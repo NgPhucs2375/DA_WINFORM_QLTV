@@ -1,0 +1,17 @@
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.exe.config
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.exe
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.pdb
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.csproj.AssemblyReference.cache
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.Properties.Resources.resources
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.csproj.GenerateResource.cache
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.csproj.CoreCompileInputs.cache
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.exe
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.pdb
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.exe.config
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.Form1.resources
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.FormDangNhap.resources
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.FormDangKy.resources
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.QuanLySach.resources
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.QuanLyDG.resources
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.QuanLyTG.resources
+D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.QLMuonTra.resources

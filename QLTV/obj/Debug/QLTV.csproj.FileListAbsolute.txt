@@ -15,3 +15,20 @@ D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.QuanLySach.
 D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.QuanLyDG.resources
 D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.QuanLyTG.resources
 D:\LapTrinh dotNet\DoAnDotNet\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.QLMuonTra.resources
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.exe.config
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.exe
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.pdb
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.csproj.AssemblyReference.cache
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.exe.config
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.Form1.resources
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.FormDangKy.resources
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.FormDangNhap.resources
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.Properties.Resources.resources
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.QLMuonTra.resources
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.QuanLyDG.resources
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.QuanLySach.resources
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.QuanLyTG.resources
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.csproj.GenerateResource.cache
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.csproj.CoreCompileInputs.cache
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.exe
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.pdb

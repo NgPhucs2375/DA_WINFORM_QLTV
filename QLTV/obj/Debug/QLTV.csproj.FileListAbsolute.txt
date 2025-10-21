@@ -32,3 +32,8 @@ D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.
 D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.csproj.CoreCompileInputs.cache
 D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.exe
 D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.pdb
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\EntityFramework.dll
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\EntityFramework.SqlServer.dll
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\EntityFramework.xml
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\EntityFramework.SqlServer.xml
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.csproj.Up2Date

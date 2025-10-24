@@ -65,7 +65,7 @@ namespace QLTV
 
             // Mở form chính, có thể truyền vai trò
             this.Hide();
-            Form1 main = new Form1(user); // FormMain có constructor nhận NguoiDung
+            Form1 main = new Form1(); // FormMain có constructor nhận NguoiDung
             main.Show(); 
             }
         }

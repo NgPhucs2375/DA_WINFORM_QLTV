@@ -37,3 +37,25 @@ D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\Entit
 D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\EntityFramework.xml
 D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\EntityFramework.SqlServer.xml
 D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.csproj.Up2Date
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.csproj.AssemblyReference.cache
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.exe.config
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.Form1.resources
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.FormDangKy.resources
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.FormDangNhap.resources
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.Properties.Resources.resources
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.QLMuonTra.resources
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.QuanLyDG.resources
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.QuanLySach.resources
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.QuanLyTG.resources
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.csproj.GenerateResource.cache
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.csproj.CoreCompileInputs.cache
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.exe
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.pdb
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\bin\Debug\QLTV.exe.config
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\bin\Debug\QLTV.exe
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\bin\Debug\QLTV.pdb
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\bin\Debug\EntityFramework.dll
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\bin\Debug\EntityFramework.SqlServer.dll
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\bin\Debug\EntityFramework.xml
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\bin\Debug\EntityFramework.SqlServer.xml
+D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.csproj.Up2Date

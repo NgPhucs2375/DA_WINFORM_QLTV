@@ -24,6 +24,8 @@ namespace QLTV
 
         private void QuanLyDG_Load(object sender, EventArgs e)
         {
+            dtpNgayHetHan.Format = DateTimePickerFormat.Custom;
+            dtpNgayHetHan.CustomFormat = "yyyy/MM/dd";
             cbxVaiTroDG.Items.Clear();
             cbxVaiTroDG.Items.Add("Độc giả");
             cbxVaiTroDG.SelectedIndex = 0;
@@ -37,7 +39,7 @@ namespace QLTV
 
             cboTrangThai.SelectedIndex = 0;
 
-            txtNgayTao.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+            txtNgayTao.Text = DateTime.Now.ToString("yyyy/MM/dd");
         }
 
         //nút load danh sách độc giả
@@ -108,6 +110,7 @@ namespace QLTV
                                     MaDG = dg.IDDocGia,
                                     HoTen = nd.HoTen_NguoiDung,
                                     Email = nd.Email_NguoiDung,
+                                    MatKhau = nd.MatKhau_NguoiDung,
                                     SDT = nd.SDT_NguoiDung,
                                     TinhTrangThe = dg.TinhTrangThe,
                                     NgayCapThe = dg.NgayCap,
@@ -138,6 +141,7 @@ namespace QLTV
                                 MaDG = dg.IDDocGia,
                                 HoTen = nd.HoTen_NguoiDung,
                                 Email = nd.Email_NguoiDung,
+                                MatKhau = nd.MatKhau_NguoiDung,
                                 SDT = nd.SDT_NguoiDung,
                                 TinhTrangThe = dg.TinhTrangThe,
                                 NgayCapThe = dg.NgayCap,
@@ -157,6 +161,7 @@ namespace QLTV
                     dataGVDSDocGia.Columns["MaDG"].HeaderText = "Mã Độc Giả";
                     dataGVDSDocGia.Columns["HoTen"].HeaderText = "Họ Tên";
                     dataGVDSDocGia.Columns["Email"].HeaderText = "Email";
+                    dataGVDSDocGia.Columns["MatKhau"].HeaderText = "Mật Khẩu";
                     dataGVDSDocGia.Columns["SDT"].HeaderText = "Số Điện Thoại";
                     dataGVDSDocGia.Columns["TinhTrangThe"].HeaderText = "Tình Trạng Thẻ";
                     dataGVDSDocGia.Columns["NgayCapThe"].HeaderText = "Ngày Cấp Thẻ";
@@ -299,7 +304,6 @@ namespace QLTV
 
         private void dtpNgayHetHan_ValueChanged(object sender, EventArgs e)
         {
-            dtpNgayHetHan.CustomFormat = "yyyy/MM/dd";
         }
 
 
@@ -322,8 +326,14 @@ namespace QLTV
 
                 if (DateTime.TryParse(row.Cells["NgayHetHanThe"].Value.ToString(), out DateTime ngayHetHan))
                 {
+                    dtpNgayHetHan.MinDate = DateTimePicker.MinimumDateTime; 
+                    dtpNgayHetHan.MaxDate = DateTimePicker.MaximumDateTime;
                     dtpNgayHetHan.Value = ngayHetHan;
 
+                }
+                else
+                {
+                    dtpNgayHetHan.Value = DateTime.Now;
                 }
 
             }
@@ -435,6 +445,18 @@ namespace QLTV
                     MessageBox.Show("Không tìm thấy độc giả trong cơ sở dữ liệu!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void btnResetForm_Click(object sender, EventArgs e)
+        {
+            textMaDG.Clear();
+            txtEmailDG.Clear();
+            txtPassDG.Clear();
+            txtSDTDG.Clear();
+            txtTenDG.Clear();
+            cboTrangThai.SelectedIndex = -1;
+            dtpNgayHetHan.Value = DateTime.Now;
+
         }
     }
 }

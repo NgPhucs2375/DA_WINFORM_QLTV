@@ -77,7 +77,7 @@
             this.grbDangKy.TabIndex = 3;
             this.grbDangKy.TabStop = false;
             this.grbDangKy.Text = "Thông tin đăng ký";
-            this.grbDangKy.Enter += new System.EventHandler(this.grbDangKy_Enter);
+            //this.grbDangKy.Enter += new System.EventHandler(this.grbDangKy_Enter);
             // 
             // cboVaiTro
             // 

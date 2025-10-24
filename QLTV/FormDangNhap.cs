@@ -19,7 +19,21 @@ namespace QLTV
         {
             InitializeComponent();
         }
-        //Hàm check email bằng regex
+        //Hàm check email bằng regex      // Hàm check Tên người dùng chỉ chứa chữ cái và khoảng trắng
+        private bool CheckName(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return false;
+            string pattern = @"^[a-zA-Z\s]+$";
+            return Regex.IsMatch(name, pattern);
+        }
+
+        //Hàm check mật khẩu mạnh phải chứa ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số 
+        private bool CheckPassword(string password)
+        {
+            if (string.IsNullOrEmpty(password)) return false;
+            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"; // Mật khẩu mạnh
+            return Regex.IsMatch(password, pattern);
+        }
         private bool CheckEmail(string email)
         {
             if (string.IsNullOrEmpty(email)) return false;
@@ -28,6 +42,8 @@ namespace QLTV
             return Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
 
         }
+
+
         private void btnAccesLogin_Click(object sender, EventArgs e)
         {
             string name = txtTenDangNhap.Text.Trim();
@@ -36,11 +52,21 @@ namespace QLTV
             if (string.IsNullOrEmpty(name)|| string.IsNullOrEmpty(email)||string.IsNullOrEmpty(pass))
             {
                 MessageBox.Show("Vui lòng nhập đầy đủ thông tin!");
+                return;
             }
-
+            if (!CheckName(name))
+            {
+                MessageBox.Show("Tên không hợp lệ! ");
+                return;
+            }
             if (!CheckEmail(email))
             {
                 MessageBox.Show("Email không hợp lệ!");
+                return;
+            }
+            if (!CheckPassword(pass))
+            {
+                MessageBox.Show("Mật khẩu không hợp lệ! Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số.");
                 return;
             }
 
@@ -75,9 +101,6 @@ namespace QLTV
             Application.Exit();
         }
 
-        private void FormDangNhap_Load(object sender, EventArgs e)
-        {
-
-        }
+     
     }
 }

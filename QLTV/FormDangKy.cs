@@ -18,6 +18,7 @@ namespace QLTV
         public FormDangKy()
         {
             InitializeComponent();
+            this.Load += FormDangKy_Load; // theem event load cho form
         }
 
         //Hàm check email bằng regex
@@ -29,6 +30,30 @@ namespace QLTV
             return Regex.IsMatch(email, pattern,RegexOptions.IgnoreCase);
 
         }
+
+        // Hàm check Tên người dùng chỉ chứa chữ cái và khoảng trắng
+        private bool CheckName(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return false;
+            string pattern = @"^[a-zA-Z\s]+$"; 
+            return Regex.IsMatch(name, pattern);
+        }
+
+        //Hàm  check SĐT chỉ chứa số và có độ dài từ 10 ký tự
+        private bool CheckSDT(string sdt)
+        {
+            if (string.IsNullOrEmpty(sdt)) return false;
+            string pattern = @"^\d{10,}$"; // Chỉ chứa số và có độ dài từ 10 ký tự trở lên
+            return Regex.IsMatch(sdt, pattern);
+        }
+
+        //Hàm check mật khẩu mạnh phải chứa ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số 
+        private bool CheckPassword(string password)
+        {
+            if (string.IsNullOrEmpty(password)) return false;
+            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"; // Mật khẩu mạnh
+            return Regex.IsMatch(password, pattern);
+        }
         private void btnDangKy_Click(object sender, EventArgs e)
         {
             string name = txtNameNguoiDung_DangKy.Text.Trim();
@@ -37,6 +62,23 @@ namespace QLTV
             string password = txtMatKhau_DangKy.Text.Trim();
             string repassword = txtNhaplaiMatKhau_DangKy.Text.Trim();
             string vaitro = cboVaiTro.SelectedItem.ToString();
+            if (!CheckName(name))
+            {
+                MessageBox.Show("Tên không hợp lệ! Chỉ được phép chữ cái và khoảng trắng.");
+                return;
+            }
+
+            if(!CheckSDT(sdt))
+            {
+                MessageBox.Show("Số điện thoại không hợp lệ! Vui lòng nhập lại.");
+                return;
+            }
+            if (!CheckPassword(password))
+            {
+                MessageBox.Show("Mật khẩu không hợp lệ! Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số.");
+                return;
+            }
+
             if (password != repassword)
             {
                 MessageBox.Show("Mật khẩu không khớp vui lòng nhập lại mật khẩu!");
@@ -81,11 +123,20 @@ namespace QLTV
                     Email_NguoiDung = email,
                     SDT_NguoiDung = txtSDT_DangKy.Text.Trim(),
                     MatKhau_NguoiDung = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(txtMatKhau_DangKy.Text)),
-                    VaiTro_NguoiDung = vaitro
+                    VaiTro_NguoiDung = vaitro,
+                    NgayTao_NguoiDung = DateTime.Now
+
                 };
                 db.NguoiDungs.Add(user);
                 db.SaveChanges();
             }
+            txtNameNguoiDung_DangKy.Clear();
+            txtEmail_DangKy.Clear();
+            txtSDT_DangKy.Clear();
+            txtMatKhau_DangKy.Clear();
+            txtNhaplaiMatKhau_DangKy.Clear();
+            cboVaiTro.SelectedIndex = 0;
+            txtMaCapQuyen_DangKy.Clear();
 
             MessageBox.Show("Đăng ký thành công!");
         }
@@ -114,7 +165,14 @@ namespace QLTV
 
         private void FormDangKy_Load(object sender, EventArgs e)
         {
-        
+            // Thêm các vai trò vào ComboBox
+            cboVaiTro.Items.Clear(); // xóa trước nếu có dữ liệu cũ
+            cboVaiTro.Items.Add("Độc Giả"); 
+            cboVaiTro.Items.Add("Thủ Thư");
+
+            // Mặc định chọn vai trò đầu tiên
+            cboVaiTro.SelectedIndex = 0; // chon Độc Giả làm mặc định
+
+        }
     }
-}
 }

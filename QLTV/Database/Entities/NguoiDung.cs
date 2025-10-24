@@ -26,6 +26,6 @@ namespace QLTV.Database.Entities
         [Column("TRANGTHAI")]
         public string TrangThai_NguoiDung { get; set; }
         [Column("NGAYTAO")]
-        public DateTime NgayTao_NguoiDung { get; set; }
+        public DateTime? NgayTao_NguoiDung { get; set; }
     }
 }

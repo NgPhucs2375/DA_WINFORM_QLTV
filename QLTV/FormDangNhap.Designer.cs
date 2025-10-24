@@ -176,7 +176,6 @@
             this.Name = "FormDangNhap";
             this.Tag = "";
             this.Text = "Đăng nhập";
-            this.Load += new System.EventHandler(this.FormDangNhap_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

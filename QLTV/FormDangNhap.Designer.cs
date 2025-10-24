@@ -45,18 +45,20 @@
             // lalNamedangnhap
             // 
             this.lalNamedangnhap.AutoSize = true;
-            this.lalNamedangnhap.Location = new System.Drawing.Point(28, 43);
+            this.lalNamedangnhap.Location = new System.Drawing.Point(19, 28);
+            this.lalNamedangnhap.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lalNamedangnhap.Name = "lalNamedangnhap";
-            this.lalNamedangnhap.Size = new System.Drawing.Size(181, 29);
+            this.lalNamedangnhap.Size = new System.Drawing.Size(120, 20);
             this.lalNamedangnhap.TabIndex = 0;
             this.lalNamedangnhap.Text = "Tên đăng nhập:";
             // 
             // lalMatKhau
             // 
             this.lalMatKhau.AutoSize = true;
-            this.lalMatKhau.Location = new System.Drawing.Point(28, 100);
+            this.lalMatKhau.Location = new System.Drawing.Point(19, 65);
+            this.lalMatKhau.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lalMatKhau.Name = "lalMatKhau";
-            this.lalMatKhau.Size = new System.Drawing.Size(115, 29);
+            this.lalMatKhau.Size = new System.Drawing.Size(79, 20);
             this.lalMatKhau.TabIndex = 1;
             this.lalMatKhau.Text = "Mật khẩu:";
             // 
@@ -73,35 +75,40 @@
             this.groupBox1.Controls.Add(this.lalMatKhau);
             this.groupBox1.Controls.Add(this.lalNamedangnhap);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(12, 25);
+            this.groupBox1.Location = new System.Drawing.Point(8, 16);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(549, 437);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Size = new System.Drawing.Size(366, 284);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Thông tin đăng nhập";
             // 
             // txtEmail_DangNhap
             // 
-            this.txtEmail_DangNhap.Location = new System.Drawing.Point(214, 166);
+            this.txtEmail_DangNhap.Location = new System.Drawing.Point(143, 108);
+            this.txtEmail_DangNhap.Margin = new System.Windows.Forms.Padding(2);
             this.txtEmail_DangNhap.Name = "txtEmail_DangNhap";
-            this.txtEmail_DangNhap.Size = new System.Drawing.Size(307, 35);
+            this.txtEmail_DangNhap.Size = new System.Drawing.Size(206, 26);
             this.txtEmail_DangNhap.TabIndex = 9;
             // 
             // lalEmail
             // 
             this.lalEmail.AutoSize = true;
-            this.lalEmail.Location = new System.Drawing.Point(28, 171);
+            this.lalEmail.Location = new System.Drawing.Point(19, 111);
+            this.lalEmail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lalEmail.Name = "lalEmail";
-            this.lalEmail.Size = new System.Drawing.Size(80, 29);
+            this.lalEmail.Size = new System.Drawing.Size(52, 20);
             this.lalEmail.TabIndex = 8;
             this.lalEmail.Text = "Email:";
             // 
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(356, 246);
+            this.radioButton2.Location = new System.Drawing.Point(237, 160);
+            this.radioButton2.Margin = new System.Windows.Forms.Padding(2);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(120, 33);
+            this.radioButton2.Size = new System.Drawing.Size(81, 24);
             this.radioButton2.TabIndex = 7;
             this.radioButton2.TabStop = true;
             this.radioButton2.Text = "Độc giả";
@@ -110,9 +117,10 @@
             // radioButton1
             // 
             this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(34, 246);
+            this.radioButton1.Location = new System.Drawing.Point(23, 160);
+            this.radioButton1.Margin = new System.Windows.Forms.Padding(2);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(118, 33);
+            this.radioButton1.Size = new System.Drawing.Size(81, 24);
             this.radioButton1.TabIndex = 6;
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "Thủ thư";
@@ -120,9 +128,10 @@
             // 
             // btnAccesLogin
             // 
-            this.btnAccesLogin.Location = new System.Drawing.Point(33, 320);
+            this.btnAccesLogin.Location = new System.Drawing.Point(22, 208);
+            this.btnAccesLogin.Margin = new System.Windows.Forms.Padding(2);
             this.btnAccesLogin.Name = "btnAccesLogin";
-            this.btnAccesLogin.Size = new System.Drawing.Size(150, 49);
+            this.btnAccesLogin.Size = new System.Drawing.Size(100, 32);
             this.btnAccesLogin.TabIndex = 5;
             this.btnAccesLogin.Text = "Đăng nhập";
             this.btnAccesLogin.UseVisualStyleBackColor = true;
@@ -130,9 +139,10 @@
             // 
             // Exit
             // 
-            this.Exit.Location = new System.Drawing.Point(356, 320);
+            this.Exit.Location = new System.Drawing.Point(237, 208);
+            this.Exit.Margin = new System.Windows.Forms.Padding(2);
             this.Exit.Name = "Exit";
-            this.Exit.Size = new System.Drawing.Size(150, 49);
+            this.Exit.Size = new System.Drawing.Size(100, 32);
             this.Exit.TabIndex = 4;
             this.Exit.Text = "Thoát";
             this.Exit.UseVisualStyleBackColor = true;
@@ -140,24 +150,27 @@
             // 
             // txtTenDangNhap
             // 
-            this.txtTenDangNhap.Location = new System.Drawing.Point(214, 43);
+            this.txtTenDangNhap.Location = new System.Drawing.Point(143, 28);
+            this.txtTenDangNhap.Margin = new System.Windows.Forms.Padding(2);
             this.txtTenDangNhap.Name = "txtTenDangNhap";
-            this.txtTenDangNhap.Size = new System.Drawing.Size(307, 35);
+            this.txtTenDangNhap.Size = new System.Drawing.Size(206, 26);
             this.txtTenDangNhap.TabIndex = 3;
             // 
             // txtMatKhau_DangNhap
             // 
-            this.txtMatKhau_DangNhap.Location = new System.Drawing.Point(214, 95);
+            this.txtMatKhau_DangNhap.Location = new System.Drawing.Point(143, 62);
+            this.txtMatKhau_DangNhap.Margin = new System.Windows.Forms.Padding(2);
             this.txtMatKhau_DangNhap.Name = "txtMatKhau_DangNhap";
-            this.txtMatKhau_DangNhap.Size = new System.Drawing.Size(307, 35);
+            this.txtMatKhau_DangNhap.Size = new System.Drawing.Size(206, 26);
             this.txtMatKhau_DangNhap.TabIndex = 2;
             // 
             // FormDangNhap
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(753, 511);
+            this.ClientSize = new System.Drawing.Size(502, 332);
             this.Controls.Add(this.groupBox1);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormDangNhap";

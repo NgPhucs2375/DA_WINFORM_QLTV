@@ -36,6 +36,7 @@
             this.btnSuaDG = new System.Windows.Forms.Button();
             this.btnThemDG = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
+            this.textBox10 = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.txtSDTDG = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -100,6 +101,7 @@
             this.groupBox2.Controls.Add(this.btnSuaDG);
             this.groupBox2.Controls.Add(this.btnThemDG);
             this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.textBox10);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.txtSDTDG);
             this.groupBox2.Controls.Add(this.label11);
@@ -161,6 +163,24 @@
             this.btnThemDG.UseVisualStyleBackColor = true;
             this.btnThemDG.Click += new System.EventHandler(this.btnThemDG_Click);
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(424, 163);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(89, 25);
+            this.label8.TabIndex = 11;
+            this.label8.Text = "Loại ĐG:";
+            // 
+            // textBox9
+            // 
+            this.textBox9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox9.Location = new System.Drawing.Point(538, 124);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(225, 30);
+            this.textBox9.TabIndex = 16;
+            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -170,6 +190,14 @@
             this.label9.Size = new System.Drawing.Size(59, 25);
             this.label9.TabIndex = 15;
             this.label9.Text = "SĐT:";
+            // 
+            // textBox10
+            // 
+            this.textBox10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox10.Location = new System.Drawing.Point(538, 88);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(225, 30);
+            this.textBox10.TabIndex = 14;
             // 
             // label10
             // 
@@ -433,6 +461,7 @@
         private System.Windows.Forms.Button btnSuaDG;
         private System.Windows.Forms.Button btnThemDG;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtSDTDG;
         private System.Windows.Forms.Label label11;

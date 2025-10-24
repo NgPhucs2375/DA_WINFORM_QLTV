@@ -114,7 +114,7 @@ namespace QLTV
 
         private void FormDangKy_Load(object sender, EventArgs e)
         {
-
-        }
+        
     }
+}
 }

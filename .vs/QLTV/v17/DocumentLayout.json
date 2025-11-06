@@ -1,0 +1,404 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|c:\\users\\test\\documents\\visual studio 2022\\dotnet\\doanthuvien\\qltv\\qlmuontra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\qlmuontra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\lapphieutra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\lapphieutra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\lapphieumuon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\lapphieumuon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\lapphieumuon.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\lapphieumuon.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\lapphieutra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\lapphieutra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|c:\\users\\test\\documents\\visual studio 2022\\dotnet\\doanthuvien\\qltv\\lapphieumuon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\lapphieumuon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\lapphieutra.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\lapphieutra.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\database\\qltvdatacontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\database\\qltvdatacontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\database\\entities\\yeucaumuon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\database\\entities\\yeucaumuon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\database\\entities\\sach.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\database\\entities\\sach.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\database\\entities\\phieumuon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\database\\entities\\phieumuon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|c:\\users\\test\\documents\\visual studio 2022\\dotnet\\doanthuvien\\qltv\\database\\entities\\phat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\database\\entities\\phat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\database\\entities\\nhanvien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\database\\entities\\nhanvien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\database\\entities\\nguoidung.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\database\\entities\\nguoidung.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|c:\\users\\test\\documents\\visual studio 2022\\dotnet\\doanthuvien\\qltv\\database\\entities\\loginlog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\database\\entities\\loginlog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|c:\\users\\test\\documents\\visual studio 2022\\dotnet\\doanthuvien\\qltv\\database\\entities\\hoatdonglog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\database\\entities\\hoatdonglog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\database\\entities\\docgia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\database\\entities\\docgia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\database\\entities\\baocao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\database\\entities\\baocao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\lapphieumuon.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\lapphieumuon.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\database\\entities\\thongbao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\database\\entities\\thongbao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\lapphieutra.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\lapphieutra.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\qltv\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F46F8F47-4A74-4B26-98BF-4466778B053E}|QLTV\\QLTV.csproj|solutionrelative:qltv\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "QLMuonTra.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\QLMuonTra.cs",
+              "RelativeDocumentMoniker": "QLTV\\QLMuonTra.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\QLMuonTra.cs [Design]",
+              "RelativeToolTip": "QLTV\\QLMuonTra.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T09:35:58.096Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "LapPhieuMuon.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuMuon.Designer.cs",
+              "RelativeDocumentMoniker": "QLTV\\LapPhieuMuon.Designer.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuMuon.Designer.cs",
+              "RelativeToolTip": "QLTV\\LapPhieuMuon.Designer.cs",
+              "ViewState": "AgIAAHgAAAAAAAAAAAD4v4gAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T08:20:00.596Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "LapPhieuTra.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuTra.cs",
+              "RelativeDocumentMoniker": "QLTV\\LapPhieuTra.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuTra.cs",
+              "RelativeToolTip": "QLTV\\LapPhieuTra.cs",
+              "ViewState": "AgIAAGkAAAAAAAAAAAAIwIQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T07:54:23.698Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "LapPhieuMuon.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuMuon.cs",
+              "RelativeDocumentMoniker": "QLTV\\LapPhieuMuon.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuMuon.cs [Design]",
+              "RelativeToolTip": "QLTV\\LapPhieuMuon.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T08:17:42.122Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Program.cs",
+              "RelativeDocumentMoniker": "QLTV\\Program.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Program.cs",
+              "RelativeToolTip": "QLTV\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T07:50:37.996Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "LapPhieuMuon.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuMuon.cs",
+              "RelativeDocumentMoniker": "QLTV\\LapPhieuMuon.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuMuon.cs",
+              "RelativeToolTip": "QLTV\\LapPhieuMuon.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAIwGYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T08:22:22.821Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "LapPhieuTra.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuTra.cs",
+              "RelativeDocumentMoniker": "QLTV\\LapPhieuTra.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuTra.cs [Design]",
+              "RelativeToolTip": "QLTV\\LapPhieuTra.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T08:24:03.752Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "LapPhieuTra.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuTra.Designer.cs",
+              "RelativeDocumentMoniker": "QLTV\\LapPhieuTra.Designer.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuTra.Designer.cs",
+              "RelativeToolTip": "QLTV\\LapPhieuTra.Designer.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAADwvxEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T08:24:00.38Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "QLTVDataContext.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\QLTVDataContext.cs",
+              "RelativeDocumentMoniker": "QLTV\\Database\\QLTVDataContext.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\QLTVDataContext.cs",
+              "RelativeToolTip": "QLTV\\Database\\QLTVDataContext.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAA/wCAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T08:32:53.557Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "YeuCauMuon.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\YeuCauMuon.cs",
+              "RelativeDocumentMoniker": "QLTV\\Database\\Entities\\YeuCauMuon.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\YeuCauMuon.cs",
+              "RelativeToolTip": "QLTV\\Database\\Entities\\YeuCauMuon.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAcwBYAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T08:38:55.194Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Sach.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\Sach.cs",
+              "RelativeDocumentMoniker": "QLTV\\Database\\Entities\\Sach.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\Sach.cs",
+              "RelativeToolTip": "QLTV\\Database\\Entities\\Sach.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAIwCUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T09:01:34.943Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "PhieuMuon.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\PhieuMuon.cs",
+              "RelativeDocumentMoniker": "QLTV\\Database\\Entities\\PhieuMuon.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\PhieuMuon.cs",
+              "RelativeToolTip": "QLTV\\Database\\Entities\\PhieuMuon.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAIwCQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T09:02:55.628Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Phat.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\Phat.cs",
+              "RelativeDocumentMoniker": "QLTV\\Database\\Entities\\Phat.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\Phat.cs",
+              "RelativeToolTip": "QLTV\\Database\\Entities\\Phat.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAcwB4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T09:26:54.594Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "NguoiDung.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\NguoiDung.cs",
+              "RelativeDocumentMoniker": "QLTV\\Database\\Entities\\NguoiDung.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\NguoiDung.cs",
+              "RelativeToolTip": "QLTV\\Database\\Entities\\NguoiDung.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAUwB8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T08:34:03.656Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "LoginLog.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\LoginLog.cs",
+              "RelativeDocumentMoniker": "QLTV\\Database\\Entities\\LoginLog.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\LoginLog.cs",
+              "RelativeToolTip": "QLTV\\Database\\Entities\\LoginLog.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAcwB8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T09:26:05.347Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "HoatDongLog.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\HoatDongLog.cs",
+              "RelativeDocumentMoniker": "QLTV\\Database\\Entities\\HoatDongLog.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\HoatDongLog.cs",
+              "RelativeToolTip": "QLTV\\Database\\Entities\\HoatDongLog.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAcwB0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T09:25:58.413Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "NhanVien.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\NhanVien.cs",
+              "RelativeDocumentMoniker": "QLTV\\Database\\Entities\\NhanVien.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\NhanVien.cs",
+              "RelativeToolTip": "QLTV\\Database\\Entities\\NhanVien.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T08:38:47.578Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "BaoCao.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\BaoCao.cs",
+              "RelativeDocumentMoniker": "QLTV\\Database\\Entities\\BaoCao.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\BaoCao.cs",
+              "RelativeToolTip": "QLTV\\Database\\Entities\\BaoCao.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T08:38:44.336Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "DocGia.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\DocGia.cs",
+              "RelativeDocumentMoniker": "QLTV\\Database\\Entities\\DocGia.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\DocGia.cs",
+              "RelativeToolTip": "QLTV\\Database\\Entities\\DocGia.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAiwCAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T08:33:18.795Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "LapPhieuMuon.resx",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuMuon.resx",
+              "RelativeDocumentMoniker": "QLTV\\LapPhieuMuon.resx",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuMuon.resx",
+              "RelativeToolTip": "QLTV\\LapPhieuMuon.resx",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-11-06T08:55:26.175Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "ThongBao.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\ThongBao.cs",
+              "RelativeDocumentMoniker": "QLTV\\Database\\Entities\\ThongBao.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Database\\Entities\\ThongBao.cs",
+              "RelativeToolTip": "QLTV\\Database\\Entities\\ThongBao.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T08:38:56.312Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "LapPhieuTra.resx",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuTra.resx",
+              "RelativeDocumentMoniker": "QLTV\\LapPhieuTra.resx",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\LapPhieuTra.resx",
+              "RelativeToolTip": "QLTV\\LapPhieuTra.resx",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-11-06T08:24:49.227Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Form1.cs",
+              "RelativeDocumentMoniker": "QLTV\\Form1.cs",
+              "ToolTip": "C:\\Users\\test\\Documents\\Visual Studio 2022\\dotNET\\DoAnThuVien\\QLTV\\Form1.cs",
+              "RelativeToolTip": "QLTV\\Form1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T07:54:58.504Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

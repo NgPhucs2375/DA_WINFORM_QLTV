@@ -107,5 +107,19 @@ namespace QLTV
 
             }
         }
+
+        private void dgwhowList_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void btnHTDanhSach_Click(object sender, EventArgs e)
+        {
+            using (var db = new QLTVDataContext())
+            {
+                var allBooks = db.Sachs.ToList();
+                dgwhowList.DataSource = allBooks;
+            }
+        }
     }
 }

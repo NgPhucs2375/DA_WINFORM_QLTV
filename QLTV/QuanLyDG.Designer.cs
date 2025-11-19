@@ -31,6 +31,7 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dataGVDSDocGia = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnResetForm = new System.Windows.Forms.Button();
             this.dtpNgayHetHan = new System.Windows.Forms.DateTimePicker();
             this.txtNgayTao = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -60,7 +61,6 @@
             this.btnSearchingDG = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.btnHTDanhSach = new System.Windows.Forms.Button();
-            this.btnResetForm = new System.Windows.Forms.Button();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGVDSDocGia)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -69,25 +69,35 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.dataGVDSDocGia);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.Location = new System.Drawing.Point(12, 485);
             this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(8);
             this.groupBox3.Size = new System.Drawing.Size(1442, 553);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Danh sách ĐG";
+            this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
             // 
             // dataGVDSDocGia
             // 
+            this.dataGVDSDocGia.AllowUserToAddRows = false;
+            this.dataGVDSDocGia.AllowUserToDeleteRows = false;
             this.dataGVDSDocGia.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGVDSDocGia.Location = new System.Drawing.Point(6, 63);
+            this.dataGVDSDocGia.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGVDSDocGia.Location = new System.Drawing.Point(8, 36);
             this.dataGVDSDocGia.Name = "dataGVDSDocGia";
+            this.dataGVDSDocGia.ReadOnly = true;
             this.dataGVDSDocGia.RowHeadersWidth = 62;
             this.dataGVDSDocGia.RowTemplate.Height = 28;
             this.dataGVDSDocGia.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGVDSDocGia.Size = new System.Drawing.Size(1422, 484);
+            this.dataGVDSDocGia.Size = new System.Drawing.Size(1426, 509);
             this.dataGVDSDocGia.TabIndex = 0;
+            this.dataGVDSDocGia.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGVDSDocGia_CellClick);
             this.dataGVDSDocGia.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGVDSDocGia_CellContentClick);
             // 
             // groupBox2
@@ -115,14 +125,25 @@
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.textMaDG);
             this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(677, 28);
+            this.groupBox2.Location = new System.Drawing.Point(687, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(777, 432);
+            this.groupBox2.Size = new System.Drawing.Size(779, 1050);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Thông tin độc giả";
             this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
+            // 
+            // btnResetForm
+            // 
+            this.btnResetForm.Location = new System.Drawing.Point(639, 346);
+            this.btnResetForm.Name = "btnResetForm";
+            this.btnResetForm.Size = new System.Drawing.Size(129, 38);
+            this.btnResetForm.TabIndex = 27;
+            this.btnResetForm.Text = "Reset";
+            this.btnResetForm.UseVisualStyleBackColor = true;
+            this.btnResetForm.Click += new System.EventHandler(this.btnResetForm_Click);
             // 
             // dtpNgayHetHan
             // 
@@ -317,7 +338,6 @@
             // 
             // textMaDG
             // 
-            this.textMaDG.Enabled = false;
             this.textMaDG.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textMaDG.Location = new System.Drawing.Point(138, 52);
             this.textMaDG.Name = "textMaDG";
@@ -342,19 +362,21 @@
             this.groupBox1.Controls.Add(this.txtSearchingDG);
             this.groupBox1.Controls.Add(this.btnSearchingDG);
             this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(479, 268);
+            this.groupBox1.Size = new System.Drawing.Size(687, 1050);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tìm kiếm độc giả";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // radMaDG
             // 
             this.radMaDG.AutoSize = true;
             this.radMaDG.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radMaDG.Location = new System.Drawing.Point(11, 149);
+            this.radMaDG.Location = new System.Drawing.Point(52, 148);
             this.radMaDG.Name = "radMaDG";
             this.radMaDG.Size = new System.Drawing.Size(213, 29);
             this.radMaDG.TabIndex = 2;
@@ -366,7 +388,7 @@
             // 
             this.radTenDG.AutoSize = true;
             this.radTenDG.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radTenDG.Location = new System.Drawing.Point(11, 114);
+            this.radTenDG.Location = new System.Drawing.Point(52, 113);
             this.radTenDG.Name = "radTenDG";
             this.radTenDG.Size = new System.Drawing.Size(213, 29);
             this.radTenDG.TabIndex = 3;
@@ -376,7 +398,7 @@
             // 
             // txtSearchingDG
             // 
-            this.txtSearchingDG.Location = new System.Drawing.Point(11, 73);
+            this.txtSearchingDG.Location = new System.Drawing.Point(52, 72);
             this.txtSearchingDG.Name = "txtSearchingDG";
             this.txtSearchingDG.Size = new System.Drawing.Size(309, 35);
             this.txtSearchingDG.TabIndex = 1;
@@ -385,7 +407,7 @@
             // btnSearchingDG
             // 
             this.btnSearchingDG.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearchingDG.Location = new System.Drawing.Point(326, 73);
+            this.btnSearchingDG.Location = new System.Drawing.Point(367, 72);
             this.btnSearchingDG.Name = "btnSearchingDG";
             this.btnSearchingDG.Size = new System.Drawing.Size(147, 38);
             this.btnSearchingDG.TabIndex = 2;
@@ -396,7 +418,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 41);
+            this.label1.Location = new System.Drawing.Point(47, 40);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(174, 29);
             this.label1.TabIndex = 0;
@@ -412,16 +434,6 @@
             this.btnHTDanhSach.UseVisualStyleBackColor = true;
             this.btnHTDanhSach.Click += new System.EventHandler(this.btnHTDanhSach_Click);
             // 
-            // btnResetForm
-            // 
-            this.btnResetForm.Location = new System.Drawing.Point(639, 346);
-            this.btnResetForm.Name = "btnResetForm";
-            this.btnResetForm.Size = new System.Drawing.Size(129, 38);
-            this.btnResetForm.TabIndex = 27;
-            this.btnResetForm.Text = "Reset";
-            this.btnResetForm.UseVisualStyleBackColor = true;
-            this.btnResetForm.Click += new System.EventHandler(this.btnResetForm_Click);
-            // 
             // QuanLyDG
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -431,7 +443,6 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.MaximumSize = new System.Drawing.Size(1488, 1106);
             this.MinimizeBox = false;
             this.Name = "QuanLyDG";
             this.Text = "Quản lý độc giả";

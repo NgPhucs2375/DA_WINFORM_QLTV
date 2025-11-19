@@ -61,7 +61,7 @@ namespace QLTV
             string sdt = txtSDT_DangKy.Text.Trim();
             string password = txtMatKhau_DangKy.Text.Trim();
             string repassword = txtNhaplaiMatKhau_DangKy.Text.Trim();
-            string vaitro = cboVaiTro.SelectedItem.ToString();
+            
             if (!CheckName(name))
             {
                 MessageBox.Show("Tên không hợp lệ! Chỉ được phép chữ cái và khoảng trắng.");
@@ -85,16 +85,8 @@ namespace QLTV
                 return;
             }
 
-            if (vaitro == "Thủ Thư")
-            {
-                string capquyen = txtMaCapQuyen_DangKy.Text.Trim();
-                const string MA_CAP_QUYEN = "ABC123";
-                if (capquyen!=MA_CAP_QUYEN)
-                {
-                    MessageBox.Show("Mã cấp quyền không hợp lệ!");
-                    return;
-                }
-            }
+            
+            //}
 
             if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(sdt) || string.IsNullOrEmpty(password)) 
             {
@@ -123,37 +115,38 @@ namespace QLTV
                     Email_NguoiDung = email,
                     SDT_NguoiDung = txtSDT_DangKy.Text.Trim(),
                     MatKhau_NguoiDung = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(txtMatKhau_DangKy.Text)),
-                    VaiTro_NguoiDung = vaitro,
-                    NgayTao_NguoiDung = DateTime.Now
+                    VaiTro_NguoiDung = "DocGia",
+                    NgayTao_NguoiDung = DateTime.Now,
+                    
 
                 };
                 db.NguoiDungs.Add(user);
                 db.SaveChanges();
+                DocGia docGia = new DocGia()
+                {
+                    IDNguoiDung_DocGia = user.IDNguoiDung,
+                    TinhTrangThe = "Active",           // Hoặc giá trị mặc định phù hợp
+                    NgayCap = DateTime.Now,
+                    NgayHetHan = DateTime.Now.AddYears(1)
+                };
+
+                db.DocGias.Add(docGia);
+                db.SaveChanges();
+
+                MessageBox.Show("Đăng ký thành công!");
             }
             txtNameNguoiDung_DangKy.Clear();
             txtEmail_DangKy.Clear();
             txtSDT_DangKy.Clear();
             txtMatKhau_DangKy.Clear();
             txtNhaplaiMatKhau_DangKy.Clear();
-            cboVaiTro.SelectedIndex = 0;
-            txtMaCapQuyen_DangKy.Clear();
-
-            MessageBox.Show("Đăng ký thành công!");
+            
+            
         }
 
         private void cboVaiTro_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cboVaiTro.SelectedItem.ToString() == "Thủ Thư")
-            {
-                // Cap lai quyen kha dung cho Cap quyen nesu chon Dung Thu thu
-                lalMaCapQuyen.Visible = true;
-                txtMaCapQuyen_DangKy.Visible = true;
-            }
-            else
-            {
-                lalMaCapQuyen.Visible=false;
-                txtMaCapQuyen_DangKy.Visible=false;
-            }
+            
         }
 
         private void btnThoat_Click(object sender, EventArgs e)
@@ -165,13 +158,12 @@ namespace QLTV
 
         private void FormDangKy_Load(object sender, EventArgs e)
         {
-            // Thêm các vai trò vào ComboBox
-            cboVaiTro.Items.Clear(); // xóa trước nếu có dữ liệu cũ
-            cboVaiTro.Items.Add("Độc Giả"); 
-            cboVaiTro.Items.Add("Thủ Thư");
+            
 
-            // Mặc định chọn vai trò đầu tiên
-            cboVaiTro.SelectedIndex = 0; // chon Độc Giả làm mặc định
+        }
+
+        private void grbDangKy_Enter(object sender, EventArgs e)
+        {
 
         }
     }

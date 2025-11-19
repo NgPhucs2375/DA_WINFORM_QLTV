@@ -16,9 +16,16 @@ namespace QLTV
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
+            //Application.Run(new MainMenu());
             //Application.Run(new LapPhieuMuon());
-            Application.Run(new LapPhieuTra());
+            //Application.Run(new LapPhieuTra());
+            //Application.Run(new QuanLySach());
+            //Application.Run(new QuanLyDG());
+            //Application.Run(new Form1());
+            Application.Run(new QuanLyNV());
+
+
+
         }
     }
 }

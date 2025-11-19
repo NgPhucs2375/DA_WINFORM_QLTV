@@ -83,3 +83,28 @@ C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLT
 C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.LapPhieuTra.resources
 C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.LapPhieuMuon.resources
 C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.exe.config
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\bin\Debug\QLTV.exe.config
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\bin\Debug\QLTV.exe
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\bin\Debug\QLTV.pdb
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\bin\Debug\EntityFramework.dll
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\bin\Debug\EntityFramework.xml
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.csproj.AssemblyReference.cache
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.Form1.resources
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.FormDangKy.resources
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.FormDangNhap.resources
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.LapPhieuMuon.resources
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.LapPhieuTra.resources
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.Properties.Resources.resources
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.QLMuonTra.resources
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.QuanLyDG.resources
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.QuanLySach.resources
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.csproj.GenerateResource.cache
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.csproj.CoreCompileInputs.cache
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.csproj.Up2Date
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.exe
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.pdb
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.MainMenu.resources
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.exe.config
+C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.QuanLyNV.resources

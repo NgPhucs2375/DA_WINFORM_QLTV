@@ -78,21 +78,42 @@ namespace QLTV
                     MessageBox.Show("Email chưa đăng ký !");
                     return;
                 }
-           
 
-            string passDB = Encoding.UTF8.GetString(Convert.FromBase64String(user.MatKhau_NguoiDung));
-            if ( pass!= passDB)
-            {
-                MessageBox.Show("Mật khẩu không đúng!");
-                return;
-            }
 
-            MessageBox.Show($"Đăng nhập thành công! Vai trò: {user.VaiTro_NguoiDung}");
+                string passInput = txtMatKhau_DangNhap.Text.Trim(); // mật khẩu người dùng nhập
 
-            // Mở form chính, có thể truyền vai trò
-            this.Hide();
-            Form1 main = new Form1(); // FormMain có constructor nhận NguoiDung
-            main.Show(); 
+                // Mã hóa Base64 mật khẩu nhập
+                string passInputBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(passInput));
+
+                // So sánh với mật khẩu trong DB (đã là Base64)
+                if (passInputBase64 != user.MatKhau_NguoiDung?.Trim())
+                {
+                    MessageBox.Show("Mật khẩu không đúng!");
+                    return;
+                }
+
+                MessageBox.Show($"Đăng nhập thành công! Vai trò: {user.VaiTro_NguoiDung}");
+
+                // Mở form chính, có thể truyền vai trò
+                string role = user.VaiTro_NguoiDung?.Trim().ToLower();
+
+                if (role == "nhanvien" || role == "admin")
+                {
+                    this.Hide();
+                    MainMenu mainmenu = new MainMenu(role);
+                    mainmenu.Show();
+                }
+                else if (role == "docgia")
+                {
+                    this.Hide();
+                    FormDG formDG = new FormDG();
+                    formDG.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Vai trò không hợp lệ!");
+                }
+
             }
         }
 
@@ -101,6 +122,14 @@ namespace QLTV
             Application.Exit();
         }
 
-     
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FormDangNhap_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

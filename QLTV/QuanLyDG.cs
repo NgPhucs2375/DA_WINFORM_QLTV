@@ -49,7 +49,7 @@ namespace QLTV
             {
                 var lstDG = from dg in db.DocGias
                             join nd in db.NguoiDungs on dg.IDNguoiDung_DocGia equals nd.IDNguoiDung
-                            where nd.VaiTro_NguoiDung == "DocGia"
+                            where nd.VaiTro_NguoiDung.Trim().ToLower() == "docgia"
                             select new
                             {
                                 MaDG = dg.IDDocGia,
@@ -64,6 +64,7 @@ namespace QLTV
 
                             };
                 dataGVDSDocGia.DataSource = lstDG.ToList();
+
                 dataGVDSDocGia.Columns["MaDG"].HeaderText = "Mã Độc Giả";
                 dataGVDSDocGia.Columns["HoTen"].HeaderText = "Họ Tên";
                 dataGVDSDocGia.Columns["Email"].HeaderText = "Email";
@@ -73,6 +74,7 @@ namespace QLTV
                 dataGVDSDocGia.Columns["NgayCapThe"].HeaderText = "Ngày Cấp Thẻ";
                 dataGVDSDocGia.Columns["NgayHetHanThe"].HeaderText = "Ngày Hết Hạn Thẻ";
                 dataGVDSDocGia.Columns["TrangThaiThe"].HeaderText = "Trạng Thái Thẻ";
+
                 dataGVDSDocGia.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             }
@@ -310,7 +312,7 @@ namespace QLTV
 
         //Chọn độc giả từ DataGridView
 
-        private void dataGVDSDocGia_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGVDSDocGia_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
@@ -319,17 +321,44 @@ namespace QLTV
                 txtEmailDG.Text = row.Cells["Email"].Value.ToString();
                 txtTenDG.Text = row.Cells["HOTEN"].Value.ToString();
                 txtSDTDG.Text = row.Cells["SDT"].Value.ToString();
-                txtPassDG.Text = row.Cells["MATKHAU"].Value.ToString();
-                string trangThai = row.Cells["TrangThaiThe"].Value.ToString();
-                cboTrangThai.SelectedItem = trangThai;
-
-
-                if (DateTime.TryParse(row.Cells["NgayHetHanThe"].Value.ToString(), out DateTime ngayHetHan))
+                string base64Pass = row.Cells["MatKhau"].Value?.ToString() ?? "";
+                if (!string.IsNullOrEmpty(base64Pass))
                 {
-                    dtpNgayHetHan.MinDate = DateTimePicker.MinimumDateTime; 
+                    try
+                    {
+                        byte[] data = Convert.FromBase64String(base64Pass);
+                        string decodedPass = Encoding.UTF8.GetString(data);
+                        txtPassDG.Text = decodedPass;
+                    }
+                    catch
+                    {
+                        // Nếu giải mã thất bại, hiển thị trực tiếp base64
+                        txtPassDG.Text = base64Pass;
+                    }
+                }
+                else
+                {
+                    txtPassDG.Text = "";
+                }
+
+                // Xử lý chọn trạng thái trong ComboBox an toàn
+                string trangThai = row.Cells["TrangThaiThe"].Value?.ToString() ?? "";
+                if (cboTrangThai.Items.Contains(trangThai))
+                {
+                    cboTrangThai.SelectedItem = trangThai;
+                }
+                else
+                {
+                    cboTrangThai.SelectedIndex = -1; // Không chọn mục nào
+                }
+
+                // Xử lý ngày hết hạn an toàn
+                string ngayHetHanStr = row.Cells["NgayHetHanThe"].Value?.ToString();
+                if (DateTime.TryParse(ngayHetHanStr, out DateTime ngayHetHan))
+                {
+                    dtpNgayHetHan.MinDate = DateTimePicker.MinimumDateTime;
                     dtpNgayHetHan.MaxDate = DateTimePicker.MaximumDateTime;
                     dtpNgayHetHan.Value = ngayHetHan;
-
                 }
                 else
                 {
@@ -456,6 +485,21 @@ namespace QLTV
             txtTenDG.Clear();
             cboTrangThai.SelectedIndex = -1;
             dtpNgayHetHan.Value = DateTime.Now;
+
+        }
+
+        private void groupBox3_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGVDSDocGia_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
         }
     }

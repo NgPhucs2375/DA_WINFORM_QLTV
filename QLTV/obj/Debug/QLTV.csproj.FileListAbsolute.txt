@@ -19,7 +19,6 @@ D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.
 D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.exe
 D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.pdb
 D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.csproj.AssemblyReference.cache
-D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.exe.config
 D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.Form1.resources
 D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.FormDangKy.resources
 D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.FormDangNhap.resources
@@ -59,3 +58,29 @@ D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\bin\Debug\EntityFramework.SqlServer
 D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\bin\Debug\EntityFramework.xml
 D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\bin\Debug\EntityFramework.SqlServer.xml
 D:\LapTrinh dotNet\DA_WINFORM_QLTV-main\QLTV\obj\Debug\QLTV.csproj.Up2Date
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\bin\Debug\QLTV.exe.config
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\bin\Debug\QLTV.exe
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\bin\Debug\QLTV.pdb
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\bin\Debug\EntityFramework.dll
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\bin\Debug\EntityFramework.xml
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.csproj.AssemblyReference.cache
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.Form1.resources
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.FormDangKy.resources
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.FormDangNhap.resources
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.Properties.Resources.resources
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.QLMuonTra.resources
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.QuanLyDG.resources
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.QuanLySach.resources
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.QuanLyTG.resources
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.csproj.GenerateResource.cache
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.csproj.CoreCompileInputs.cache
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.csproj.Up2Date
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.exe
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.pdb
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.LapPhieuTra.resources
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.LapPhieuMuon.resources
+C:\Users\test\Documents\Visual Studio 2022\dotNET\DoAnThuVien\QLTV\obj\Debug\QLTV.exe.config
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.LapPhieuMuon.resources
+D:\Đại_Học\Năm_3\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.LapPhieuTra.resources

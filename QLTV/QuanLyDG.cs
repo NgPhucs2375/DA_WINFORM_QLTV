@@ -87,7 +87,7 @@ namespace QLTV
         {
             using (var db = new QLTVDataContext())
             {
-                string searchingValue =  txtSearchingDG.Text.Trim();
+                string searchingValue =  txtSearchingDG.Text.ToLower().Trim();
                 if(!radMaDG.Checked && !radTenDG.Checked)
                 {
                     MessageBox.Show("Vui lòng chọn tiêu chí tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -137,7 +137,7 @@ namespace QLTV
                     ketqua = (
                             from dg in db.DocGias
                             join nd in db.NguoiDungs on dg.IDNguoiDung_DocGia equals nd.IDNguoiDung
-                            where nd.HoTen_NguoiDung.ToLower().Contains(keyword) && nd.VaiTro_NguoiDung.ToLower() == "docgia"
+                            where nd.HoTen_NguoiDung.ToLower().Trim().Contains(keyword) && nd.VaiTro_NguoiDung.ToLower() == "docgia"
                             select new
                             {
                                 MaDG = dg.IDDocGia,
@@ -289,24 +289,7 @@ namespace QLTV
             
         }
 
-        private void cboTrangThai_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void mskNgayHetHan_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
-        {
-
-        }
-
-        private void dtpNgayHetHan_ValueChanged(object sender, EventArgs e)
-        {
-        }
+        
 
 
 
@@ -501,6 +484,24 @@ namespace QLTV
         private void dataGVDSDocGia_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+        private void cboTrangThai_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mskNgayHetHan_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void dtpNgayHetHan_ValueChanged(object sender, EventArgs e)
+        {
         }
     }
 }

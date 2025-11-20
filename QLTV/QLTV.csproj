@@ -96,6 +96,12 @@
     <Compile Include="FormDG.Designer.cs">
       <DependentUpon>FormDG.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormDoiMatKhau.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDoiMatKhau.Designer.cs">
+      <DependentUpon>FormDoiMatKhau.cs</DependentUpon>
+    </Compile>
     <Compile Include="LapPhieuMuon.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,6 +154,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormDangNhap.resx">
       <DependentUpon>FormDangNhap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDG.resx">
+      <DependentUpon>FormDG.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDoiMatKhau.resx">
+      <DependentUpon>FormDoiMatKhau.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LapPhieuMuon.resx">
       <DependentUpon>LapPhieuMuon.cs</DependentUpon>

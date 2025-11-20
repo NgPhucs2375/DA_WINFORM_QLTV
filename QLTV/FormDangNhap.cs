@@ -91,7 +91,7 @@ namespace QLTV
                     MessageBox.Show("Mật khẩu không đúng!");
                     return;
                 }
-
+                Program.CurrentUserId = user.IDNguoiDung;
                 MessageBox.Show($"Đăng nhập thành công! Vai trò: {user.VaiTro_NguoiDung}");
 
                 // Mở form chính, có thể truyền vai trò
@@ -109,10 +109,7 @@ namespace QLTV
                     FormDG formDG = new FormDG();
                     formDG.Show();
                 }
-                else
-                {
-                    MessageBox.Show("Vai trò không hợp lệ!");
-                }
+                
 
             }
         }

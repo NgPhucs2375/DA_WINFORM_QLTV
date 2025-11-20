@@ -127,9 +127,9 @@
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(687, 0);
+            this.groupBox2.Location = new System.Drawing.Point(621, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(779, 1050);
+            this.groupBox2.Size = new System.Drawing.Size(845, 1050);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Thông tin độc giả";
@@ -156,7 +156,7 @@
             // txtNgayTao
             // 
             this.txtNgayTao.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNgayTao.Location = new System.Drawing.Point(543, 97);
+            this.txtNgayTao.Location = new System.Drawing.Point(543, 88);
             this.txtNgayTao.Name = "txtNgayTao";
             this.txtNgayTao.ReadOnly = true;
             this.txtNgayTao.Size = new System.Drawing.Size(225, 30);
@@ -338,9 +338,11 @@
             // 
             // textMaDG
             // 
+            this.textMaDG.Enabled = false;
             this.textMaDG.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textMaDG.Location = new System.Drawing.Point(138, 52);
             this.textMaDG.Name = "textMaDG";
+            this.textMaDG.ReadOnly = true;
             this.textMaDG.Size = new System.Drawing.Size(225, 30);
             this.textMaDG.TabIndex = 2;
             this.textMaDG.TextChanged += new System.EventHandler(this.textMaDG_TextChanged);
@@ -366,7 +368,7 @@
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(687, 1050);
+            this.groupBox1.Size = new System.Drawing.Size(621, 1050);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tìm kiếm độc giả";

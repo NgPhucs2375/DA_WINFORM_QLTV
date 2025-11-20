@@ -108,3 +108,5 @@ C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.pdb
 C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.MainMenu.resources
 C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.exe.config
 C:\Users\Admin\source\repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.QuanLyNV.resources
+C:\Users\Admin\Source\Repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.FormDoiMatKhau.resources
+C:\Users\Admin\Source\Repos\DA_WINFORM_QLTV\QLTV\obj\Debug\QLTV.FormDG.resources

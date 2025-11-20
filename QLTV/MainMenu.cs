@@ -65,5 +65,30 @@ namespace QLTV
             QuanLyNV f = new QuanLyNV();
             f.Show();
         }
+
+        private void btnChangePass_Click(object sender, EventArgs e)
+        {
+            FormDoiMatKhau f = new FormDoiMatKhau();
+            f.Show();
+            
+        }
+
+        private void btnLogOut_Click(object sender, EventArgs e)
+        {
+            var logout = MessageBox.Show("Bạn có chắc muốn đăng xuất?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (logout == DialogResult.Yes)
+            {
+                Program.CurrentUserId = 0;
+                this.Close();
+                FormDangNhap loginForm = new FormDangNhap();
+                loginForm.Show();
+
+            }
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
     }
 }

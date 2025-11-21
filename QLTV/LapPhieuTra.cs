@@ -96,7 +96,7 @@ namespace QLTV
                     return;
                 }
 
-                int id = (int)cboPhieuMuon.SelectedValue;
+                int id = Convert.ToInt32(cboPhieuMuon.SelectedValue);
                 var pm = db.PhieuMuons.Include(p => p.SACHDATA).FirstOrDefault(p => p.IDPhieuMuon == id);
 
                 if (pm == null)

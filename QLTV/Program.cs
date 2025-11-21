@@ -24,8 +24,9 @@ namespace QLTV
             //Application.Run(new LapPhieuTra());
             //Application.Run(new QuanLySach());
             //Application.Run(new QuanLyDG());
-            Application.Run(new Form1());
+            //Application.Run(new Form1());
             //Application.Run(new QuanLyNV());
+            Application.Run(new QLMuonTra());
 
 
 

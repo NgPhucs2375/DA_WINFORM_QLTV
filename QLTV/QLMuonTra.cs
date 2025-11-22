@@ -1,12 +1,10 @@
 ﻿using QLTV.Database;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
+using System.Data.Entity; // Cần thiết cho Include
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace QLTV
@@ -16,207 +14,163 @@ namespace QLTV
         public QLMuonTra()
         {
             InitializeComponent();
+            SetupModernUI();
         }
-        private List<object> DanhSachMuon()
+
+        private void SetupModernUI()
+        {
+            // Cấu hình TabControl để ẩn Header mặc định đi (Biến thành Tabless)
+            tabControl1.Appearance = TabAppearance.FlatButtons;
+            tabControl1.ItemSize = new Size(0, 1);
+            tabControl1.SizeMode = TabSizeMode.Fixed;
+
+            // Style cho DataGridView
+            StyleDataGridView(dgvDSMuon);
+            StyleDataGridView(dgvDSTra);
+
+            // Mặc định chọn Tab Mượn
+            SwitchTab(btnTabMuon, tabPage1);
+        }
+
+        private void StyleDataGridView(DataGridView dgv)
+        {
+            dgv.BorderStyle = BorderStyle.None;
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgv.DefaultCellStyle.SelectionBackColor = Color.SeaGreen;
+            dgv.DefaultCellStyle.SelectionForeColor = Color.WhiteSmoke;
+            dgv.BackgroundColor = Color.White;
+
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72); // Màu xanh đậm
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgv.ColumnHeadersHeight = 40;
+        }
+
+        // Hàm chuyển Tab và đổi màu nút
+        private void SwitchTab(Button clickedBtn, TabPage page)
+        {
+            tabControl1.SelectedTab = page;
+
+            // Reset màu 2 nút
+            btnTabMuon.BackColor = Color.Transparent;
+            btnTabTra.BackColor = Color.Transparent;
+            btnTabMuon.ForeColor = Color.White;
+            btnTabTra.ForeColor = Color.White;
+
+            // Highlight nút được chọn
+            clickedBtn.BackColor = Color.White;
+            clickedBtn.ForeColor = Color.Black;
+
+            // Load dữ liệu tương ứng
+            if (page == tabPage1) LoadDSMuon();
+            else LoadDSTra();
+        }
+
+        private void LoadDSMuon()
         {
             using (var db = new QLTVDataContext())
             {
-                var lstMuon = from muon in db.PhieuMuons
-                              join docgia in db.DocGias on muon.IDDocGia_PhieuMuon equals docgia.IDDocGia
-                              join sach in db.Sachs on muon.IDSach_PhieuMuon equals sach.IDSach
-                              select new
-                              {
-                                  muon.IDPhieuMuon,
-                                  muon.IDDocGia_PhieuMuon,
-                                  muon.IDSach_PhieuMuon,
-                                  sach.Name_Sach,
-                                  muon.NgayMuon_Sach,
-                                  muon.HanTra_PhieuMuon,
-                                  muon.TrangThai_PhieuMuon,
-                                  muon.SoTienPhat_PhieuMuon
-                              };
+                // Chỉ lấy phiếu đang mượn
+                var list = db.PhieuMuons
+                    .Include(p => p.DOCGIADATA.NGUOIDUNGDATA)
+                    .Include(p => p.SACHDATA)
+                    .Where(p => p.TrangThai_PhieuMuon == "Đang mượn")
+                    .Select(p => new
+                    {
+                        MaPhieu = p.IDPhieuMuon,
+                        DocGia = p.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung,
+                        TenSach = p.SACHDATA.Name_Sach,
+                        NgayMuon = p.NgayMuon_Sach,
+                        HanTra = p.HanTra_PhieuMuon,
+                        TrangThai = p.TrangThai_PhieuMuon
+                    }).ToList();
 
-                return lstMuon.ToList<object>();
+                dgvDSMuon.DataSource = list;
 
-
+                // Đổi tên cột cho đẹp
+                if (dgvDSMuon.Columns["MaPhieu"] != null) dgvDSMuon.Columns["MaPhieu"].HeaderText = "Mã Phiếu";
+                if (dgvDSMuon.Columns["DocGia"] != null) dgvDSMuon.Columns["DocGia"].HeaderText = "Độc Giả";
+                if (dgvDSMuon.Columns["TenSach"] != null) dgvDSMuon.Columns["TenSach"].HeaderText = "Tên Sách";
+                if (dgvDSMuon.Columns["NgayMuon"] != null) dgvDSMuon.Columns["NgayMuon"].HeaderText = "Ngày Mượn";
+                if (dgvDSMuon.Columns["HanTra"] != null) dgvDSMuon.Columns["HanTra"].HeaderText = "Hạn Trả";
             }
         }
-        private void SetupHeaders(DataGridView dgv)
+
+        private void LoadDSTra()
         {
-            dgv.Columns["IDPhieuMuon"].HeaderText = "Mã phiếu mượn";
-            dgv.Columns["IDDocGia_PhieuMuon"].HeaderText = "Mã độc giả";
-            dgv.Columns["IDSach_PhieuMuon"].HeaderText = "Mã sách";
-            dgv.Columns["Name_Sach"].HeaderText = "Tên sách";
-            dgv.Columns["NgayMuon_Sach"].HeaderText = "Ngày mượn";
-            dgv.Columns["HanTra_PhieuMuon"].HeaderText = "Hạn trả";
-            dgv.Columns["TrangThai_PhieuMuon"].HeaderText = "Trạng thái";
-            dgv.Columns["SoTienPhat_PhieuMuon"].HeaderText = "Số tiền phạt";
+            using (var db = new QLTVDataContext())
+            {
+                // Chỉ lấy phiếu đã trả
+                var list = db.PhieuMuons
+                    .Include(p => p.DOCGIADATA.NGUOIDUNGDATA)
+                    .Include(p => p.SACHDATA)
+                    .Where(p => p.TrangThai_PhieuMuon == "Đã trả")
+                    .Select(p => new
+                    {
+                        MaPhieu = p.IDPhieuMuon,
+                        DocGia = p.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung,
+                        TenSach = p.SACHDATA.Name_Sach,
+                        NgayTra = p.NgayTra_PhieuMuon,
+                        Phat = p.SoTienPhat_PhieuMuon
+                    }).ToList();
+
+                dgvDSTra.DataSource = list;
+            }
         }
-        private void BindDanhSachMuonToGrid(DataGridView dgv)
-        {
-            dgv.DataSource = DanhSachMuon();
 
-            SetupHeaders(dgv);
-        }
+        // --- EVENTS ---
 
+        private void btnTabMuon_Click(object sender, EventArgs e) => SwitchTab(btnTabMuon, tabPage1);
+        private void btnTabTra_Click(object sender, EventArgs e) => SwitchTab(btnTabTra, tabPage2);
 
-
-        //tabpage Quản lý mượn
-        private void QLMuonTra_Load(object sender, EventArgs e)
-        {
-            dtpNgayMuon.Format = DateTimePickerFormat.Custom;
-            dtpNgayMuon.CustomFormat = "yyyy/MM/dd";
-            dtpNgayTra.Format = DateTimePickerFormat.Custom;
-            dtpNgayTra.CustomFormat = "yyyy/MM/dd";
-        }
-        private void btnThemPhieuMuon_Click(object sender, EventArgs e)
+        private void btnThemPhieu_Click(object sender, EventArgs e)
         {
             LapPhieuMuon f = new LapPhieuMuon();
-            f.Show();
-        }
-        private void btnHTDSMuon_Click(object sender, EventArgs e)
-        {
-            BindDanhSachMuonToGrid(dgvDSMuon);
-        }
-        private void dgvDSMuon_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0) return;
-
-            DataGridViewRow row = dgvDSMuon.Rows[e.RowIndex];
-
-            txtMaPhieu.Text = row.Cells["IDPhieuMuon"].Value?.ToString();
-            txtMaDG.Text = row.Cells["IDDocGia_PhieuMuon"].Value?.ToString();
-            txtMaSach.Text = row.Cells["IDSach_PhieuMuon"].Value?.ToString();
-            txtTenSach.Text = row.Cells["Name_Sach"].Value?.ToString();
-            txtTrangThai.Text = row.Cells["TrangThai_PhieuMuon"].Value?.ToString();
-            if (row.Cells["NgayMuon_Sach"].Value != null) { 
-                dtpNgayMuon.Value = Convert.ToDateTime(row.Cells["NgayMuon_Sach"].Value);
-            }
-
-            if (row.Cells["HanTra_PhieuMuon"].Value != null)
+            if (f.ShowDialog() == DialogResult.OK)
             {
-                dtpNgayTra.Value = Convert.ToDateTime(row.Cells["HanTra_PhieuMuon"].Value);
-            }
-            txtTienPhat.Text = row.Cells["SoTienPhat_PhieuMuon"].Value?.ToString();
-        }
-        private void btnSuaPhieuMuon_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtMaPhieu.Text))
-            {
-                MessageBox.Show("Vui lòng chọn phiếu mượn cần sửa!", "Thông báo",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            try
-            {
-                using (var db = new QLTVDataContext())
-                {
-                    int idPhieu = Convert.ToInt32(txtMaPhieu.Text);
-
-                    // Tìm phiếu mượn theo ID
-                    var phieu = db.PhieuMuons.SingleOrDefault(p => p.IDPhieuMuon == idPhieu);
-
-                    if (phieu == null)
-                    {
-                        MessageBox.Show("Không tìm thấy phiếu mượn!", "Lỗi",
-                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-
-                    phieu.IDDocGia_PhieuMuon = Convert.ToInt32(txtMaDG.Text);
-                    phieu.IDSach_PhieuMuon = Convert.ToInt32(txtMaSach.Text);
-                    phieu.NgayMuon_Sach = dtpNgayMuon.Value;
-                    phieu.HanTra_PhieuMuon = dtpNgayTra.Value;
-
-                    phieu.TrangThai_PhieuMuon = "Đang mượn"; 
-
-                    phieu.SoTienPhat_PhieuMuon =
-                        string.IsNullOrWhiteSpace(txtTienPhat.Text)? 0: Convert.ToDecimal(txtTienPhat.Text);
-
-                    db.SaveChanges();
-
-                    MessageBox.Show("Cập nhật phiếu mượn thành công!", "Thông báo",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    btnHTDSMuon_Click(sender, e);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LoadDSMuon(); // Refresh lại lưới ngay khi thêm xong
             }
         }
 
-        // tabpage Quản lý trả
-        private void btnHTDSMuon1_Click(object sender, EventArgs e)
-        {
-            BindDanhSachMuonToGrid(dgvDSTra);
-        }
-        private void btnPhieuTra_Click(object sender, EventArgs e)
+        private void btnLapPhieuTra_Click(object sender, EventArgs e)
         {
             LapPhieuTra f = new LapPhieuTra();
-            f.Show();
+            if (f.ShowDialog() == DialogResult.OK)
+            {
+                LoadDSTra(); // Refresh lưới trả
+            }
         }
-        private void btnTimDSMuon_Click(object sender, EventArgs e)
+
+        private void btnTimKiem_Click(object sender, EventArgs e)
         {
+            string keyword = txtTimKiem.Text.ToLower();
             using (var db = new QLTVDataContext())
             {
-                string keyword = txtMaPMuon.Text.Trim();
-                if (string.IsNullOrWhiteSpace(keyword))
-                {
-                    MessageBox.Show("Vui lòng nhập mã phiếu mượn để tìm kiếm!", "Thông báo",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                var ketqua = new List<object>();
-                if(int.TryParse(keyword, out int maphieu))
-                {
-                    ketqua = (from muon in db.PhieuMuons
-                              join docgia in db.DocGias on muon.IDDocGia_PhieuMuon equals docgia.IDDocGia
-                              join sach in db.Sachs on muon.IDSach_PhieuMuon equals sach.IDSach
-                              where muon.IDPhieuMuon == maphieu
-                              select new
-                              {
-                                  muon.IDPhieuMuon,
-                                  muon.IDDocGia_PhieuMuon,
-                                  muon.IDSach_PhieuMuon,
-                                  sach.Name_Sach,
-                                  muon.NgayMuon_Sach,
-                                  muon.HanTra_PhieuMuon,
-                                  muon.TrangThai_PhieuMuon,
-                                  muon.SoTienPhat_PhieuMuon
-                              }).ToList<object>();
-
-                }
-                else
-                {
-                    MessageBox.Show("Mã phiếu mượn không tồn tại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                if (ketqua.Any())
-                {
-                    dgvDSTra.DataSource = ketqua;
-                    SetupHeaders(dgvDSTra);
-                }
-                else
-                {
-                    MessageBox.Show("Không tìm thấy phiếu mượn phù hợp", "Kết quả", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    dgvDSMuon.DataSource = null;
-                }
+                var list = db.PhieuMuons
+                    .Where(p => p.TrangThai_PhieuMuon == "Đang mượn" &&
+                               (p.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung.ToLower().Contains(keyword) ||
+                                p.SACHDATA.Name_Sach.ToLower().Contains(keyword)))
+                    .Select(p => new
+                    {
+                        MaPhieu = p.IDPhieuMuon,
+                        DocGia = p.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung,
+                        TenSach = p.SACHDATA.Name_Sach,
+                        NgayMuon = p.NgayMuon_Sach,
+                        HanTra = p.HanTra_PhieuMuon,
+                        TrangThai = p.TrangThai_PhieuMuon
+                    }).ToList();
+                dgvDSMuon.DataSource = list;
             }
-            
-            
-
-        }
-        private void btnXoaPhieuMuon_Click(object sender, EventArgs e)
-        {
-            
         }
 
-        private void tabPage1_Click(object sender, EventArgs e)
+        // Form Load
+        private void QLMuonTra_Load(object sender, EventArgs e)
         {
-
+            // Load dữ liệu ban đầu
+            LoadDSMuon();
         }
     }
 }

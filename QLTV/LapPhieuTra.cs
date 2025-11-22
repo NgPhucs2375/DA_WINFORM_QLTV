@@ -1,132 +1,209 @@
-﻿using System;
+﻿using QLTV.Database;
+using QLTV.Database.Entities;
+using System;
+using System.Data;
+using System.Data.Entity; // Cần thiết cho Include
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Data.Entity;
-using QLTV.Database;
-using QLTV.Database.Entities;
 
 namespace QLTV
 {
     public partial class LapPhieuTra : Form
     {
-        private QLTVDataContext db = new QLTVDataContext();
+        // Định nghĩa giá tiền phạt mỗi ngày (có thể lấy từ DB bảng ThamSo nếu có)
+        private const decimal FINE_PER_DAY = 5000;
 
         public LapPhieuTra()
         {
             InitializeComponent();
+            SetupUI();
+        }
+
+        private void SetupUI()
+        {
+            this.StartPosition = FormStartPosition.CenterScreen;
+            dtpNgayTra.Value = DateTime.Now;
         }
 
         private void LapPhieuTra_Load(object sender, EventArgs e)
         {
-            try
-            {
-                // Load phiếu đang mượn
-                var phieus = db.PhieuMuons
-                               .Where(p => p.TrangThai_PhieuMuon == "Đang mượn")
-                               .Include(p => p.SACHDATA)
-                               .Include(p => p.DOCGIADATA.NGUOIDUNGDATA)
-                               .ToList();
-
-                // Prepare anonymous list to show in combobox
-                var list = phieus.Select(p => new
-                {
-                    p.IDPhieuMuon,
-                    Display = "PM" + p.IDPhieuMuon + " - " + (p.SACHDATA != null ? p.SACHDATA.Name_Sach : "Sách #" + p.IDSach_PhieuMuon)
-                }).ToList();
-
-                cboPhieuMuon.DataSource = list;
-                cboPhieuMuon.DisplayMember = "Display";
-                cboPhieuMuon.ValueMember = "IDPhieuMuon";
-
-                lblTenDocGia.Text = "-";
-                lblTenSach.Text = "-";
-                lblSoTienPhat.Text = "0 đ";
-                dtpNgayTra.Value = DateTime.Now;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi load phiếu mượn: " + ex.Message);
-            }
+            LoadDanhSachPhieuMuon();
         }
 
-        // Designer gọi cboPhieuMuon_SelectedIndexChanged
-        private void cboPhieuMuon_SelectedIndexChanged(object sender, EventArgs e)
+        private void LoadDanhSachPhieuMuon()
         {
             try
             {
-                if (cboPhieuMuon.SelectedValue == null) return;
-                int id = (int)cboPhieuMuon.SelectedValue;
-                var pm = db.PhieuMuons
-                           .Include(p => p.DOCGIADATA.NGUOIDUNGDATA)
-                           .Include(p => p.SACHDATA)
-                           .FirstOrDefault(p => p.IDPhieuMuon == id);
+                using (var db = new QLTVDataContext())
+                {
+                    // Chỉ lấy các phiếu có trạng thái "Đang mượn"
+                    var listPhieu = db.PhieuMuons
+                        .Include(p => p.SACHDATA)
+                        .Include(p => p.DOCGIADATA.NGUOIDUNGDATA)
+                        .Where(p => p.TrangThai_PhieuMuon == "Đang mượn")
+                        .Select(p => new
+                        {
+                            p.IDPhieuMuon,
+                            // Hiển thị: PM10 - Harry Potter (Nguyễn Văn A)
+                            Display = "PM" + p.IDPhieuMuon + " - " + p.SACHDATA.Name_Sach + " (" + p.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung + ")"
+                        })
+                        .ToList();
 
+                    cboPhieuMuon.DataSource = listPhieu;
+                    cboPhieuMuon.DisplayMember = "Display";
+                    cboPhieuMuon.ValueMember = "IDPhieuMuon";
+
+                    // Reset thông tin
+                    if (listPhieu.Count == 0) ClearInfo();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải dữ liệu: " + ex.Message);
+            }
+        }
+
+        private void ClearInfo()
+        {
+            lblTenDocGia.Text = "---";
+            lblTenSach.Text = "---";
+            lblNgayMuon.Text = "---";
+            lblHanTra.Text = "---";
+            lblSoTienPhat.Text = "0 VNĐ";
+            cboPhieuMuon.SelectedIndex = -1;
+        }
+
+        // Tính toán tiền phạt
+        private void CalculateFine()
+        {
+            if (cboPhieuMuon.SelectedValue == null) return;
+
+            // Lấy hạn trả từ Tag (đã lưu lúc chọn combobox) hoặc query lại
+            // Ở đây ta query lại cho an toàn dữ liệu
+            int idPhieu = (int)cboPhieuMuon.SelectedValue;
+            using (var db = new QLTVDataContext())
+            {
+                var pm = db.PhieuMuons.Find(idPhieu);
                 if (pm != null)
                 {
-                    lblTenDocGia.Text = pm.DOCGIADATA?.NGUOIDUNGDATA?.HoTen_NguoiDung ?? "-";
-                    lblTenSach.Text = pm.SACHDATA?.Name_Sach ?? "-";
-                    dtpNgayTra.Value = DateTime.Now;
+                    DateTime ngayTra = dtpNgayTra.Value.Date;
+                    DateTime hanTra = pm.HanTra_PhieuMuon.Date;
 
-                    // Tính tiền phạt: giả sử 1000đ/ngày trễ
-                    int songaytre = (DateTime.Now.Date - pm.HanTra_PhieuMuon.Date).Days;
-                    if (songaytre > 0)
+                    // Nếu ngày trả > hạn trả -> Tính phạt
+                    if (ngayTra > hanTra)
                     {
-                        lblSoTienPhat.Text = (songaytre * 1000).ToString("N0") + " đ";
+                        int daysLate = (ngayTra - hanTra).Days;
+                        decimal fine = daysLate * FINE_PER_DAY;
+
+                        lblSoTienPhat.Text = $"{fine:N0} VNĐ ({daysLate} ngày trễ)";
+                        lblSoTienPhat.ForeColor = Color.Red;
+                        lblSoTienPhat.Tag = fine; // Lưu giá trị số để dùng khi Save
                     }
                     else
                     {
-                        lblSoTienPhat.Text = "0 đ";
+                        lblSoTienPhat.Text = "0 VNĐ (Đúng hạn)";
+                        lblSoTienPhat.ForeColor = Color.Green;
+                        lblSoTienPhat.Tag = 0m;
                     }
                 }
             }
-            catch (Exception ex)
+        }
+
+        // Sự kiện chọn phiếu mượn
+        private void cboPhieuMuon_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboPhieuMuon.SelectedValue == null) return;
+
+            int idPhieu;
+            if (!int.TryParse(cboPhieuMuon.SelectedValue.ToString(), out idPhieu)) return;
+
+            using (var db = new QLTVDataContext())
             {
-                MessageBox.Show("Lỗi: " + ex.Message);
+                var pm = db.PhieuMuons
+                    .Include(p => p.SACHDATA)
+                    .Include(p => p.DOCGIADATA.NGUOIDUNGDATA)
+                    .FirstOrDefault(p => p.IDPhieuMuon == idPhieu);
+
+                if (pm != null)
+                {
+                    lblTenDocGia.Text = pm.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung;
+                    lblTenSach.Text = pm.SACHDATA.Name_Sach;
+                    lblNgayMuon.Text = pm.NgayMuon_Sach.ToString("dd/MM/yyyy");
+                    lblHanTra.Text = pm.HanTra_PhieuMuon.ToString("dd/MM/yyyy");
+
+                    CalculateFine(); // Tính tiền ngay khi chọn
+                }
             }
         }
 
-        // Designer gọi btnTraSach_Click
+        // Sự kiện thay đổi ngày trả -> Tính lại tiền phạt
+        private void dtpNgayTra_ValueChanged(object sender, EventArgs e)
+        {
+            CalculateFine();
+        }
+
         private void btnTraSach_Click(object sender, EventArgs e)
         {
+            if (cboPhieuMuon.SelectedValue == null)
+            {
+                MessageBox.Show("Vui lòng chọn phiếu mượn!", "Cảnh báo");
+                return;
+            }
+
+            int idPhieu = (int)cboPhieuMuon.SelectedValue;
+            decimal tienPhat = Convert.ToDecimal(lblSoTienPhat.Tag);
+
             try
             {
-                if (cboPhieuMuon.SelectedValue == null)
+                using (var db = new QLTVDataContext())
                 {
-                    MessageBox.Show("Vui lòng chọn phiếu mượn.", "Thông báo");
-                    return;
+                    var pm = db.PhieuMuons.Find(idPhieu);
+                    if (pm == null) return;
+
+                    // 1. Cập nhật Phiếu Mượn
+                    pm.NgayTra_PhieuMuon = dtpNgayTra.Value;
+                    pm.TrangThai_PhieuMuon = "Đã trả";
+                    pm.SoTienPhat_PhieuMuon = tienPhat;
+
+                    // 2. Tạo Phiếu Phạt (Nếu có tiền phạt)
+                    if (tienPhat > 0)
+                    {
+                        Phat phat = new Phat()
+                        {
+                            IDPhieuMuon_Phat = pm.IDPhieuMuon,
+                            SoTien_Phat = tienPhat,
+                            LyDo_Phat = "Quá hạn trả sách",
+                            NgayPhat = DateTime.Now,
+                            DaThanhToan = true // Giả sử thu tiền luôn tại quầy
+                        };
+                        db.Phats.Add(phat);
+                    }
+
+                    // 3. Cập nhật Kho Sách (QUAN TRỌNG: Cộng lại số lượng)
+                    var sach = db.Sachs.Find(pm.IDSach_PhieuMuon);
+                    if (sach != null)
+                    {
+                        sach.SoLuong_Sach += 1; // Trả lại sách vào kho
+                        if (sach.TrangThai_Sach == "Hết hàng") sach.TrangThai_Sach = "Còn sách";
+                    }
+
+                    db.SaveChanges();
+                    MessageBox.Show("Trả sách thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
                 }
-
-                int id = Convert.ToInt32(cboPhieuMuon.SelectedValue);
-                var pm = db.PhieuMuons.Include(p => p.SACHDATA).FirstOrDefault(p => p.IDPhieuMuon == id);
-
-                if (pm == null)
-                {
-                    MessageBox.Show("Phiếu mượn không tồn tại.", "Lỗi");
-                    return;
-                }
-
-                pm.NgayTra_PhieuMuon = dtpNgayTra.Value.Date;
-                pm.TrangThai_PhieuMuon = "Đã trả";
-
-                int songaytre = (dtpNgayTra.Value.Date - pm.HanTra_PhieuMuon.Date).Days;
-                pm.SoTienPhat_PhieuMuon = songaytre > 0 ? songaytre * 1000 : 0;
-
-                // Cập nhật sách thành có sẵn
-                if (pm.SACHDATA != null)
-                {
-                    pm.SACHDATA.TrangThai_Sach = "Có sẵn";
-                }
-
-                db.SaveChanges();
-                MessageBox.Show("Trả sách thành công!", "Thành công");
-
-                // Refresh combobox phiếu mượn
-                LapPhieuTra_Load(this, EventArgs.Empty);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi trả sách: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Lỗi hệ thống: " + ex.Message);
             }
+        }
+
+        private void btnHuy_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

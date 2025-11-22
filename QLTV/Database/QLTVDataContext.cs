@@ -11,7 +11,7 @@ namespace QLTV.Database
 {
     internal class QLTVDataContext : DbContext
     {
-        public QLTVDataContext(): base("Server = DESKTOP-G2UDKQ8;Database = QL_THUVIEN; Integrated Security = true")
+        public QLTVDataContext(): base("Server = MSI;Database = QL_THUVIEN; Integrated Security = true")
         {
             Database.Log = sql => Console.WriteLine(sql);
 

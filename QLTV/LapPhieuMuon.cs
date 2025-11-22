@@ -1,104 +1,135 @@
-﻿using System;
+﻿using QLTV.Database;
+using QLTV.Database.Entities;
+using System;
+using System.Data;
+using System.Data.Entity;
+using System.Drawing; // Để chỉnh màu
 using System.Linq;
 using System.Windows.Forms;
-using System.Data.Entity;
-using QLTV.Database; // chứa QLTVDataContext
-using QLTV.Database.Entities;
 
 namespace QLTV
 {
     public partial class LapPhieuMuon : Form
     {
-        // SỬ DỤNG đúng class context của project anh
-        private QLTVDataContext db = new QLTVDataContext();
-
         public LapPhieuMuon()
         {
             InitializeComponent();
+            SetupUI();
+        }
+
+        private void SetupUI()
+        {
+            this.StartPosition = FormStartPosition.CenterScreen;
+            // Mặc định ngày mượn là hôm nay, hạn trả +7 ngày
+            dtpNgayMuon.Value = DateTime.Now;
+            dtpHanTra.Value = DateTime.Now.AddDays(7);
         }
 
         private void LapPhieuMuon_Load(object sender, EventArgs e)
         {
             try
             {
-                // Load độc giả: dùng DbSet tên DocGias (theo QLTVDataContext.cs)
-                var docs = db.DocGias.Include(d => d.NGUOIDUNGDATA).ToList();
-                cboDocGia.DataSource = docs;
-                cboDocGia.DisplayMember = "NGUOIDUNGDATA.HoTen_NguoiDung";
-                cboDocGia.ValueMember = "IDDocGia";
+                using (var db = new QLTVDataContext())
+                {
+                    // Load Độc giả (Chỉ lấy những người thẻ còn hạn)
+                    var docs = db.DocGias
+                        .Include(d => d.NGUOIDUNGDATA)
+                        .Where(d => d.NgayHetHan >= DateTime.Now)
+                        .Select(d => new {
+                            d.IDDocGia,
+                            HoTen = d.NGUOIDUNGDATA.HoTen_NguoiDung
+                        }).ToList();
 
-                // Load sách có trạng thái "Có sẵn" (hoặc theo giá trị anh lưu)
-                var saches = db.Sachs.Where(s => s.TrangThai_Sach == "Có sẵn" || s.TrangThai_Sach == "Còn sẵn" || s.TrangThai_Sach == "Co san")
-                                     .ToList();
-                // nếu không có, fallback load tất cả
-                if (!saches.Any()) saches = db.Sachs.ToList();
+                    cboDocGia.DataSource = docs;
+                    cboDocGia.DisplayMember = "HoTen";
+                    cboDocGia.ValueMember = "IDDocGia";
 
-                cboSach.DataSource = saches;
-                cboSach.DisplayMember = "Name_Sach";
-                cboSach.ValueMember = "IDSach";
+                    // Load Sách (Chỉ lấy sách còn trong kho)
+                    var saches = db.Sachs
+                        .Where(s => s.SoLuong_Sach > 0)
+                        .Select(s => new { s.IDSach, s.Name_Sach })
+                        .ToList();
 
-                // Trang thai mặc định khi lập phiếu
-                cboTrangThai.Items.Clear();
-                cboTrangThai.Items.Add("Đang mượn");
-                cboTrangThai.SelectedIndex = 0;
+                    cboSach.DataSource = saches;
+                    cboSach.DisplayMember = "Name_Sach";
+                    cboSach.ValueMember = "IDSach";
 
-                dtpNgayMuon.Value = DateTime.Now;
-                dtpHanTra.Value = DateTime.Now.AddDays(7);
+                    // Load Trạng thái
+                    cboTrangThai.Items.Clear();
+                    cboTrangThai.Items.Add("Đang mượn");
+                    cboTrangThai.SelectedIndex = 0;
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi load dữ liệu: " + ex.Message);
+                MessageBox.Show("Lỗi tải dữ liệu: " + ex.Message);
             }
         }
 
-        // NOTE: Designer gọi event này: btnLapPhieuMuon_Click
+        // Sự kiện khi thay đổi ngày mượn -> Tự tính hạn trả
+        private void dtpNgayMuon_ValueChanged(object sender, EventArgs e)
+        {
+            dtpHanTra.Value = dtpNgayMuon.Value.AddDays(7);
+        }
+
         private void btnLapPhieuMuon_Click(object sender, EventArgs e)
         {
+            if (cboDocGia.SelectedValue == null || cboSach.SelectedValue == null)
+            {
+                MessageBox.Show("Vui lòng chọn Độc giả và Sách!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int idDocGia = (int)cboDocGia.SelectedValue;
+            int idSach = (int)cboSach.SelectedValue;
+
             try
             {
-                if (cboDocGia.SelectedValue == null || cboSach.SelectedValue == null)
+                using (var db = new QLTVDataContext())
                 {
-                    MessageBox.Show("Vui lòng chọn độc giả và sách.", "Thông báo");
-                    return;
+                    // 1. Kiểm tra lại số lượng sách (tránh trường hợp vừa hết)
+                    var sach = db.Sachs.Find(idSach);
+                    if (sach == null || sach.SoLuong_Sach <= 0)
+                    {
+                        MessageBox.Show("Sách này vừa hết hàng!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // 2. Tạo phiếu mượn
+                    PhieuMuon pm = new PhieuMuon()
+                    {
+                        IDDocGia_PhieuMuon = idDocGia,
+                        IDSach_PhieuMuon = idSach,
+                        NgayMuon_Sach = dtpNgayMuon.Value,
+                        HanTra_PhieuMuon = dtpHanTra.Value,
+                        TrangThai_PhieuMuon = "Đang mượn",
+                        SoTienPhat_PhieuMuon = 0
+                    };
+                    db.PhieuMuons.Add(pm);
+
+                    // 3. Trừ số lượng sách trong kho
+                    sach.SoLuong_Sach -= 1;
+                    // Nếu muốn đổi trạng thái khi hết sách:
+                    if (sach.SoLuong_Sach == 0) sach.TrangThai_Sach = "Hết hàng";
+
+                    db.SaveChanges();
+
+                    MessageBox.Show("Lập phiếu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Quan trọng: Báo cho form cha biết là đã OK để reload lại danh sách
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
                 }
-
-                int idDocGia = (int)cboDocGia.SelectedValue;
-                int idSach = (int)cboSach.SelectedValue;
-
-                // Tạo phiếu mượn mới
-                var pm = new PhieuMuon
-                {
-                    IDDocGia_PhieuMuon = idDocGia,
-                    IDSach_PhieuMuon = idSach,
-                    NgayMuon_Sach = dtpNgayMuon.Value.Date,
-                    HanTra_PhieuMuon = dtpHanTra.Value.Date,
-                    TrangThai_PhieuMuon = cboTrangThai.Text,
-                    SoTienPhat_PhieuMuon = 0
-                };
-
-                db.PhieuMuons.Add(pm);
-
-                // Cập nhật trạng thái sách (nếu có field TrangThai_Sach)
-                var sach = db.Sachs.Find(idSach);
-                if (sach != null)
-                {
-                    sach.TrangThai_Sach = "Đang mượn";
-                }
-
-                db.SaveChanges();
-                MessageBox.Show("Lập phiếu mượn thành công!", "Thành công");
-
-                // Refresh danh sách sách còn mượn
-                var saches = db.Sachs.Where(s => s.TrangThai_Sach == "Có sẵn" || s.TrangThai_Sach == "Còn sẵn" || s.TrangThai_Sach == "Co san").ToList();
-                if (!saches.Any()) saches = db.Sachs.ToList();
-                cboSach.DataSource = saches;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi lập phiếu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Lỗi: " + ex.Message);
             }
         }
 
-     
+        private void btnHuy_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

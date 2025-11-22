@@ -1,102 +1,126 @@
 ﻿using QLTV.Database;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace QLTV
 {
     public partial class FormDoiMatKhau : Form
     {
+        private int _currentUserId;
+
         public FormDoiMatKhau()
         {
             InitializeComponent();
+            _currentUserId = Program.CurrentUserId; // Lấy ID người dùng đang đăng nhập
+            SetupUI();
+            LoadUserInfo();
         }
 
-        private void txtTenDangNhap_TextChanged(object sender, EventArgs e)
+        private void SetupUI()
         {
-
+            this.StartPosition = FormStartPosition.CenterScreen;
+            txtMatKhauHienTai.UseSystemPasswordChar = true;
+            txtMatKhauMoi.UseSystemPasswordChar = true;
+            txtXacNhanMK.UseSystemPasswordChar = true;
         }
 
-        private void txtEmail_DangNhap_TextChanged(object sender, EventArgs e)
+        private void LoadUserInfo()
         {
+            // Nếu chưa đăng nhập (Test mode) thì thôi
+            if (_currentUserId == 0) return;
 
+            using (var db = new QLTVDataContext())
+            {
+                var user = db.NguoiDungs.FirstOrDefault(u => u.IDNguoiDung == _currentUserId);
+                if (user != null)
+                {
+                    txtEmail.Text = user.Email_NguoiDung;
+                    txtHoTen.Text = user.HoTen_NguoiDung;
+                }
+            }
         }
 
-        private void txtMatKhau_DangNhap_TextChanged(object sender, EventArgs e)
+        private string CalculateMD5Hash(string input)
         {
-
-        }
-
-        private void txtXacNhanMK_TextChanged(object sender, EventArgs e)
-        {
-
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] inputBytes = Encoding.ASCII.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("X2"));
+                }
+                return sb.ToString();
+            }
         }
 
         private void btnDoiMK_Click(object sender, EventArgs e)
         {
-            string email = txtEmail_DangNhap.Text.Trim();
-            string currentPass = txtMatKhau_DangNhap.Text.Trim();
-            string newPass = txtMKMoi.Text.Trim();
-            string confirmPass = txtMKMoi.Text.Trim();
+            string oldPass = txtMatKhauHienTai.Text;
+            string newPass = txtMatKhauMoi.Text;
+            string confirmPass = txtXacNhanMK.Text;
 
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(currentPass) ||
-                string.IsNullOrEmpty(newPass) || string.IsNullOrEmpty(confirmPass))
+            // 1. Validate input
+            if (string.IsNullOrEmpty(oldPass) || string.IsNullOrEmpty(newPass))
             {
                 MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (newPass != confirmPass)
+            if (newPass.Length < 6)
             {
-                MessageBox.Show("Mật khẩu mới và xác nhận mật khẩu không khớp!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Mật khẩu mới phải có ít nhất 6 ký tự!", "Cảnh báo");
                 return;
             }
 
-            using (var db = new QLTVDataContext())
+            if (newPass != confirmPass)
             {
-                var user = db.NguoiDungs.FirstOrDefault(u => u.Email_NguoiDung == email);
-                if (user == null)
+                MessageBox.Show("Mật khẩu xác nhận không khớp!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 2. Xử lý DB
+            try
+            {
+                using (var db = new QLTVDataContext())
                 {
-                    MessageBox.Show("Email không tồn tại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    var user = db.NguoiDungs.FirstOrDefault(u => u.IDNguoiDung == _currentUserId);
+
+                    if (user == null)
+                    {
+                        MessageBox.Show("Không tìm thấy thông tin người dùng!", "Lỗi");
+                        return;
+                    }
+
+                    // Kiểm tra mật khẩu cũ (MD5)
+                    string oldPassHash = CalculateMD5Hash(oldPass);
+                    if (oldPassHash != user.MatKhau_NguoiDung)
+                    {
+                        MessageBox.Show("Mật khẩu hiện tại không đúng!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // Cập nhật mật khẩu mới (MD5)
+                    user.MatKhau_NguoiDung = CalculateMD5Hash(newPass);
+                    db.SaveChanges();
+
+                    MessageBox.Show("Đổi mật khẩu thành công!", "Thông báo");
+                    this.Close();
                 }
-
-                // Mã hóa Base64 mật khẩu hiện tại nhập vào để so sánh
-                string currentPassBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(currentPass));
-                if (currentPassBase64 != user.MatKhau_NguoiDung)
-                {
-                    MessageBox.Show("Mật khẩu hiện tại không đúng!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                // Mã hóa Base64 mật khẩu mới để lưu
-                string newPassBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(newPass));
-                user.MatKhau_NguoiDung = newPassBase64;
-
-                db.SaveChanges();
-
-                MessageBox.Show("Đổi mật khẩu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.Close();
-                FormDangNhap f = new FormDangNhap();
-                f.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi hệ thống: " + ex.Message);
             }
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Exit_Click(object sender, EventArgs e)
+        private void btnThoat_Click(object sender, EventArgs e)
         {
             this.Close();
-
         }
     }
 }

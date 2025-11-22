@@ -23,7 +23,7 @@ namespace QLTV.Database.Entities
         [Column("HANTRA")]
         public DateTime HanTra_PhieuMuon { get; set; }
         [Column("NGAYTRA")]
-        public DateTime NgayTra_PhieuMuon { get; set; }
+        public DateTime? NgayTra_PhieuMuon { get; set; }
         [Column("TRANGTHAI")]
         public string TrangThai_PhieuMuon { get; set; }
         [Column("SOTIENPHAT")]

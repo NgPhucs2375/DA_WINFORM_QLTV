@@ -2,198 +2,198 @@
 {
     partial class FormDangNhap
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
+            if (disposing && (components != null)) components.Dispose();
             base.Dispose(disposing);
         }
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            this.lalNamedangnhap = new System.Windows.Forms.Label();
-            this.lalMatKhau = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.pnlLeft = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.pnlRight = new System.Windows.Forms.Panel();
+            this.lblHeader = new System.Windows.Forms.Label();
             this.txtEmail_DangNhap = new System.Windows.Forms.TextBox();
+            this.txtMatKhau_DangNhap = new System.Windows.Forms.TextBox();
             this.lalEmail = new System.Windows.Forms.Label();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.lalMatKhau = new System.Windows.Forms.Label();
             this.btnAccesLogin = new System.Windows.Forms.Button();
             this.Exit = new System.Windows.Forms.Button();
-            this.txtTenDangNhap = new System.Windows.Forms.TextBox();
-            this.txtMatKhau_DangNhap = new System.Windows.Forms.TextBox();
-            this.groupBox1.SuspendLayout();
+            this.pnlLeft.SuspendLayout();
+            this.pnlRight.SuspendLayout();
             this.SuspendLayout();
+
             // 
-            // lalNamedangnhap
+            // pnlLeft (Panel Xanh bên trái)
             // 
-            this.lalNamedangnhap.AutoSize = true;
-            this.lalNamedangnhap.Location = new System.Drawing.Point(19, 28);
-            this.lalNamedangnhap.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lalNamedangnhap.Name = "lalNamedangnhap";
-            this.lalNamedangnhap.Size = new System.Drawing.Size(120, 20);
-            this.lalNamedangnhap.TabIndex = 0;
-            this.lalNamedangnhap.Text = "Tên đăng nhập:";
+            this.pnlLeft.BackColor = System.Drawing.Color.SeaGreen;
+            this.pnlLeft.Controls.Add(this.label1);
+            this.pnlLeft.Controls.Add(this.lblTitle);
+            this.pnlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlLeft.Location = new System.Drawing.Point(0, 0);
+            this.pnlLeft.Name = "pnlLeft";
+            this.pnlLeft.Size = new System.Drawing.Size(300, 450);
+            this.pnlLeft.TabIndex = 0;
             // 
-            // lalMatKhau
+            // label1 (Slogan)
             // 
-            this.lalMatKhau.AutoSize = true;
-            this.lalMatKhau.Location = new System.Drawing.Point(19, 65);
-            this.lalMatKhau.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lalMatKhau.Name = "lalMatKhau";
-            this.lalMatKhau.Size = new System.Drawing.Size(79, 20);
-            this.lalMatKhau.TabIndex = 1;
-            this.lalMatKhau.Text = "Mật khẩu:";
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Light", 12F);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(40, 220);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(220, 56);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Đăng nhập để tiếp tục\r\nvào hệ thống";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // groupBox1
+            // lblTitle (Logo)
             // 
-            this.groupBox1.Controls.Add(this.txtEmail_DangNhap);
-            this.groupBox1.Controls.Add(this.lalEmail);
-            this.groupBox1.Controls.Add(this.radioButton2);
-            this.groupBox1.Controls.Add(this.radioButton1);
-            this.groupBox1.Controls.Add(this.btnAccesLogin);
-            this.groupBox1.Controls.Add(this.Exit);
-            this.groupBox1.Controls.Add(this.txtTenDangNhap);
-            this.groupBox1.Controls.Add(this.txtMatKhau_DangNhap);
-            this.groupBox1.Controls.Add(this.lalMatKhau);
-            this.groupBox1.Controls.Add(this.lalNamedangnhap);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(8, 16);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(366, 284);
-            this.groupBox1.TabIndex = 2;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Thông tin đăng nhập";
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.White;
+            this.lblTitle.Location = new System.Drawing.Point(50, 150);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(200, 54);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "WELCOME";
             // 
-            // txtEmail_DangNhap
+            // pnlRight (Panel Trắng bên phải)
             // 
-            this.txtEmail_DangNhap.Location = new System.Drawing.Point(143, 108);
-            this.txtEmail_DangNhap.Margin = new System.Windows.Forms.Padding(2);
-            this.txtEmail_DangNhap.Name = "txtEmail_DangNhap";
-            this.txtEmail_DangNhap.Size = new System.Drawing.Size(206, 26);
-            this.txtEmail_DangNhap.TabIndex = 9;
+            this.pnlRight.BackColor = System.Drawing.Color.White;
+            this.pnlRight.Controls.Add(this.lblHeader);
+            this.pnlRight.Controls.Add(this.txtEmail_DangNhap);
+            this.pnlRight.Controls.Add(this.txtMatKhau_DangNhap);
+            this.pnlRight.Controls.Add(this.lalEmail);
+            this.pnlRight.Controls.Add(this.lalMatKhau);
+            this.pnlRight.Controls.Add(this.btnAccesLogin);
+            this.pnlRight.Controls.Add(this.Exit);
+            this.pnlRight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlRight.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.pnlRight.Location = new System.Drawing.Point(300, 0);
+            this.pnlRight.Name = "pnlRight";
+            this.pnlRight.Size = new System.Drawing.Size(450, 450);
+            this.pnlRight.TabIndex = 1;
+            // 
+            // lblHeader
+            // 
+            this.lblHeader.AutoSize = true;
+            this.lblHeader.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this.lblHeader.ForeColor = System.Drawing.Color.SeaGreen;
+            this.lblHeader.Location = new System.Drawing.Point(30, 40);
+            this.lblHeader.Name = "lblHeader";
+            this.lblHeader.Size = new System.Drawing.Size(172, 41);
+            this.lblHeader.TabIndex = 0;
+            this.lblHeader.Text = "Đăng nhập";
             // 
             // lalEmail
             // 
             this.lalEmail.AutoSize = true;
-            this.lalEmail.Location = new System.Drawing.Point(19, 111);
-            this.lalEmail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lalEmail.ForeColor = System.Drawing.Color.DimGray;
+            this.lalEmail.Location = new System.Drawing.Point(35, 120);
             this.lalEmail.Name = "lalEmail";
-            this.lalEmail.Size = new System.Drawing.Size(52, 20);
-            this.lalEmail.TabIndex = 8;
+            this.lalEmail.Size = new System.Drawing.Size(55, 23);
+            this.lalEmail.TabIndex = 1;
             this.lalEmail.Text = "Email:";
             // 
-            // radioButton2
+            // txtEmail_DangNhap
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(237, 160);
-            this.radioButton2.Margin = new System.Windows.Forms.Padding(2);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(81, 24);
-            this.radioButton2.TabIndex = 7;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Độc giả";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.txtEmail_DangNhap.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtEmail_DangNhap.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtEmail_DangNhap.Location = new System.Drawing.Point(35, 150);
+            this.txtEmail_DangNhap.Name = "txtEmail_DangNhap";
+            this.txtEmail_DangNhap.Size = new System.Drawing.Size(380, 30);
+            this.txtEmail_DangNhap.TabIndex = 2;
             // 
-            // radioButton1
+            // lalMatKhau
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(23, 160);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(2);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(81, 24);
-            this.radioButton1.TabIndex = 6;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Thủ thư";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.lalMatKhau.AutoSize = true;
+            this.lalMatKhau.ForeColor = System.Drawing.Color.DimGray;
+            this.lalMatKhau.Location = new System.Drawing.Point(35, 200);
+            this.lalMatKhau.Name = "lalMatKhau";
+            this.lalMatKhau.Size = new System.Drawing.Size(86, 23);
+            this.lalMatKhau.TabIndex = 3;
+            this.lalMatKhau.Text = "Mật khẩu:";
+            // 
+            // txtMatKhau_DangNhap
+            // 
+            this.txtMatKhau_DangNhap.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtMatKhau_DangNhap.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtMatKhau_DangNhap.Location = new System.Drawing.Point(35, 230);
+            this.txtMatKhau_DangNhap.Name = "txtMatKhau_DangNhap";
+            this.txtMatKhau_DangNhap.Size = new System.Drawing.Size(380, 30);
+            this.txtMatKhau_DangNhap.TabIndex = 4;
+            this.txtMatKhau_DangNhap.UseSystemPasswordChar = true;
             // 
             // btnAccesLogin
             // 
-            this.btnAccesLogin.Location = new System.Drawing.Point(22, 208);
-            this.btnAccesLogin.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAccesLogin.BackColor = System.Drawing.Color.SeaGreen;
+            this.btnAccesLogin.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAccesLogin.FlatAppearance.BorderSize = 0;
+            this.btnAccesLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAccesLogin.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnAccesLogin.ForeColor = System.Drawing.Color.White;
+            this.btnAccesLogin.Location = new System.Drawing.Point(35, 300);
             this.btnAccesLogin.Name = "btnAccesLogin";
-            this.btnAccesLogin.Size = new System.Drawing.Size(100, 32);
+            this.btnAccesLogin.Size = new System.Drawing.Size(380, 45);
             this.btnAccesLogin.TabIndex = 5;
-            this.btnAccesLogin.Text = "Đăng nhập";
-            this.btnAccesLogin.UseVisualStyleBackColor = true;
+            this.btnAccesLogin.Text = "ĐĂNG NHẬP";
+            this.btnAccesLogin.UseVisualStyleBackColor = false;
             this.btnAccesLogin.Click += new System.EventHandler(this.btnAccesLogin_Click);
             // 
             // Exit
             // 
-            this.Exit.Location = new System.Drawing.Point(237, 208);
-            this.Exit.Margin = new System.Windows.Forms.Padding(2);
+            this.Exit.BackColor = System.Drawing.Color.White;
+            this.Exit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.Exit.FlatAppearance.BorderSize = 0;
+            this.Exit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Exit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Underline);
+            this.Exit.ForeColor = System.Drawing.Color.DimGray;
+            this.Exit.Location = new System.Drawing.Point(35, 360);
             this.Exit.Name = "Exit";
-            this.Exit.Size = new System.Drawing.Size(100, 32);
-            this.Exit.TabIndex = 4;
-            this.Exit.Text = "Thoát";
-            this.Exit.UseVisualStyleBackColor = true;
+            this.Exit.Size = new System.Drawing.Size(380, 35);
+            this.Exit.TabIndex = 6;
+            this.Exit.Text = "Quay lại màn hình chính";
+            this.Exit.UseVisualStyleBackColor = false;
             this.Exit.Click += new System.EventHandler(this.Exit_Click);
-            // 
-            // txtTenDangNhap
-            // 
-            this.txtTenDangNhap.Location = new System.Drawing.Point(143, 28);
-            this.txtTenDangNhap.Margin = new System.Windows.Forms.Padding(2);
-            this.txtTenDangNhap.Name = "txtTenDangNhap";
-            this.txtTenDangNhap.Size = new System.Drawing.Size(206, 26);
-            this.txtTenDangNhap.TabIndex = 3;
-            // 
-            // txtMatKhau_DangNhap
-            // 
-            this.txtMatKhau_DangNhap.Location = new System.Drawing.Point(143, 62);
-            this.txtMatKhau_DangNhap.Margin = new System.Windows.Forms.Padding(2);
-            this.txtMatKhau_DangNhap.Name = "txtMatKhau_DangNhap";
-            this.txtMatKhau_DangNhap.Size = new System.Drawing.Size(206, 26);
-            this.txtMatKhau_DangNhap.TabIndex = 2;
             // 
             // FormDangNhap
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(502, 332);
-            this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
+            this.ClientSize = new System.Drawing.Size(750, 450);
+            this.Controls.Add(this.pnlRight);
+            this.Controls.Add(this.pnlLeft);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormDangNhap";
-            this.Tag = "";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Đăng nhập";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.Load += new System.EventHandler(this.FormDangNhap_Load);
+            this.pnlLeft.ResumeLayout(false);
+            this.pnlLeft.PerformLayout();
+            this.pnlRight.ResumeLayout(false);
+            this.pnlRight.PerformLayout();
             this.ResumeLayout(false);
-
         }
 
         #endregion
 
-        private System.Windows.Forms.Label lalNamedangnhap;
+        private System.Windows.Forms.Panel pnlLeft;
+        private System.Windows.Forms.Panel pnlRight;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblHeader;
+        private System.Windows.Forms.TextBox txtEmail_DangNhap;
+        private System.Windows.Forms.TextBox txtMatKhau_DangNhap;
+        private System.Windows.Forms.Label lalEmail;
         private System.Windows.Forms.Label lalMatKhau;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnAccesLogin;
         private System.Windows.Forms.Button Exit;
-        private System.Windows.Forms.TextBox txtTenDangNhap;
-        private System.Windows.Forms.TextBox txtMatKhau_DangNhap;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.TextBox txtEmail_DangNhap;
-        private System.Windows.Forms.Label lalEmail;
     }
 }

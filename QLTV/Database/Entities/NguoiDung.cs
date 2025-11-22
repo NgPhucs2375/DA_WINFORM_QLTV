@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 namespace QLTV.Database.Entities
 {
     [Table("NGUOIDUNG")]
-    internal class NguoiDung
+    public class NguoiDung
     {
         [Column("MANGUOIDUNG"),Key]
         public int IDNguoiDung { get; set; }

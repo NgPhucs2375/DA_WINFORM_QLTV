@@ -79,9 +79,9 @@ namespace QLTV
         {
             if (cboPhieuMuon.SelectedValue == null) return;
 
-            // Lấy hạn trả từ Tag (đã lưu lúc chọn combobox) hoặc query lại
-            // Ở đây ta query lại cho an toàn dữ liệu
-            int idPhieu = (int)cboPhieuMuon.SelectedValue;
+            // Lấy ID phiếu an toàn
+            if (!int.TryParse(cboPhieuMuon.SelectedValue.ToString(), out int idPhieu)) return;
+
             using (var db = new QLTVDataContext())
             {
                 var pm = db.PhieuMuons.Find(idPhieu);
@@ -94,11 +94,21 @@ namespace QLTV
                     if (ngayTra > hanTra)
                     {
                         int daysLate = (ngayTra - hanTra).Days;
-                        decimal fine = daysLate * FINE_PER_DAY;
 
-                        lblSoTienPhat.Text = $"{fine:N0} VNĐ ({daysLate} ngày trễ)";
+                        decimal finePerDay = 5000; // Giá mặc định phòng hờ
+                        var config = db.ThamSos.Find("TIEN_PHAT_MOI_NGAY");
+                        if (config != null)
+                        {
+                            decimal.TryParse(config.GiaTri, out finePerDay);
+                        }
+                        // --------------------------------------------------
+
+                        decimal fine = daysLate * finePerDay;
+
+                        // Hiển thị chi tiết: Tổng tiền (Số ngày trễ x Giá)
+                        lblSoTienPhat.Text = $"{fine:N0} VNĐ (Trễ {daysLate} ngày)";
                         lblSoTienPhat.ForeColor = Color.Red;
-                        lblSoTienPhat.Tag = fine; // Lưu giá trị số để dùng khi Save
+                        lblSoTienPhat.Tag = fine; // Lưu giá trị số để dùng khi bấm nút Trả
                     }
                     else
                     {
@@ -109,7 +119,6 @@ namespace QLTV
                 }
             }
         }
-
         // Sự kiện chọn phiếu mượn
         private void cboPhieuMuon_SelectedIndexChanged(object sender, EventArgs e)
         {

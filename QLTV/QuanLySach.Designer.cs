@@ -22,6 +22,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.dgwhowList = new System.Windows.Forms.DataGridView();
             this.grbChiTiet = new System.Windows.Forms.GroupBox();
+            this.btnGetInfo = new System.Windows.Forms.Button(); // Nút API mới
+            this.txtISBN = new System.Windows.Forms.TextBox(); // Ô nhập ISBN mới
+            this.labelISBN = new System.Windows.Forms.Label();
             this.btnReset = new System.Windows.Forms.Button();
             this.btnXoa = new System.Windows.Forms.Button();
             this.btnSua = new System.Windows.Forms.Button();
@@ -140,6 +143,9 @@
             // 
             // grbChiTiet
             // 
+            this.grbChiTiet.Controls.Add(this.btnGetInfo);
+            this.grbChiTiet.Controls.Add(this.txtISBN);
+            this.grbChiTiet.Controls.Add(this.labelISBN);
             this.grbChiTiet.Controls.Add(this.btnReset);
             this.grbChiTiet.Controls.Add(this.btnXoa);
             this.grbChiTiet.Controls.Add(this.btnSua);
@@ -168,6 +174,35 @@
             this.grbChiTiet.TabIndex = 0;
             this.grbChiTiet.TabStop = false;
             this.grbChiTiet.Text = "Thông tin sách";
+            // 
+            // labelISBN
+            // 
+            this.labelISBN.AutoSize = true;
+            this.labelISBN.Location = new System.Drawing.Point(20, 380);
+            this.labelISBN.Name = "labelISBN";
+            this.labelISBN.Size = new System.Drawing.Size(50, 23);
+            this.labelISBN.TabIndex = 16;
+            this.labelISBN.Text = "ISBN:";
+            // 
+            // txtISBN
+            // 
+            this.txtISBN.Location = new System.Drawing.Point(120, 377);
+            this.txtISBN.Name = "txtISBN";
+            this.txtISBN.Size = new System.Drawing.Size(150, 30);
+            this.txtISBN.TabIndex = 17;
+            // 
+            // btnGetInfo
+            // 
+            this.btnGetInfo.BackColor = System.Drawing.Color.DodgerBlue;
+            this.btnGetInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGetInfo.ForeColor = System.Drawing.Color.White;
+            this.btnGetInfo.Location = new System.Drawing.Point(280, 375);
+            this.btnGetInfo.Name = "btnGetInfo";
+            this.btnGetInfo.Size = new System.Drawing.Size(80, 32);
+            this.btnGetInfo.TabIndex = 18;
+            this.btnGetInfo.Text = "Web";
+            this.btnGetInfo.UseVisualStyleBackColor = false;
+            this.btnGetInfo.Click += new System.EventHandler(this.btnGetInfo_Click);
             // 
             // txtIDSach
             // 
@@ -287,7 +322,7 @@
             // 
             this.cboTrangThai.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboTrangThai.FormattingEnabled = true;
-            this.cboTrangThai.Location = new System.Drawing.Point(120, 352);
+            this.cboTrangThai.Location = new System.Drawing.Point(120, 340); // Đẩy lên 1 chút để nhường chỗ cho ISBN
             this.cboTrangThai.Name = "cboTrangThai";
             this.cboTrangThai.Size = new System.Drawing.Size(230, 31);
             this.cboTrangThai.TabIndex = 15;
@@ -295,7 +330,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(20, 355);
+            this.label8.Location = new System.Drawing.Point(20, 343);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(91, 23);
             this.label8.TabIndex = 14;
@@ -307,7 +342,7 @@
             this.btnThem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnThem.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnThem.ForeColor = System.Drawing.Color.White;
-            this.btnThem.Location = new System.Drawing.Point(25, 410);
+            this.btnThem.Location = new System.Drawing.Point(25, 430);
             this.btnThem.Name = "btnThem";
             this.btnThem.Size = new System.Drawing.Size(150, 40);
             this.btnThem.TabIndex = 16;
@@ -321,7 +356,7 @@
             this.btnSua.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSua.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnSua.ForeColor = System.Drawing.Color.White;
-            this.btnSua.Location = new System.Drawing.Point(200, 410);
+            this.btnSua.Location = new System.Drawing.Point(200, 430);
             this.btnSua.Name = "btnSua";
             this.btnSua.Size = new System.Drawing.Size(150, 40);
             this.btnSua.TabIndex = 17;
@@ -335,7 +370,7 @@
             this.btnXoa.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXoa.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnXoa.ForeColor = System.Drawing.Color.White;
-            this.btnXoa.Location = new System.Drawing.Point(25, 460);
+            this.btnXoa.Location = new System.Drawing.Point(25, 480);
             this.btnXoa.Name = "btnXoa";
             this.btnXoa.Size = new System.Drawing.Size(150, 40);
             this.btnXoa.TabIndex = 18;
@@ -349,7 +384,7 @@
             this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReset.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnReset.ForeColor = System.Drawing.Color.White;
-            this.btnReset.Location = new System.Drawing.Point(200, 460);
+            this.btnReset.Location = new System.Drawing.Point(200, 480);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(150, 40);
             this.btnReset.TabIndex = 19;
@@ -411,5 +446,8 @@
         private System.Windows.Forms.Button btnSua;
         private System.Windows.Forms.Button btnXoa;
         private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.Button btnGetInfo; // Mới
+        private System.Windows.Forms.TextBox txtISBN; // Mới
+        private System.Windows.Forms.Label labelISBN; // Mới
     }
 }

@@ -50,7 +50,16 @@ namespace QLTV
             tabControl1.SelectedTab = tabTraCuu;
             SetActiveButton(btnNavTraCuu);
         }
+        private void btnXemThe_Click(object sender, EventArgs e)
+        {
+            // Lấy thông tin từ các Label đang hiện trên FormDG
+            string ten = lblXinChao.Text.Replace("Xin chào, ", "");
+            string han = lblHanThe.Text.Replace("Hạn thẻ: ", "");
+            string ma = _userId.ToString(); // Hoặc lấy mã độc giả thật từ DB
 
+            FormTheDocGia f = new FormTheDocGia(ten, ma, han);
+            f.ShowDialog();
+        }
         private void btnNavLichSu_Click(object sender, EventArgs e)
         {
             tabControl1.SelectedTab = tabLichSu;

@@ -28,5 +28,9 @@ namespace QLTV.Database
         public DbSet<BaoCao> BaoCaos { get; set; }
         public DbSet<LoginLog> LoginLogs { get; set; }
         public DbSet<HoatDongLog> HoatDongLogs { get; set; }
+        public DbSet<Entities.ThamSo> ThamSos { get; set; }
+        public DbSet<Entities.TheLoai> TheLoais { get; set; }
+        public DbSet<Entities.TacGia> TacGias { get; set; }
+        public DbSet<Entities.NhaXuatBan> NhaXuatBans { get; set; }
     }
 }

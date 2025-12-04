@@ -103,7 +103,7 @@ namespace QLTV
                 dtpkNgayVLNV.Value = Convert.ToDateTime(row.Cells["NgayVaoLam"].Value);
 
             // Không load mật khẩu lên textbox để bảo mật, và vì nó đã bị Hash
-            txtMatKhauNV.PlaceholderText = "(Giữ nguyên)";
+            //txtMatKhauNV.PlaceholderText = "(Giữ nguyên)";
             txtMatKhauNV.Clear();
         }
 
@@ -246,7 +246,7 @@ namespace QLTV
             txtMatKhauNV.Clear();
             cboVaiTro.SelectedIndex = 1;
             dtpkNgayVLNV.Value = DateTime.Now;
-            txtMatKhauNV.PlaceholderText = "";
+            //txtMatKhauNV.PlaceholderText = "";
         }
 
         private void txtKeyword_TextChanged(object sender, EventArgs e)

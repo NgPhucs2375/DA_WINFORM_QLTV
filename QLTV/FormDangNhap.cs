@@ -76,6 +76,7 @@ namespace QLTV
 
                     // 3. Đăng nhập thành công
                     Program.CurrentUserId = user.IDNguoiDung; // Lưu session
+                    Logger.Record("Đăng nhập", "HeThong", "Người dùng đăng nhập vào hệ thống");
                     string role = user.VaiTro_NguoiDung?.Trim().ToLower();
 
                     // Mở form tương ứng
@@ -106,7 +107,10 @@ namespace QLTV
             // Đóng form này -> Form1 sẽ tự hiện lại (do sự kiện FormClosed bên Form1)
             this.Close();
         }
-
+        private void lnkQuenMatKhau_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            new FormQuenMatKhau().ShowDialog();
+        }
         // Event thừa
         private void FormDangNhap_Load(object sender, EventArgs e) { }
         private void groupBox1_Enter(object sender, EventArgs e) { }

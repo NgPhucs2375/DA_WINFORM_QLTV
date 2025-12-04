@@ -206,6 +206,20 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Tra";
             this.tabPage2.UseVisualStyleBackColor = true;
+            //
+            //btnGiaHan
+            //
+            // Code thêm vào Designer
+            this.btnGiaHan = new System.Windows.Forms.Button();
+            this.btnGiaHan.BackColor = System.Drawing.Color.DarkOrange;
+            this.btnGiaHan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGiaHan.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnGiaHan.ForeColor = System.Drawing.Color.White;
+            this.btnGiaHan.Location = new System.Drawing.Point(200, 10); // Đặt cạnh nút Thêm
+            this.btnGiaHan.Size = new System.Drawing.Size(150, 40);
+            this.btnGiaHan.Text = "GIA HẠN";
+            this.btnGiaHan.Click += new System.EventHandler(this.btnGiaHan_Click);
+            this.pnlMuonAction.Controls.Add(this.btnGiaHan);
             // 
             // pnlTraContent
             // 
@@ -277,6 +291,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvDSTra)).EndInit();
             this.pnlTraAction.ResumeLayout(false);
             this.ResumeLayout(false);
+
+
+
         }
 
         #endregion
@@ -298,5 +315,9 @@
         private System.Windows.Forms.DataGridView dgvDSTra;
         private System.Windows.Forms.Panel pnlTraAction;
         private System.Windows.Forms.Button btnLapPhieuTra;
+        private System.Windows.Forms.Button btnGiaHan;
+        private System.Windows.Forms.Button btnSomeOtherAction;
+
+        private System.Windows.Forms.Button btnNewAction;   
     }
 }

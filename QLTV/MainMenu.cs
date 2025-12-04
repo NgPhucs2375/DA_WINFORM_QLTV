@@ -118,5 +118,41 @@ namespace QLTV
                 }
             }
         }
+        private void btnCaiDat_Click(object sender, EventArgs e)
+        {
+            if (userRole == "admin")
+            {
+                // Mở FormCaiDat dạng Dialog để người dùng tập trung cấu hình
+                FormCaiDat f = new FormCaiDat();
+                f.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Chức năng này chỉ dành cho Admin!", "Hạn chế quyền", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+        private void btnNhatKy_Click(object sender, EventArgs e)
+        {
+            if (userRole == "admin")
+            {
+                OpenChildForm(typeof(FormNhatKy));
+            }
+            else
+            {
+                MessageBox.Show("Bạn không có quyền xem nhật ký hệ thống!");
+            }
+        }
+        private void btnDanhMuc_Click(object sender, EventArgs e)
+        {
+            // Phân quyền: Chỉ Admin hoặc Thủ thư (Nhân viên) mới được sửa danh mục
+            if (userRole == "admin" || userRole == "nhanvien")
+            {
+                OpenChildForm(typeof(FormDanhMuc));
+            }
+            else
+            {
+                MessageBox.Show("Bạn không có quyền truy cập mục này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }

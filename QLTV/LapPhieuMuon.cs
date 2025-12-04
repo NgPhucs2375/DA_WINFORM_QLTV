@@ -3,7 +3,8 @@ using QLTV.Database.Entities;
 using System;
 using System.Data;
 using System.Data.Entity;
-using System.Drawing; // Để chỉnh màu
+using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -114,9 +115,18 @@ namespace QLTV
 
                     db.SaveChanges();
 
-                    MessageBox.Show("Lập phiếu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DialogResult result = MessageBox.Show("Lập phiếu thành công! Bạn có muốn in phiếu không?", "In phiếu", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                    // Quan trọng: Báo cho form cha biết là đã OK để reload lại danh sách
+                    if (result == DialogResult.Yes)
+                    {
+                        PrintDocument pd = new PrintDocument();
+                        pd.PrintPage += new PrintPageEventHandler(InPhieu_PrintPage);
+
+                        PrintPreviewDialog preview = new PrintPreviewDialog();
+                        preview.Document = pd;
+                        preview.ShowDialog();
+                    }
+
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
@@ -130,6 +140,19 @@ namespace QLTV
         private void btnHuy_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void InPhieu_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            Font fontTieuDe = new Font("Arial", 20, FontStyle.Bold);
+            Font fontNoiDung = new Font("Arial", 12);
+
+            e.Graphics.DrawString("PHIẾU MƯỢN SÁCH", fontTieuDe, Brushes.Black, 250, 50);
+            e.Graphics.DrawString($"Độc giả: {cboDocGia.Text}", fontNoiDung, Brushes.Black, 100, 120);
+            e.Graphics.DrawString($"Sách: {cboSach.Text}", fontNoiDung, Brushes.Black, 100, 150);
+            e.Graphics.DrawString($"Ngày mượn: {dtpNgayMuon.Value:dd/MM/yyyy}", fontNoiDung, Brushes.Black, 100, 180);
+            e.Graphics.DrawString($"Hạn trả: {dtpHanTra.Value:dd/MM/yyyy}", fontNoiDung, Brushes.Black, 100, 210);
+            e.Graphics.DrawString("Người lập phiếu", fontNoiDung, Brushes.Black, 500, 300);
         }
     }
 }

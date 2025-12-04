@@ -5,6 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Net.Http; 
+using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace QLTV
 {
@@ -129,6 +132,7 @@ namespace QLTV
                     db.Sachs.Add(s);
                     db.SaveChanges();
                     MessageBox.Show("Thêm sách thành công!");
+                    Logger.Record("Thêm sách", "Sach", "Đã thêm sách có ID: " + s.IDSach);
                     LoadData();
                     ClearForm();
                 }
@@ -159,6 +163,7 @@ namespace QLTV
 
                         db.SaveChanges();
                         MessageBox.Show("Cập nhật thành công!");
+                        Logger.Record("Sửa sách", "Sach", "Đã Sửa sách có ID: " + id);
                         LoadData();
                     }
                 }
@@ -189,6 +194,7 @@ namespace QLTV
                         db.Sachs.Remove(s);
                         db.SaveChanges();
                         MessageBox.Show("Đã xóa!");
+                        Logger.Record("Xóa sách", "Sach", "Đã xóa sách có ID: " + id);
                         LoadData();
                         ClearForm();
                     }
@@ -219,8 +225,96 @@ namespace QLTV
             return true;
         }
 
-        // Sự kiện thừa
-        private void btnSearch_Click(object sender, EventArgs e) { } // Đã dùng TextChanged
+private async void btnGetInfo_Click(object sender, EventArgs e)
+    {
+        // 1. Làm sạch mã ISBN (Xóa khoảng trắng, dấu gạch ngang)
+        string isbn = txtISBN.Text.Replace("-", "").Replace(" ", "").Trim();
+
+        if (string.IsNullOrEmpty(isbn))
+        {
+            MessageBox.Show("Vui lòng nhập mã ISBN!");
+            return;
+        }
+
+        btnGetInfo.Text = "Đang tải...";
+        btnGetInfo.Enabled = false;
+
+        try
+        {
+            // --- FIX QUAN TRỌNG: Kích hoạt bảo mật TLS 1.2 ---
+            // Google chặn các kết nối cũ, dòng này bắt buộc với WinForms .NET 4.5/4.6/4.7
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+            using (HttpClient client = new HttpClient())
+            {
+                // Thêm User-Agent giả lập trình duyệt (tránh bị chặn)
+                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+
+                string url = $"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}";
+
+                // Debug: Nếu vẫn lỗi, bạn hãy copy link này dán vào Chrome xem có ra gì không
+                Console.WriteLine("Link API: " + url);
+
+                HttpResponseMessage response = await client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    JObject data = JObject.Parse(json);
+
+                    // Kiểm tra số lượng kết quả trả về
+                    if (data["totalItems"] != null && data["totalItems"].Value<int>() > 0)
+                    {
+                        var bookInfo = data["items"][0]["volumeInfo"];
+
+                        // --- ĐIỀN DỮ LIỆU ---
+                        txtNameSach.Text = bookInfo["title"]?.ToString();
+
+                        // Tác giả
+                        if (bookInfo["authors"] != null)
+                        {
+                            txtTacGia.Text = string.Join(", ", bookInfo["authors"].Select(a => a.ToString()));
+                        }
+
+                        // NXB & Năm
+                        txtNXB.Text = bookInfo["publisher"]?.ToString();
+                        string publishDate = bookInfo["publishedDate"]?.ToString(); // VD: "2008-08-01"
+                        if (!string.IsNullOrEmpty(publishDate) && publishDate.Length >= 4)
+                        {
+                            txtNamXB.Text = publishDate.Substring(0, 4);
+                        }
+
+                        // Số trang (Gán tạm vào số lượng nếu muốn)
+                        // txtSoLuong.Text = bookInfo["pageCount"]?.ToString();
+
+                        MessageBox.Show("Đã tìm thấy thông tin sách!", "Thành công");
+                    }
+                    else
+                    {
+                        // Trường hợp không tìm thấy
+                        string msg = $"Không tìm thấy sách có mã '{isbn}' trên Google Books.\n\n" +
+                                     "Nguyên nhân: Sách này (thường là sách Việt Nam) chưa được cập nhật lên hệ thống Google.\n" +
+                                     "Bạn hãy thử mã này để test: 9780132350884";
+                        MessageBox.Show(msg, "Kết quả tìm kiếm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Lỗi kết nối đến Google: " + response.StatusCode);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Lỗi hệ thống: " + ex.Message);
+        }
+        finally
+        {
+            btnGetInfo.Text = "Lấy từ Web";
+            btnGetInfo.Enabled = true;
+        }
+    }
+    private void btnSearch_Click(object sender, EventArgs e) { } // Đã dùng TextChanged
         private void btnHTDanhSach_Click(object sender, EventArgs e) => LoadData();
     }
 }

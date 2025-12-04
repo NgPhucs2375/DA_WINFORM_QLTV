@@ -172,5 +172,43 @@ namespace QLTV
             // Load dữ liệu ban đầu
             LoadDSMuon();
         }
+        private void btnGiaHan_Click(object sender, EventArgs e)
+        {
+            if (dgvDSMuon.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn phiếu mượn cần gia hạn!", "Thông báo");
+                return;
+            }
+
+            // Lấy ID phiếu (Sửa 'MaPhieu' nếu tên cột trong DataGrid của bạn khác)
+            if (dgvDSMuon.CurrentRow.Cells["MaPhieu"].Value == null) return;
+            int idPhieu = Convert.ToInt32(dgvDSMuon.CurrentRow.Cells["MaPhieu"].Value);
+
+            try
+            {
+                using (var db = new QLTVDataContext())
+                {
+                    var pm = db.PhieuMuons.Find(idPhieu);
+                    if (pm == null || pm.TrangThai_PhieuMuon == "Đã trả")
+                    {
+                        MessageBox.Show("Không thể gia hạn phiếu này!");
+                        return;
+                    }
+
+                    // Lấy số ngày gia hạn từ DB (Phần D)
+                    int days = 7; // Mặc định
+                    var config = db.ThamSos.Find("SO_NGAY_GIA_HAN");
+                    if (config != null) int.TryParse(config.GiaTri, out days);
+
+                    pm.HanTra_PhieuMuon = pm.HanTra_PhieuMuon.AddDays(days);
+                    db.SaveChanges();
+
+                    MessageBox.Show($"Đã gia hạn thêm {days} ngày.\nHạn mới: {pm.HanTra_PhieuMuon:dd/MM/yyyy}", "Thành công");
+                    Logger.Record("Gia hạn sách", "PhieuMuon", "Gia hạn phiếu PM" + idPhieu);
+                    LoadDSMuon(); // Refresh lại lưới
+                }
+            }
+            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
+        }
     }
 }

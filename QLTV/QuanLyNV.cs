@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace QLTV
@@ -109,6 +110,7 @@ namespace QLTV
 
         private void btnThemNV_Click(object sender, EventArgs e)
         {
+            if(!ValidateInput()) return;
             if (string.IsNullOrWhiteSpace(txtTenNV.Text) || string.IsNullOrWhiteSpace(txtEmailNV.Text) || string.IsNullOrWhiteSpace(txtMatKhauNV.Text))
             {
                 MessageBox.Show("Vui lòng nhập đủ thông tin!", "Cảnh báo");
@@ -161,6 +163,8 @@ namespace QLTV
 
         private void btnSuaNV_Click(object sender, EventArgs e)
         {
+            if (!ValidateInput()) return;
+
             if (string.IsNullOrWhiteSpace(txtMaNV.Text)) return;
             int id = int.Parse(txtMaNV.Text);
 
@@ -268,6 +272,86 @@ namespace QLTV
                                TrangThai = nd.TrangThai_NguoiDung
                            };
                 dgvNhanVien.DataSource = list.ToList();
+            }
+        }
+        private bool ValidateInput()
+        {
+            if (string.IsNullOrWhiteSpace(txtTenNV.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tên nhân viên!", "Cảnh báo");
+                txtTenNV.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtEmailNV.Text))
+            {
+                MessageBox.Show("Vui lòng nhập email!", "Cảnh báo");
+                txtEmailNV.Focus();
+                return false;
+            }
+
+            if (!IsValidEmail(txtEmailNV.Text.Trim()))
+            {
+                MessageBox.Show("Email không đúng định dạng!", "Cảnh báo");
+                txtEmailNV.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtMatKhauNV.Text))
+            {
+                MessageBox.Show("Vui lòng nhập mật khẩu!", "Cảnh báo");
+                txtMatKhauNV.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtSDTNV.Text))
+            {
+                MessageBox.Show("Vui lòng nhập số điện thoại!", "Cảnh báo");
+                txtSDTNV.Focus();
+                return false;
+            }
+
+            string sdt = txtSDTNV.Text.Trim();
+            if (sdt.Length < 10 || sdt.Length > 11 || !sdt.All(char.IsDigit))
+            {
+                MessageBox.Show("Số điện thoại phải gồm 10 đến 11 chữ số và chỉ chứa số.", "Cảnh báo");
+                txtSDTNV.Focus();
+                return false;
+            }
+
+            // Kiểm tra vai trò đã chọn
+            if (cboVaiTro.SelectedIndex < 0)
+            {
+                MessageBox.Show("Vui lòng chọn vai trò!", "Cảnh báo");
+                cboVaiTro.Focus();
+                return false;
+            }
+
+            // Kiểm tra ngày vào làm không lớn hơn ngày hiện tại
+            if (dtpkNgayVLNV.Value.Date > DateTime.Now.Date)
+            {
+                MessageBox.Show("Ngày vào làm không được lớn hơn ngày hiện tại!", "Cảnh báo");
+                dtpkNgayVLNV.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        // Hàm kiểm tra email hợp lệ
+        private bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            try
+            {
+                string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+                return Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
+            }
+            catch
+            {
+                return false;
             }
         }
 

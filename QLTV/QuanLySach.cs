@@ -108,7 +108,6 @@ namespace QLTV
                 dgwhowList.DataSource = list;
             }
         }
-
         private void btnThem_Click(object sender, EventArgs e)
         {
             if (!ValidateInput()) return;
@@ -117,28 +116,87 @@ namespace QLTV
             {
                 using (var db = new QLTVDataContext())
                 {
-                    Sach s = new Sach()
-                    {
-                        Name_Sach = txtNameSach.Text.Trim(),
-                        TacGia_Sach = txtTacGia.Text.Trim(),
-                        TheLoai_Sach = txtChuDe.Text.Trim(),
-                        NhaXuatBan_Sach = txtNXB.Text.Trim(),
-                        NamXuatBan_Sach = int.Parse(txtNamXB.Text),
-                        SoLuong_Sach = int.Parse(txtSoLuong.Text),
-                        TrangThai_Sach = cboTrangThai.Text,
-                        ViTriSach = "Kệ A1" // Mặc định hoặc thêm textbox nhập
-                    };
+                    // Lấy mã sách nhập từ textbox (ví dụ txtMaSach)
+                    string maSach = txtIDSach.Text.Trim();
 
-                    db.Sachs.Add(s);
-                    db.SaveChanges();
-                    MessageBox.Show("Thêm sách thành công!");
-                    Logger.Record("Thêm sách", "Sach", "Đã thêm sách có ID: " + s.IDSach);
+                    // Tìm sách theo mã đã tồn tại chưa
+                    var sachTonTai = db.Sachs.FirstOrDefault(s => s.IDSach.ToString() == maSach);
+
+                    if (sachTonTai != null)
+                    {
+                        // Nếu tồn tại thì chỉ cộng số lượng
+                        int soLuongNhap = int.Parse(txtSoLuong.Text);
+                        sachTonTai.SoLuong_Sach += soLuongNhap;
+
+                        db.SaveChanges();
+                        MessageBox.Show($"Sách có mã {maSach}, đã cập nhật số lượng thành: {sachTonTai.SoLuong_Sach}");
+                        Logger.Record("Cập nhật số lượng sách", "Sach", $"Sách mã: {maSach}, số lượng mới: {sachTonTai.SoLuong_Sach}");
+                    }
+                    else
+                    {
+                        // Nếu chưa tồn tại thì tạo mới sách
+                        Sach s = new Sach()
+                        {
+                            // Giả sử IDSach là tự sinh hoặc do bạn nhập, nếu nhập thì gán IDSach = maSach hoặc kiểu phù hợp
+                            // Nếu IDSach tự sinh trong DB, bạn không cần gán ở đây
+                            Name_Sach = txtNameSach.Text.Trim(),
+                            TacGia_Sach = txtTacGia.Text.Trim(),
+                            TheLoai_Sach = txtChuDe.Text.Trim(),
+                            NhaXuatBan_Sach = txtNXB.Text.Trim(),
+                            NamXuatBan_Sach = int.Parse(txtNamXB.Text),
+                            SoLuong_Sach = int.Parse(txtSoLuong.Text),
+                            TrangThai_Sach = cboTrangThai.Text,
+                            ViTriSach = "Kệ A1" // hoặc lấy từ textbox
+                        };
+
+                        db.Sachs.Add(s);
+                        db.SaveChanges();
+                        MessageBox.Show("Thêm sách thành công!");
+                        Logger.Record("Thêm sách", "Sach", "Đã thêm sách có ID: " + s.IDSach);
+                    }
+
                     LoadData();
                     ClearForm();
                 }
             }
-            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message);
+            }
         }
+
+        //private void btnThem_Click(object sender, EventArgs e)
+        //{
+        //    if (!ValidateInput()) return;
+
+        //    try
+        //    {
+        //        using (var db = new QLTVDataContext())
+        //        {
+
+        //            Sach s = new Sach()
+        //            {
+
+        //                Name_Sach = txtNameSach.Text.Trim(),
+        //                TacGia_Sach = txtTacGia.Text.Trim(),
+        //                TheLoai_Sach = txtChuDe.Text.Trim(),
+        //                NhaXuatBan_Sach = txtNXB.Text.Trim(),
+        //                NamXuatBan_Sach = int.Parse(txtNamXB.Text),
+        //                SoLuong_Sach = int.Parse(txtSoLuong.Text),
+        //                TrangThai_Sach = cboTrangThai.Text,
+        //                ViTriSach = "Kệ A1" // Mặc định hoặc thêm textbox nhập
+        //            };
+
+        //            db.Sachs.Add(s);
+        //            db.SaveChanges();
+        //            MessageBox.Show("Thêm sách thành công!");
+        //            Logger.Record("Thêm sách", "Sach", "Đã thêm sách có ID: " + s.IDSach);
+        //            LoadData();
+        //            ClearForm();
+        //        }
+        //    }
+        //    catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
+        //}
 
         private void btnSua_Click(object sender, EventArgs e)
         {

@@ -9,6 +9,8 @@ namespace QLTV
     public static class Program
     {
         public static int CurrentUserId;
+        public static string CurrentName;
+        public static string CurrentEmail;
 
 
         /// <summary>

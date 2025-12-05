@@ -87,9 +87,12 @@ namespace QLTV
             if (cboTrangThai.Items.Contains(status)) cboTrangThai.SelectedItem = status;
         }
 
+
         private void btnThem_Click(object sender, EventArgs e)
         {
             if (!ValidateInput()) return;
+
+           
 
             try
             {
@@ -229,7 +232,51 @@ namespace QLTV
             if (string.IsNullOrEmpty(txtHoTen.Text)) { MessageBox.Show("Nhập họ tên!"); return false; }
             if (string.IsNullOrEmpty(txtEmail.Text)) { MessageBox.Show("Nhập email!"); return false; }
             // Thêm Regex check email, sdt ở đây nếu cần
+
+            if (string.IsNullOrEmpty(txtSDT.Text))
+            {
+                MessageBox.Show("Nhập số điện thoại!");
+                txtSDT.Focus();
+                return false;
+            }
+
+            // Kiểm tra định dạng email
+            if (!IsValidEmail(txtEmail.Text.Trim()))
+            {
+                MessageBox.Show("Email không đúng định dạng!");
+                txtEmail.Focus();
+                return false;
+            }
+
+            // Kiểm tra số điện thoại (10-11 số, chỉ chứa chữ số)
+            string sdt = txtSDT.Text.Trim();
+            if (sdt.Length < 10 || sdt.Length > 11 || !sdt.All(char.IsDigit))
+            {
+                MessageBox.Show("Số điện thoại phải gồm 10 đến 11 chữ số và chỉ chứa số.");
+                txtSDT.Focus();
+                return false;
+            }
             return true;
+        }
+        //hàm checkmail
+        private bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            try
+            {
+                string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+                return Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        private void txtSDT_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

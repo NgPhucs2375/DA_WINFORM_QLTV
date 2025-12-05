@@ -74,6 +74,8 @@ namespace QLTV
                         return;
                     }
 
+                    Program.CurrentName = user.HoTen_NguoiDung;
+                    Program.CurrentEmail = user.Email_NguoiDung;
                     // 3. Đăng nhập thành công
                     Program.CurrentUserId = user.IDNguoiDung; // Lưu session
                     Logger.Record("Đăng nhập", "HeThong", "Người dùng đăng nhập vào hệ thống");

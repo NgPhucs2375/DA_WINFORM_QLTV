@@ -114,7 +114,8 @@ namespace QLTV
                         DocGia = p.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung,
                         TenSach = p.SACHDATA.Name_Sach,
                         NgayTra = p.NgayTra_PhieuMuon,
-                        Phat = p.SoTienPhat_PhieuMuon
+                        Phat = p.SoTienPhat_PhieuMuon,
+                        TongTien = p.TongTien
                     }).ToList();
 
                 dgvDSTra.DataSource = list;

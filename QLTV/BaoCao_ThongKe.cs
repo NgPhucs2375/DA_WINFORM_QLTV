@@ -268,6 +268,7 @@ namespace QLTV
                     LyDo = p.LyDo_Phat,
                     NgayPhat = p.NgayPhat,
                     SoTien = p.SoTien_Phat
+
                 })
                 .ToList();
         }
@@ -393,6 +394,10 @@ namespace QLTV
             chartThongKe.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
         }
 
+        private void dgvKetQua_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 
 

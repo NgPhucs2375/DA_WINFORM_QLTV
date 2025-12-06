@@ -18,9 +18,11 @@ namespace QLTV
             {
                 var phat = db.ThamSos.Find("TIEN_PHAT_MOI_NGAY");
                 var giahan = db.ThamSos.Find("SO_NGAY_GIA_HAN");
+                var tienmuon = db.ThamSos.Find("SO_TIEN_MUON_MOI_NGAY");
 
                 if (phat != null) txtTienPhat.Text = phat.GiaTri;
                 if (giahan != null) txtGiaHan.Text = giahan.GiaTri;
+                if (tienmuon != null) txtTienMuon.Text = tienmuon.GiaTri;
             }
         }
 
@@ -32,9 +34,11 @@ namespace QLTV
                 {
                     var phat = db.ThamSos.Find("TIEN_PHAT_MOI_NGAY");
                     var giahan = db.ThamSos.Find("SO_NGAY_GIA_HAN");
+                    var tienmuon = db.ThamSos.Find("SO_TIEN_MUON_MOI_NGAY");
 
                     if (phat != null) phat.GiaTri = txtTienPhat.Text;
                     if (giahan != null) giahan.GiaTri = txtGiaHan.Text;
+                    if (tienmuon != null) tienmuon.GiaTri = txtTienMuon.Text;
 
                     db.SaveChanges();
                     MessageBox.Show("Lưu cấu hình thành công!", "Thông báo");

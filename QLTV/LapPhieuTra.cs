@@ -74,6 +74,45 @@ namespace QLTV
             cboPhieuMuon.SelectedIndex = -1;
         }
 
+
+        //Tính tiền mượn
+        private decimal CalculateRentalFee()
+        {
+            if (cboPhieuMuon.SelectedValue == null) return 0m;
+
+            if (!int.TryParse(cboPhieuMuon.SelectedValue.ToString(), out int idPhieu)) return 0m;
+
+            using (var db = new QLTVDataContext())
+            {
+                var pm = db.PhieuMuons.Find(idPhieu);
+                if (pm == null) return 0m;
+
+                DateTime ngayMuon = pm.NgayMuon_Sach.Date;
+                DateTime ngayTra = pm.HanTra_PhieuMuon.Date;
+
+                int soNgayMuon = (ngayTra - ngayMuon).Days;
+                if (soNgayMuon < 1) soNgayMuon = 1; // tối thiểu 1 ngày
+
+                decimal tienThueMoiNgay = 5000m; // Mặc định
+
+                var configThue = db.ThamSos.Find("SO_TIEN_MUON_MOI_NGAY");
+                if (configThue != null)
+                {
+                    decimal.TryParse(configThue.GiaTri, out tienThueMoiNgay);
+                }
+
+                decimal tienMuon = soNgayMuon * tienThueMoiNgay;
+
+                // Hiển thị lên label
+                lblTienMuon.Text = $"{tienMuon:N0} VNĐ";
+                lblTienMuon.Tag = tienMuon; // Lưu để tính tổng
+
+                return tienMuon;
+            }
+        }
+
+
+
         // Tính toán tiền phạt
         private void CalculateFine()
         {
@@ -150,6 +189,19 @@ namespace QLTV
         private void dtpNgayTra_ValueChanged(object sender, EventArgs e)
         {
             CalculateFine();
+            decimal tienMuon = CalculateRentalFee();
+
+            // Cập nhật tổng tiền (nếu bạn có hàm này)
+            UpdateTotalMoney();
+        }
+        private void UpdateTotalMoney()
+        {
+            decimal tienMuon = lblTienMuon.Tag != null ? (decimal)lblTienMuon.Tag : 0m;
+            decimal tienPhat = lblSoTienPhat.Tag != null ? (decimal)lblSoTienPhat.Tag : 0m;
+
+            decimal tongTien = tienMuon + tienPhat;
+
+            lblTongTien.Text = $"{tongTien:N0} VNĐ";
         }
 
         private void btnTraSach_Click(object sender, EventArgs e)
@@ -162,6 +214,8 @@ namespace QLTV
 
             int idPhieu = (int)cboPhieuMuon.SelectedValue;
             decimal tienPhat = Convert.ToDecimal(lblSoTienPhat.Tag);
+            decimal tienMuon = lblTienMuon.Tag != null ? (decimal)lblTienMuon.Tag : 0m;
+            decimal tongTien = tienPhat + tienMuon;
 
             try
             {
@@ -174,6 +228,10 @@ namespace QLTV
                     pm.NgayTra_PhieuMuon = dtpNgayTra.Value;
                     pm.TrangThai_PhieuMuon = "Đã trả";
                     pm.SoTienPhat_PhieuMuon = tienPhat;
+
+                    // Cập nhật thêm tiền thuê và tổng tiền
+                    pm.TienMuon = tienMuon;
+                    pm.TongTien = tongTien;
 
                     // 2. Tạo Phiếu Phạt (Nếu có tiền phạt)
                     if (tienPhat > 0)
@@ -210,9 +268,25 @@ namespace QLTV
             }
         }
 
+
         private void btnHuy_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void lblTienMuon_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblTongTien_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblHanTra_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

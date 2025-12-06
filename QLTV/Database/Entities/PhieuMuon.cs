@@ -27,7 +27,14 @@ namespace QLTV.Database.Entities
         [Column("TRANGTHAI")]
         public string TrangThai_PhieuMuon { get; set; }
         [Column("SOTIENPHAT")]
+
+
         public decimal SoTienPhat_PhieuMuon { get; set; }
+
+        [Column("TIENMUON")]
+        public decimal TienMuon { get; set; }
+        [Column("TONGTIEN")]
+        public decimal TongTien { get; set; }
 
         public virtual DocGia DOCGIADATA { get; set; }
         public virtual Sach SACHDATA {  get; set; }

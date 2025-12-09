@@ -9,21 +9,28 @@ using System.Threading.Tasks;
 namespace QLTV.Database.Entities
 {
     [Table("HOATDONG_LOG")]
-
     internal class HoatDongLog
     {
-        [Column("MAHDLOG"), Key]
+        [Key]
+        [Column("ID")]
         public int IDDHLog { get; set; }
+
+        // FK đến bảng NGUOIDUNG
         [Column("MANGUOIDUNG"), ForeignKey("NGUOIDUNGDATA5")]
         public int IDNguoiDung_DHG { get; set; }
+
         [Column("HANHDONG")]
         public string HangDong_DHG { get; set; }
+
         [Column("DOITUONG")]
         public string DoiTuong { get; set; }
+
         [Column("NOIDUNG")]
         public string NoiDung_DHG { get; set; }
+
         [Column("THOIGIAN")]
         public DateTime ThoiGian_DHG { get; set; }
+
         public virtual NguoiDung NGUOIDUNGDATA5 { get; set; }
     }
 }

@@ -28,6 +28,7 @@ namespace QLTV
 
         private void btnLuu_Click(object sender, EventArgs e)
         {
+            if (!ValidateSettingsInput()) return;
             try
             {
                 using (var db = new QLTVDataContext())
@@ -47,5 +48,47 @@ namespace QLTV
             }
             catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
         }
+
+
+        private bool ValidateSettingsInput()
+        {
+            // Kiểm tra txtTienPhat
+            if (!IsValidNonNegativeInt(txtTienPhat.Text))
+            {
+                MessageBox.Show("Nhập sai giá tiền phạt.", "Lỗi");
+                txtTienPhat.Focus();
+                return false;
+            }
+
+            // Kiểm tra txtGiaHan (số ngày gia hạn phải là số nguyên dương, không âm)
+            if (!IsValidNonNegativeInt(txtGiaHan.Text))
+            {
+                MessageBox.Show("Số ngày gia hạn không hợp lệ.", "Lỗi");
+                txtGiaHan.Focus();
+                return false;
+            }
+
+            // Kiểm tra txtTienMuon (tiền mượn phải là số nguyên dương, mệnh giá hợp lệ)
+            if (!IsValidNonNegativeInt(txtTienMuon.Text))
+            {
+                MessageBox.Show("Nhập sai giá tiền mượn.", "Lỗi");
+                txtTienMuon.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        // Hàm kiểm tra chuỗi có phải số nguyên không âm (>= 0) và không có ký tự khác
+        private bool IsValidNonNegativeInt(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return false;
+
+            // Kiểm tra chỉ chứa số và chuyển sang số nguyên
+            if (!int.TryParse(text, out int value)) return false;
+
+            return value >= 0;
+        }
+
     }
 }

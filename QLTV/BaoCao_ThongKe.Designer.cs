@@ -245,6 +245,7 @@
             this.chartThongKe.Size = new System.Drawing.Size(728, 539);
             this.chartThongKe.TabIndex = 12;
             this.chartThongKe.Text = "Biểu đồ thống kê";
+            this.chartThongKe.Click += new System.EventHandler(this.chartThongKe_Click);
             // 
             // splitContainer1
             // 
@@ -255,12 +256,12 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.dgvKetQua);
-            this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(12, 12, 12, 12);
+            this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(12);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.chartThongKe);
-            this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(12, 12, 12, 12);
+            this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(12);
             this.splitContainer1.Size = new System.Drawing.Size(1848, 563);
             this.splitContainer1.SplitterDistance = 1092;
             this.splitContainer1.TabIndex = 2;

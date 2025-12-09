@@ -35,6 +35,10 @@ namespace QLTV.Database.Entities
         public decimal TienMuon { get; set; }
         [Column("TONGTIEN")]
         public decimal TongTien { get; set; }
+        [Column("MANHANVIEN"), ForeignKey("NHANVIENDATA")]
+        public int? IDNhanVien { get; set; }
+
+        public virtual NhanVien NHANVIENDATA { get; set; }
 
         public virtual DocGia DOCGIADATA { get; set; }
         public virtual Sach SACHDATA {  get; set; }

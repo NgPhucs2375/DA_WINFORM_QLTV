@@ -83,7 +83,7 @@ namespace QLTV
 
         private void btnQLMuonTra_Click(object sender, EventArgs e) => OpenChildForm(typeof(QLMuonTra));
 
-        private void btnBaoCao_Click(object sender, EventArgs e) => OpenChildForm(typeof(BaoCao_ThongKe));
+        //private void btnBaoCao_Click(object sender, EventArgs e) => OpenChildForm(typeof(BaoCao_ThongKe));
 
         private void btnQLNhanVien_Click(object sender, EventArgs e) => OpenChildForm(typeof(QuanLyNV));
 
@@ -118,6 +118,17 @@ namespace QLTV
                 }
             }
         }
+        private void btnBaoCao_Click(object sender, EventArgs e)
+        {
+            if (userRole == "admin")
+            {
+                OpenChildForm(typeof(BaoCao_ThongKe));
+            }
+            else
+            {
+                MessageBox.Show("Chức năng này chỉ dành cho Admin!", "Hạn chế quyền", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
         private void btnCaiDat_Click(object sender, EventArgs e)
         {
             if (userRole == "admin")
@@ -139,7 +150,7 @@ namespace QLTV
             }
             else
             {
-                MessageBox.Show("Bạn không có quyền xem nhật ký hệ thống!");
+                MessageBox.Show("Bạn không có quyền truy cập mục này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
         private void btnDanhMuc_Click(object sender, EventArgs e)
@@ -153,6 +164,28 @@ namespace QLTV
             {
                 MessageBox.Show("Bạn không có quyền truy cập mục này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+        // Thêm hàm này vào trong class MainMenu (bên dưới các hàm click khác)
+        private void btnDuyetMuonOnline_Click(object sender, EventArgs e)
+        {
+  
+            foreach (Form f in this.MdiChildren)
+            {
+                if (f is FormDuyet)
+                {
+                    f.Activate(); // Nếu đang mở thì focus vào nó
+                    return;
+                }
+            }
+
+            // 3. Khởi tạo và hiển thị Form Duyệt
+            FormDuyet form = new FormDuyet();
+            form.MdiParent = this; // Đặt MainMenu làm cha (Form con sẽ nằm gọn trong vùng xám)
+            form.Show();
+        }
+        private void MainMenu_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

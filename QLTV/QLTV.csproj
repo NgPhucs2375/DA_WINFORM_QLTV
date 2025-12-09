@@ -140,6 +140,12 @@
     <Compile Include="FormDoiMatKhau.Designer.cs">
       <DependentUpon>FormDoiMatKhau.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormDuyet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDuyet.Designer.cs">
+      <DependentUpon>FormDuyet.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormNhatKy.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -203,6 +209,7 @@
     <Compile Include="QuanLyNV.Designer.cs">
       <DependentUpon>QuanLyNV.cs</DependentUpon>
     </Compile>
+    <Compile Include="SessionHelper.cs" />
     <EmbeddedResource Include="BaoCao_ThongKe.resx">
       <DependentUpon>BaoCao_ThongKe.cs</DependentUpon>
     </EmbeddedResource>

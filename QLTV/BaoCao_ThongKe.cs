@@ -3,15 +3,13 @@ using QLTV.Database.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity; // Cần thiết cho .Include()
+using System.Data.Entity; 
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices; // Cần thiết để giải phóng Excel
+using System.Runtime.InteropServices; 
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-
-// Alias để ngắn gọn hơn khi gọi Excel
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace QLTV
@@ -28,13 +26,11 @@ namespace QLTV
         {
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            // Cấu hình DateTimePicker: Mặc định là đầu tháng và cuối tháng hiện tại
             dtpTuNgay.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             dtpDenNgay.Value = dtpTuNgay.Value.AddMonths(1).AddDays(-1);
             dtpTuNgay.Format = DateTimePickerFormat.Short;
             dtpDenNgay.Format = DateTimePickerFormat.Short;
 
-            // Cấu hình Label tổng tiền
             lblTongTien.Text = "Tổng doanh thu: 0 VNĐ";
             lblTongTien.Font = new Font("Arial", 12, FontStyle.Bold);
             lblTongTien.ForeColor = Color.DarkRed;
@@ -348,53 +344,179 @@ namespace QLTV
 
         private void DrawChart(string type, object dataSource)
         {
-            // 1. Reset biểu đồ cũ
+            // Xóa series & title cũ
             chartThongKe.Series.Clear();
             chartThongKe.Titles.Clear();
 
-            // 2. Cấu hình tiêu đề
-            string titleText = cboLoaiThongKe.Text;
-            chartThongKe.Titles.Add(titleText);
+            // Tiêu đề biểu đồ
+            chartThongKe.Titles.Add(cboLoaiThongKe.Text);
             chartThongKe.Titles[0].Font = new Font("Arial", 12, FontStyle.Bold);
 
-            // 3. Xử lý vẽ theo từng loại báo cáo
-            if (type == "REVENUE_FINES") // Biểu đồ Cột: Doanh thu
+            // Cấu hình ChartArea
+            var area = chartThongKe.ChartAreas[0];
+            area.AxisX.MajorGrid.Enabled = false;
+            area.AxisY.MajorGrid.Enabled = false;
+            area.AxisX.Title = "Danh mục";
+            area.AxisY.Title = "Số lượng";
+            area.AxisX.Interval = 1;
+            area.AxisX.LabelStyle.Angle = -45;
+
+            // ===== 1. SÁCH ĐANG CÓ SẴN TRONG KHO → BIỂU ĐỒ TRÒN (PIE) =====
+            if (type == "BOOKS_AVAILABLE")
+            {
+                var list = dataSource as IEnumerable<dynamic>;
+                if (list == null || !list.Any()) return;
+
+                // Lấy TOP 10 sách tồn kho cao nhất để chart tròn không bị rối
+                var topBooks = list
+                    .Select(x => new
+                    {
+                        TenSach = x.TenSach ?? x.Name_Sach ?? "Unknown",
+                        TonKho = (int)(x.TonKho ?? x.SoLuong_Sach ?? 0)
+                    })
+                    .OrderByDescending(x => x.TonKho)
+                    .Take(10)
+                    .ToList();
+
+                Series series = new Series("Tồn kho");
+                series.ChartType = SeriesChartType.Pie;
+                series.IsValueShownAsLabel = true;
+
+                foreach (var item in topBooks)
+                {
+                    series.Points.AddXY(item.TenSach, item.TonKho);
+                }
+
+                // Style cho Pie
+                series["PieLabelStyle"] = "Outside";
+                series["PieLineColor"] = "Black";
+                chartThongKe.Legends[0].Enabled = true;
+
+                chartThongKe.Series.Add(series);
+
+                // Thêm đoạn tăng kích thước pie chart ở đây
+                var areaPie = chartThongKe.ChartAreas[0];
+                areaPie.InnerPlotPosition.Auto = false;
+                areaPie.InnerPlotPosition.X = 5;
+                areaPie.InnerPlotPosition.Y = 5;
+                areaPie.InnerPlotPosition.Width = 50;
+                areaPie.InnerPlotPosition.Height = 50;
+
+                areaPie.Position.Auto = false;
+                areaPie.Position.X = 25;
+                areaPie.Position.Y = 25;
+                areaPie.Position.Width = 70;
+                areaPie.Position.Height = 70;
+
+
+                if (list.Count() > 10)
+                {
+                    chartThongKe.Titles.Add($"(Hiển thị Top 10 / {list.Count()} sách tồn kho)");
+                    chartThongKe.Titles[1].Font = new Font("Arial", 9, FontStyle.Italic);
+                    chartThongKe.Titles[1].ForeColor = Color.Gray;
+                }
+            }
+            // ===== 2. DOANH THU TIỀN PHẠT → CỘT =====
+            else if (type == "REVENUE_FINES")
             {
                 var list = dataSource as List<RevenueDTO>;
                 if (list == null || list.Count == 0) return;
 
-                // Gom nhóm theo ngày để vẽ (Ví dụ: Ngày 20 thu được 100k, Ngày 21 thu được 200k)
-                var chartData = list.GroupBy(x => x.NgayPhat.Date)
-                                    .Select(g => new { Ngay = g.Key, TongTien = g.Sum(x => x.SoTien) })
-                                    .OrderBy(x => x.Ngay)
-                                    .ToList();
+                var chartData = list
+                    .GroupBy(x => x.NgayPhat.Date)
+                    .Select(g => new { Ngay = g.Key, TongTien = g.Sum(x => x.SoTien) })
+                    .OrderBy(x => x.Ngay)
+                    .ToList();
 
                 Series series = new Series("Doanh Thu");
-                series.ChartType = SeriesChartType.Column; // Loại biểu đồ cột
-                series.IsValueShownAsLabel = true; // Hiện số tiền trên đầu cột
+                series.ChartType = SeriesChartType.Column;
+                series.IsValueShownAsLabel = true;
 
                 foreach (var item in chartData)
                 {
                     series.Points.AddXY(item.Ngay.ToString("dd/MM"), item.TongTien);
                 }
-                chartThongKe.Series.Add(series);
-            }
-            else if (type == "TOP_READERS") // Biểu đồ Tròn: Top độc giả
-            {
-                // Bạn cần sửa lại hàm GetTopReaders trả về List class cụ thể thay vì anonymous object để cast được ở đây
-                // Đây là ví dụ giả định logic
-                Series series = new Series("TopDocGia");
-                series.ChartType = SeriesChartType.Pie;
-                // ... logic add points tương tự
-                chartThongKe.Series.Add(series);
-            }
 
-            // Tắt lưới cho đẹp
-            chartThongKe.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
-            chartThongKe.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
+                chartThongKe.Series.Add(series);
+            }
+            // ===== 3. TOP ĐỘC GIẢ → TRÒN =====
+            else if (type == "TOP_READERS")
+            {
+                var list = dataSource as IEnumerable<dynamic>;
+                if (list == null || !list.Any()) return;
+
+                Series series = new Series("Top Độc Giả");
+                series.ChartType = SeriesChartType.Pie;
+                series.IsValueShownAsLabel = true;
+
+                foreach (var item in list)
+                {
+                    string label = item.HoTen ?? item.HoTen_NguoiDung ?? "Unknown";
+                    int count = (int)(item.SoLanMuon ?? 0);
+                    series.Points.AddXY(label, count);
+                }
+
+                series["PieLabelStyle"] = "Outside";
+                series["PieLineColor"] = "Black";
+                chartThongKe.Legends[0].Enabled = true;
+
+                chartThongKe.Series.Add(series);
+            }
+            // ===== 4. SÁCH ĐANG ĐƯỢC MƯỢN → CỘT =====
+            else if (type == "BOOKS_BORROWED")
+            {
+                var list = dataSource as IEnumerable<dynamic>;
+                if (list == null || !list.Any()) return;
+
+                var grouped = list
+                    .GroupBy(x => x.TenSach ?? x.Name_Sach)
+                    .Select(g => new { TenSach = g.Key, SoLuongMuon = g.Count() })
+                    .OrderByDescending(x => x.SoLuongMuon)
+                    .Take(20)
+                    .ToList();
+
+                Series series = new Series("Sách đang mượn");
+                series.ChartType = SeriesChartType.Column;
+                series.IsValueShownAsLabel = true;
+
+                foreach (var item in grouped)
+                {
+                    series.Points.AddXY(item.TenSach ?? "Unknown", item.SoLuongMuon);
+                }
+
+                chartThongKe.Series.Add(series);
+            }
+            // ===== 5. DANH SÁCH QUÁ HẠN → CỘT =====
+            else if (type == "OVERDUE_LOANS")
+            {
+                var list = dataSource as IEnumerable<dynamic>;
+                if (list == null || !list.Any()) return;
+
+                var grouped = list
+                    .GroupBy(x => (int)(x.SoNgayQua ?? 0))
+                    .Select(g => new { SoNgayQua = g.Key, SoLuong = g.Count() })
+                    .OrderBy(x => x.SoNgayQua)
+                    .ToList();
+
+                Series series = new Series("Phiếu mượn quá hạn");
+                series.ChartType = SeriesChartType.Column;
+                series.IsValueShownAsLabel = true;
+
+                foreach (var item in grouped)
+                {
+                    series.Points.AddXY(item.SoNgayQua + " ngày", item.SoLuong);
+                }
+
+                chartThongKe.Series.Add(series);
+            }
         }
 
         private void dgvKetQua_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void chartThongKe_Click(object sender, EventArgs e)
         {
 
         }

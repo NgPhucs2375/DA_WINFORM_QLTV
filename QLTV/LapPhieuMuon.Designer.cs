@@ -214,6 +214,7 @@
             this.grbInfo.ResumeLayout(false);
             this.grbInfo.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion

@@ -30,6 +30,7 @@ namespace QLTV
             //Application.Run(new QuanLyNV());
             //Application.Run(new BaoCao_ThongKe());
             //Application.Run(new QLMuonTra());
+            //Application.Run(new FormDG());
 
 
             // lúc nào cũng chạy Intro trước (Phúc note)

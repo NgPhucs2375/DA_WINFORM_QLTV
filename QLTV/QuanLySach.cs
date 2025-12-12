@@ -62,6 +62,24 @@ namespace QLTV
                     SoLuong = s.SoLuong_Sach,
                     TrangThai = s.TrangThai_Sach
                 }).ToList();
+                // Load combobox chủ đề
+                cboChuDe.Items.Clear();
+                cboChuDe.Items.Add("Chủ đề");
+                cboChuDe.Items.AddRange(db.Sachs
+                    .Select(s => s.TheLoai_Sach)
+                    .Distinct()
+                    .ToArray());
+
+                // Load combobox tác giả
+                cboTacGia.Items.Clear();
+                cboTacGia.Items.Add("Tác giả");
+                cboTacGia.Items.AddRange(db.Sachs
+                    .Select(s => s.TacGia_Sach)
+                    .Distinct()
+                    .ToArray());
+
+                cboChuDe.SelectedIndex = 0;
+                cboTacGia.SelectedIndex = 0;
             }
         }
 
@@ -283,96 +301,152 @@ namespace QLTV
             return true;
         }
 
-private async void btnGetInfo_Click(object sender, EventArgs e)
+    private async void btnGetInfo_Click(object sender, EventArgs e)
     {
-        // 1. Làm sạch mã ISBN (Xóa khoảng trắng, dấu gạch ngang)
-        string isbn = txtISBN.Text.Replace("-", "").Replace(" ", "").Trim();
+            // 1. Làm sạch mã ISBN (Xóa khoảng trắng, dấu gạch ngang)
+            string isbn = txtISBN.Text.Replace("-", "").Replace(" ", "").Trim();
 
-        if (string.IsNullOrEmpty(isbn))
-        {
-            MessageBox.Show("Vui lòng nhập mã ISBN!");
-            return;
-        }
-
-        btnGetInfo.Text = "Đang tải...";
-        btnGetInfo.Enabled = false;
-
-        try
-        {
-            // --- FIX QUAN TRỌNG: Kích hoạt bảo mật TLS 1.2 ---
-            // Google chặn các kết nối cũ, dòng này bắt buộc với WinForms .NET 4.5/4.6/4.7
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-            using (HttpClient client = new HttpClient())
+            if (string.IsNullOrEmpty(isbn))
             {
-                // Thêm User-Agent giả lập trình duyệt (tránh bị chặn)
-                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+                MessageBox.Show("Vui lòng nhập mã ISBN!");
+                return;
+            }
 
-                string url = $"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}";
+            btnGetInfo.Text = "Đang tải...";
+            btnGetInfo.Enabled = false;
 
-                // Debug: Nếu vẫn lỗi, bạn hãy copy link này dán vào Chrome xem có ra gì không
-                Console.WriteLine("Link API: " + url);
+            try
+            {
+                // --- FIX QUAN TRỌNG: Kích hoạt bảo mật TLS 1.2 ---
+                // Google chặn các kết nối cũ, dòng này bắt buộc với WinForms .NET 4.5/4.6/4.7
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                HttpResponseMessage response = await client.GetAsync(url);
-
-                if (response.IsSuccessStatusCode)
+                using (HttpClient client = new HttpClient())
                 {
-                    string json = await response.Content.ReadAsStringAsync();
-                    JObject data = JObject.Parse(json);
+                    // Thêm User-Agent giả lập trình duyệt (tránh bị chặn)
+                    client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
 
-                    // Kiểm tra số lượng kết quả trả về
-                    if (data["totalItems"] != null && data["totalItems"].Value<int>() > 0)
+                    string url = $"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}";
+
+                    // Debug: Nếu vẫn lỗi, bạn hãy copy link này dán vào Chrome xem có ra gì không
+                    Console.WriteLine("Link API: " + url);
+
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    if (response.IsSuccessStatusCode)
                     {
-                        var bookInfo = data["items"][0]["volumeInfo"];
+                        string json = await response.Content.ReadAsStringAsync();
+                        JObject data = JObject.Parse(json);
 
-                        // --- ĐIỀN DỮ LIỆU ---
-                        txtNameSach.Text = bookInfo["title"]?.ToString();
-
-                        // Tác giả
-                        if (bookInfo["authors"] != null)
+                        // Kiểm tra số lượng kết quả trả về
+                        if (data["totalItems"] != null && data["totalItems"].Value<int>() > 0)
                         {
-                            txtTacGia.Text = string.Join(", ", bookInfo["authors"].Select(a => a.ToString()));
-                        }
+                            var bookInfo = data["items"][0]["volumeInfo"];
 
-                        // NXB & Năm
-                        txtNXB.Text = bookInfo["publisher"]?.ToString();
-                        string publishDate = bookInfo["publishedDate"]?.ToString(); // VD: "2008-08-01"
-                        if (!string.IsNullOrEmpty(publishDate) && publishDate.Length >= 4)
+                            // --- ĐIỀN DỮ LIỆU ---
+                            txtNameSach.Text = bookInfo["title"]?.ToString();
+
+                            // Tác giả
+                            if (bookInfo["authors"] != null)
+                            {
+                                txtTacGia.Text = string.Join(", ", bookInfo["authors"].Select(a => a.ToString()));
+                            }
+
+                            // NXB & Năm
+                            txtNXB.Text = bookInfo["publisher"]?.ToString();
+                            string publishDate = bookInfo["publishedDate"]?.ToString(); // VD: "2008-08-01"
+                            if (!string.IsNullOrEmpty(publishDate) && publishDate.Length >= 4)
+                            {
+                                txtNamXB.Text = publishDate.Substring(0, 4);
+                            }
+
+                            // Số trang (Gán tạm vào số lượng nếu muốn)
+                            // txtSoLuong.Text = bookInfo["pageCount"]?.ToString();
+
+                            MessageBox.Show("Đã tìm thấy thông tin sách!", "Thành công");
+                        }
+                        else
                         {
-                            txtNamXB.Text = publishDate.Substring(0, 4);
+                            // Trường hợp không tìm thấy
+                            string msg = $"Không tìm thấy sách có mã '{isbn}' trên Google Books.\n\n" +
+                                         "Nguyên nhân: Sách này (thường là sách Việt Nam) chưa được cập nhật lên hệ thống Google.\n" +
+                                         "Bạn hãy thử mã này để test: 9780132350884";
+                            MessageBox.Show(msg, "Kết quả tìm kiếm", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
-
-                        // Số trang (Gán tạm vào số lượng nếu muốn)
-                        // txtSoLuong.Text = bookInfo["pageCount"]?.ToString();
-
-                        MessageBox.Show("Đã tìm thấy thông tin sách!", "Thành công");
                     }
                     else
                     {
-                        // Trường hợp không tìm thấy
-                        string msg = $"Không tìm thấy sách có mã '{isbn}' trên Google Books.\n\n" +
-                                     "Nguyên nhân: Sách này (thường là sách Việt Nam) chưa được cập nhật lên hệ thống Google.\n" +
-                                     "Bạn hãy thử mã này để test: 9780132350884";
-                        MessageBox.Show(msg, "Kết quả tìm kiếm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Lỗi kết nối đến Google: " + response.StatusCode);
                     }
                 }
-                else
-                {
-                    MessageBox.Show("Lỗi kết nối đến Google: " + response.StatusCode);
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi hệ thống: " + ex.Message);
+            }
+            finally
+            {
+                btnGetInfo.Text = "Lấy từ Web";
+                btnGetInfo.Enabled = true;
             }
         }
-        catch (Exception ex)
+        // Lọc dữ liệu theo Chủ đề và Tác giả
+        private void FilterData()
         {
-            MessageBox.Show("Lỗi hệ thống: " + ex.Message);
+            using (var db = new QLTVDataContext())
+            {
+                string selectedChuDe = cboChuDe.SelectedItem?.ToString();
+                string selectedTacGia = cboTacGia.SelectedItem?.ToString();
+
+                var query = db.Sachs.AsQueryable();
+
+                // Lọc theo thể loại (Chủ đề)
+                if (!string.IsNullOrEmpty(selectedChuDe) && selectedChuDe != "Chủ đề")
+                {
+                    query = query.Where(s => s.TheLoai_Sach == selectedChuDe);
+                }
+
+                // Lọc theo tác giả
+                if (!string.IsNullOrEmpty(selectedTacGia) && selectedTacGia != "Tác giả")
+                {
+                    query = query.Where(s => s.TacGia_Sach == selectedTacGia);
+                }
+
+                dgwhowList.DataSource = query.Select(s => new
+                {
+                    ID = s.IDSach,
+                    TenSach = s.Name_Sach,
+                    TacGia = s.TacGia_Sach,
+                    TheLoai = s.TheLoai_Sach,
+                    NXB = s.NhaXuatBan_Sach,
+                    NamXB = s.NamXuatBan_Sach,
+                    SoLuong = s.SoLuong_Sach,
+                    TrangThai = s.TrangThai_Sach
+                }).ToList();
+            }
         }
-        finally
+
+
+        private void cboChuDe_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btnGetInfo.Text = "Lấy từ Web";
-            btnGetInfo.Enabled = true;
+            FilterData();
         }
-    }
-    private void btnSearch_Click(object sender, EventArgs e) { } // Đã dùng TextChanged
+
+        private void cboTacGia_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FilterData();
+        }
+        private void btnSearch_Click(object sender, EventArgs e) { } // Đã dùng TextChanged
         private void btnHTDanhSach_Click(object sender, EventArgs e) => LoadData();
+
+        
+
+        private void btnRsFilter_Click_1(object sender, EventArgs e)
+        {
+            
+
+            // Load lại toàn bộ dữ liệu
+            LoadData();
+        }
     }
 }

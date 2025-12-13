@@ -1,8 +1,7 @@
-D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.exe.config
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.exe
-D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.pdb
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\EntityFramework.dll
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\EntityFramework.SqlServer.dll
+D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.exe.config
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\Newtonsoft.Json.dll
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QRCoder.dll
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\EntityFramework.xml

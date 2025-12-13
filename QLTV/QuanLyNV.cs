@@ -158,7 +158,10 @@ namespace QLTV
                     ClearForm();
                 }
             }
-            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể xóa nhân viên này vì họ đã tham gia vào các giao dịch (Phiếu mượn/trả).\n\nBạn chỉ có thể đổi mật khẩu hoặc cập nhật trạng thái 'Ngưng hoạt động' cho tài khoản này.", "Lỗi ràng buộc dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void btnSuaNV_Click(object sender, EventArgs e)

@@ -11,9 +11,6 @@ namespace QLTV
 {
     public partial class LapPhieuTra : Form
     {
-        // Định nghĩa giá tiền phạt mỗi ngày (có thể lấy từ DB bảng ThamSo nếu có)
-        private const decimal FINE_PER_DAY = 5000;
-
         public LapPhieuTra()
         {
             InitializeComponent();
@@ -24,11 +21,19 @@ namespace QLTV
         {
             this.StartPosition = FormStartPosition.CenterScreen;
             dtpNgayTra.Value = DateTime.Now;
+
+            // Cài đặt trạng thái ban đầu cho phần làm mất sách
+            if (chkMatSach != null) chkMatSach.Checked = false;
+            if (txtTienDenBu != null)
+            {
+                txtTienDenBu.Enabled = false;
+                txtTienDenBu.Text = "0";
+            }
         }
 
         private void LapPhieuTra_Load(object sender, EventArgs e)
         {
-            // Fix lỗi binding: Cần set DisplayMember và ValueMember trước khi set DataSource
+            // Fix lỗi binding
             cboPhieuMuon.DisplayMember = "Display";
             cboPhieuMuon.ValueMember = "IDPhieuMuon";
             LoadDanhSachPhieuMuon();
@@ -48,14 +53,12 @@ namespace QLTV
                         .Select(p => new
                         {
                             p.IDPhieuMuon,
-                            // Hiển thị: PM10 - Harry Potter (Nguyễn Văn A)
                             Display = "PM" + p.IDPhieuMuon + " - " + p.SACHDATA.Name_Sach + " (" + p.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung + ")"
                         })
                         .ToList();
 
                     cboPhieuMuon.DataSource = listPhieu;
 
-                    // Reset thông tin
                     if (listPhieu.Count == 0) ClearInfo();
                 }
             }
@@ -72,15 +75,15 @@ namespace QLTV
             lblNgayMuon.Text = "---";
             lblHanTra.Text = "---";
             lblSoTienPhat.Text = "0 VNĐ";
+            lblTienMuon.Text = "0 VNĐ";
+            lblTongTien.Text = "0 VNĐ";
             cboPhieuMuon.SelectedIndex = -1;
         }
 
-
-        //Tính tiền mượn
+        // Tính tiền mượn
         private decimal CalculateRentalFee()
         {
             if (cboPhieuMuon.SelectedValue == null) return 0m;
-
             if (!int.TryParse(cboPhieuMuon.SelectedValue.ToString(), out int idPhieu)) return 0m;
 
             using (var db = new QLTVDataContext())
@@ -88,38 +91,29 @@ namespace QLTV
                 var pm = db.PhieuMuons.Find(idPhieu);
                 if (pm == null) return 0m;
 
-                // Sử dụng Hạn trả (HanTra_PhieuMuon) và Ngày mượn (NgayMuon_Sach) để tính tiền mượn
                 DateTime ngayMuon = pm.NgayMuon_Sach.Date;
                 DateTime hanTra = pm.HanTra_PhieuMuon.Date;
 
                 int soNgayMuon = (hanTra - ngayMuon).Days;
-                if (soNgayMuon < 1) soNgayMuon = 1; // tối thiểu 1 ngày
+                if (soNgayMuon < 1) soNgayMuon = 1;
 
-                decimal tienThueMoiNgay = 5000m; // Mặc định
-
+                decimal tienThueMoiNgay = 5000m;
                 var configThue = db.ThamSos.Find("SO_TIEN_MUON_MOI_NGAY");
-                if (configThue != null)
-                {
-                    decimal.TryParse(configThue.GiaTri, out tienThueMoiNgay);
-                }
+                if (configThue != null) decimal.TryParse(configThue.GiaTri, out tienThueMoiNgay);
 
                 decimal tienMuon = soNgayMuon * tienThueMoiNgay;
 
-                // Hiển thị lên label
                 lblTienMuon.Text = $"{tienMuon:N0} VNĐ";
-                lblTienMuon.Tag = tienMuon; // Lưu để tính tổng
+                lblTienMuon.Tag = tienMuon;
 
                 return tienMuon;
             }
         }
 
-
-        // Tính toán tiền phạt
+        // Tính toán tiền phạt quá hạn
         private void CalculateFine()
         {
             if (cboPhieuMuon.SelectedValue == null) return;
-
-            // Lấy ID phiếu an toàn
             if (!int.TryParse(cboPhieuMuon.SelectedValue.ToString(), out int idPhieu)) return;
 
             using (var db = new QLTVDataContext())
@@ -130,24 +124,18 @@ namespace QLTV
                     DateTime ngayTra = dtpNgayTra.Value.Date;
                     DateTime hanTra = pm.HanTra_PhieuMuon.Date;
 
-                    // Nếu ngày trả > hạn trả -> Tính phạt
                     if (ngayTra > hanTra)
                     {
                         int daysLate = (ngayTra - hanTra).Days;
-
-                        decimal finePerDay = 5000; // Giá mặc định phòng hờ
+                        decimal finePerDay = 5000;
                         var config = db.ThamSos.Find("TIEN_PHAT_MOI_NGAY");
-                        if (config != null)
-                        {
-                            decimal.TryParse(config.GiaTri, out finePerDay);
-                        }
+                        if (config != null) decimal.TryParse(config.GiaTri, out finePerDay);
 
                         decimal fine = daysLate * finePerDay;
 
-                        // Hiển thị chi tiết: Tổng tiền (Số ngày trễ x Giá)
                         lblSoTienPhat.Text = $"{fine:N0} VNĐ (Trễ {daysLate} ngày)";
                         lblSoTienPhat.ForeColor = Color.Red;
-                        lblSoTienPhat.Tag = fine; // Lưu giá trị số để dùng khi bấm nút Trả
+                        lblSoTienPhat.Tag = fine;
                     }
                     else
                     {
@@ -159,16 +147,21 @@ namespace QLTV
             }
         }
 
+        // Cập nhật tổng tiền (Thuê + Phạt + Đền bù)
         private void UpdateTotalMoney()
         {
-            decimal tienMuon = lblTienMuon.Tag != null ? (decimal)lblTienMuon.Tag : 0m;
-            decimal tienPhat = lblSoTienPhat.Tag != null ? (decimal)lblSoTienPhat.Tag : 0m;
+            decimal tienMuon = (lblTienMuon.Tag != null && lblTienMuon.Tag is decimal) ? (decimal)lblTienMuon.Tag : 0m;
+            decimal tienPhat = (lblSoTienPhat.Tag != null && lblSoTienPhat.Tag is decimal) ? (decimal)lblSoTienPhat.Tag : 0m;
 
-            decimal tongTien = tienMuon + tienPhat;
+            decimal tienDenBu = 0;
+            if (chkMatSach.Checked)
+            {
+                decimal.TryParse(txtTienDenBu.Text, out tienDenBu);
+            }
 
+            decimal tongTien = tienMuon + tienPhat + tienDenBu;
             lblTongTien.Text = $"{tongTien:N0} VNĐ";
         }
-
 
         // Sự kiện chọn phiếu mượn
         private void cboPhieuMuon_SelectedIndexChanged(object sender, EventArgs e)
@@ -176,7 +169,6 @@ namespace QLTV
             if (cboPhieuMuon.SelectedValue == null) return;
 
             int idPhieu;
-            // Xử lý lỗi binding: Dùng TryParse an toàn
             if (!int.TryParse(cboPhieuMuon.SelectedValue.ToString(), out idPhieu)) return;
 
             using (var db = new QLTVDataContext())
@@ -193,22 +185,44 @@ namespace QLTV
                     lblNgayMuon.Text = pm.NgayMuon_Sach.ToString("dd/MM/yyyy");
                     lblHanTra.Text = pm.HanTra_PhieuMuon.ToString("dd/MM/yyyy");
 
-                    // Tính lại tiền thuê dựa trên thông tin phiếu
                     CalculateRentalFee();
-                    CalculateFine(); // Tính tiền phạt ngay khi chọn
-                    UpdateTotalMoney(); // Cập nhật tổng
+                    CalculateFine();
+                    UpdateTotalMoney();
                 }
             }
         }
 
-        // Sự kiện thay đổi ngày trả -> Tính lại tiền phạt
+        // Sự kiện thay đổi ngày trả
         private void dtpNgayTra_ValueChanged(object sender, EventArgs e)
         {
             CalculateFine();
-            CalculateRentalFee(); // Cần gọi lại để đảm bảo Tag được set
+            CalculateRentalFee();
             UpdateTotalMoney();
         }
 
+        // Sự kiện Checkbox Mất sách
+        private void chkMatSach_CheckedChanged(object sender, EventArgs e)
+        {
+            txtTienDenBu.Enabled = chkMatSach.Checked;
+            if (chkMatSach.Checked)
+            {
+                txtTienDenBu.Text = "50000"; // Gợi ý giá trị mặc định
+                txtTienDenBu.Focus();
+            }
+            else
+            {
+                txtTienDenBu.Text = "0";
+            }
+            UpdateTotalMoney();
+        }
+
+        // Sự kiện nhập tiền đền bù
+        private void txtTienDenBu_TextChanged(object sender, EventArgs e)
+        {
+            UpdateTotalMoney();
+        }
+
+        // Xử lý nút Trả Sách (Logic chính)
         private void btnTraSach_Click(object sender, EventArgs e)
         {
             if (cboPhieuMuon.SelectedValue == null)
@@ -218,9 +232,16 @@ namespace QLTV
             }
 
             int idPhieu = (int)cboPhieuMuon.SelectedValue;
-            decimal tienPhat = lblSoTienPhat.Tag != null ? (decimal)lblSoTienPhat.Tag : 0m;
-            decimal tienMuon = lblTienMuon.Tag != null ? (decimal)lblTienMuon.Tag : 0m;
-            decimal tongTien = tienPhat + tienMuon;
+
+            // Lấy các giá trị tiền
+            decimal tienMuon = (lblTienMuon.Tag != null && lblTienMuon.Tag is decimal) ? (decimal)lblTienMuon.Tag : 0m;
+            decimal tienPhatQuaHan = (lblSoTienPhat.Tag != null && lblSoTienPhat.Tag is decimal) ? (decimal)lblSoTienPhat.Tag : 0m;
+
+            decimal tienDenBu = 0;
+            if (chkMatSach.Checked) decimal.TryParse(txtTienDenBu.Text, out tienDenBu);
+
+            decimal tongTienPhat = tienPhatQuaHan + tienDenBu; // Tổng tiền phạt ghi vào phiếu
+            decimal tongThanhToan = tienMuon + tongTienPhat;
 
             try
             {
@@ -229,46 +250,57 @@ namespace QLTV
                     var pm = db.PhieuMuons.Find(idPhieu);
                     if (pm == null) return;
 
-                    // LẤY NGÀY MƯỢN TRONG DB ĐỂ SO SÁNH (FIX LỖI)
-                    DateTime ngayMuonDB = pm.NgayMuon_Sach.Date;
-                    DateTime ngayTraMoi = dtpNgayTra.Value.Date;
-
-                    if (ngayTraMoi < ngayMuonDB)
+                    // Kiểm tra logic ngày tháng
+                    if (dtpNgayTra.Value.Date < pm.NgayMuon_Sach.Date)
                     {
-                        MessageBox.Show($"Ngày trả ({ngayTraMoi:dd/MM/yyyy}) không thể trước Ngày mượn ({ngayMuonDB:dd/MM/yyyy})!", "Lỗi logic", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Ngày trả không thể trước ngày mượn!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
-
                     // 1. Cập nhật Phiếu Mượn
                     pm.NgayTra_PhieuMuon = dtpNgayTra.Value;
-                    pm.TrangThai_PhieuMuon = "Đã trả";
-                    pm.SoTienPhat_PhieuMuon = tienPhat;
-
-                    // Cập nhật thêm tiền thuê và tổng tiền
+                    pm.SoTienPhat_PhieuMuon = tongTienPhat;
                     pm.TienMuon = tienMuon;
-                    pm.TongTien = tongTien;
+                    pm.TongTien = tongThanhToan;
 
-                    // 2. Tạo Phiếu Phạt (Nếu có tiền phạt)
-                    if (tienPhat > 0)
+                    // Xác định trạng thái dựa trên việc có mất sách không
+                    if (chkMatSach.Checked)
                     {
+                        pm.TrangThai_PhieuMuon = "Làm mất";
+                    }
+                    else
+                    {
+                        pm.TrangThai_PhieuMuon = "Đã trả";
+                    }
+
+                    // 2. Tạo Phiếu Phạt (Nếu có tiền phạt hoặc đền bù)
+                    if (tongTienPhat > 0)
+                    {
+                        string lyDo = "Quá hạn trả sách";
+                        if (chkMatSach.Checked) lyDo = "Làm mất sách";
+                        if (tienPhatQuaHan > 0 && chkMatSach.Checked) lyDo = "Quá hạn & Làm mất sách";
+
                         Phat phat = new Phat()
                         {
                             IDPhieuMuon_Phat = pm.IDPhieuMuon,
-                            SoTien_Phat = tienPhat,
-                            LyDo_Phat = "Quá hạn trả sách",
+                            SoTien_Phat = tongTienPhat,
+                            LyDo_Phat = lyDo,
                             NgayPhat = DateTime.Now,
                             DaThanhToan = true
                         };
                         db.Phats.Add(phat);
                     }
 
-                    // 3. Cập nhật Kho Sách (QUAN TRỌNG: Cộng lại số lượng)
-                    var sach = db.Sachs.Find(pm.IDSach_PhieuMuon);
-                    if (sach != null)
+                    // 3. Cập nhật Kho Sách
+                    // QUAN TRỌNG: Chỉ cộng lại số lượng nếu KHÔNG làm mất sách
+                    if (!chkMatSach.Checked)
                     {
-                        sach.SoLuong_Sach += 1;
-                        if (sach.TrangThai_Sach == "Hết hàng") sach.TrangThai_Sach = "Còn sách";
+                        var sach = db.Sachs.Find(pm.IDSach_PhieuMuon);
+                        if (sach != null)
+                        {
+                            sach.SoLuong_Sach += 1;
+                            if (sach.TrangThai_Sach == "Hết hàng") sach.TrangThai_Sach = "Còn sách";
+                        }
                     }
 
                     db.SaveChanges();
@@ -283,7 +315,6 @@ namespace QLTV
                 MessageBox.Show("Lỗi hệ thống: " + ex.Message, "Lỗi");
             }
         }
-
 
         private void btnHuy_Click(object sender, EventArgs e)
         {

@@ -25,6 +25,7 @@
             this.pnlMuonAction = new System.Windows.Forms.Panel();
             this.btnTimKiem = new System.Windows.Forms.Button();
             this.txtTimKiem = new System.Windows.Forms.TextBox();
+            this.btnGiaHan = new System.Windows.Forms.Button(); // Khai báo nút Gia Hạn
             this.btnThemPhieu = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pnlTraContent = new System.Windows.Forms.Panel();
@@ -43,9 +44,9 @@
             this.pnlTraAction.SuspendLayout();
             this.SuspendLayout();
             // 
-            // pnlHeader (THANH ĐIỀU HƯỚNG TRÊN CÙNG)
+            // pnlHeader
             // 
-            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(100))))); // Đen trong suốt
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this.pnlHeader.Controls.Add(this.btnTabTra);
             this.pnlHeader.Controls.Add(this.btnTabMuon);
             this.pnlHeader.Controls.Add(this.lblTitle);
@@ -58,7 +59,6 @@
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
             this.lblTitle.Location = new System.Drawing.Point(20, 15);
@@ -71,9 +71,7 @@
             // 
             this.btnTabMuon.BackColor = System.Drawing.Color.Transparent;
             this.btnTabMuon.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnTabMuon.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnTabMuon.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnTabMuon.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnTabMuon.FlatAppearance.BorderSize = 0;
             this.btnTabMuon.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTabMuon.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnTabMuon.ForeColor = System.Drawing.Color.White;
@@ -89,7 +87,7 @@
             // 
             this.btnTabTra.BackColor = System.Drawing.Color.Transparent;
             this.btnTabTra.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnTabTra.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnTabTra.FlatAppearance.BorderSize = 0;
             this.btnTabTra.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTabTra.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnTabTra.ForeColor = System.Drawing.Color.White;
@@ -112,10 +110,8 @@
             this.tabControl1.Size = new System.Drawing.Size(1100, 530);
             this.tabControl1.TabIndex = 1;
             // 
-            // tabPage1 (TAB QUẢN LÝ MƯỢN)
+            // tabPage1
             // 
-            this.tabPage1.BackgroundImage = global::QLTV.Properties.Resources.bookstorebg2; // Sử dụng lại ảnh nền
-            this.tabPage1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tabPage1.Controls.Add(this.pnlMuonContent);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
@@ -125,9 +121,9 @@
             this.tabPage1.Text = "Muon";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // pnlMuonContent (Container trong suốt chứa nội dung)
+            // pnlMuonContent
             // 
-            this.pnlMuonContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255))))); // Màu trắng hơi trong suốt
+            this.pnlMuonContent.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnlMuonContent.Controls.Add(this.dgvDSMuon);
             this.pnlMuonContent.Controls.Add(this.pnlMuonAction);
             this.pnlMuonContent.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -137,11 +133,26 @@
             this.pnlMuonContent.Size = new System.Drawing.Size(1052, 461);
             this.pnlMuonContent.TabIndex = 0;
             // 
+            // dgvDSMuon
+            // 
+            this.dgvDSMuon.AllowUserToAddRows = false;
+            this.dgvDSMuon.BackgroundColor = System.Drawing.Color.White;
+            this.dgvDSMuon.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvDSMuon.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvDSMuon.Location = new System.Drawing.Point(10, 70);
+            this.dgvDSMuon.Name = "dgvDSMuon";
+            this.dgvDSMuon.ReadOnly = true;
+            this.dgvDSMuon.RowHeadersVisible = false;
+            this.dgvDSMuon.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvDSMuon.Size = new System.Drawing.Size(1032, 381);
+            this.dgvDSMuon.TabIndex = 1;
+            // 
             // pnlMuonAction
             // 
             this.pnlMuonAction.BackColor = System.Drawing.Color.White;
             this.pnlMuonAction.Controls.Add(this.btnTimKiem);
             this.pnlMuonAction.Controls.Add(this.txtTimKiem);
+            this.pnlMuonAction.Controls.Add(this.btnGiaHan);
             this.pnlMuonAction.Controls.Add(this.btnThemPhieu);
             this.pnlMuonAction.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlMuonAction.Location = new System.Drawing.Point(10, 10);
@@ -159,9 +170,23 @@
             this.btnThemPhieu.Name = "btnThemPhieu";
             this.btnThemPhieu.Size = new System.Drawing.Size(180, 40);
             this.btnThemPhieu.TabIndex = 0;
-            this.btnThemPhieu.Text = "+ LẬP PHIẾU MƯỢN";
+            this.btnThemPhieu.Text = "+ LẬP PHIẾU";
             this.btnThemPhieu.UseVisualStyleBackColor = false;
             this.btnThemPhieu.Click += new System.EventHandler(this.btnThemPhieu_Click);
+            // 
+            // btnGiaHan
+            // 
+            this.btnGiaHan.BackColor = System.Drawing.Color.DarkOrange;
+            this.btnGiaHan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGiaHan.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnGiaHan.ForeColor = System.Drawing.Color.White;
+            this.btnGiaHan.Location = new System.Drawing.Point(200, 10);
+            this.btnGiaHan.Name = "btnGiaHan";
+            this.btnGiaHan.Size = new System.Drawing.Size(150, 40);
+            this.btnGiaHan.TabIndex = 3;
+            this.btnGiaHan.Text = "GIA HẠN";
+            this.btnGiaHan.UseVisualStyleBackColor = false;
+            this.btnGiaHan.Click += new System.EventHandler(this.btnGiaHan_Click);
             // 
             // txtTimKiem
             // 
@@ -186,18 +211,8 @@
             this.btnTimKiem.UseVisualStyleBackColor = false;
             this.btnTimKiem.Click += new System.EventHandler(this.btnTimKiem_Click);
             // 
-            // dgvDSMuon
+            // tabPage2
             // 
-            this.dgvDSMuon.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvDSMuon.Location = new System.Drawing.Point(10, 70);
-            this.dgvDSMuon.Name = "dgvDSMuon";
-            this.dgvDSMuon.Size = new System.Drawing.Size(1032, 381);
-            this.dgvDSMuon.TabIndex = 1;
-            // 
-            // tabPage2 (TAB QUẢN LÝ TRẢ)
-            // 
-            this.tabPage2.BackgroundImage = global::QLTV.Properties.Resources.bookstorebg2;
-            this.tabPage2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tabPage2.Controls.Add(this.pnlTraContent);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
@@ -206,24 +221,10 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Tra";
             this.tabPage2.UseVisualStyleBackColor = true;
-            //
-            //btnGiaHan
-            //
-            // Code thêm vào Designer
-            this.btnGiaHan = new System.Windows.Forms.Button();
-            this.btnGiaHan.BackColor = System.Drawing.Color.DarkOrange;
-            this.btnGiaHan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGiaHan.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnGiaHan.ForeColor = System.Drawing.Color.White;
-            this.btnGiaHan.Location = new System.Drawing.Point(200, 10); // Đặt cạnh nút Thêm
-            this.btnGiaHan.Size = new System.Drawing.Size(150, 40);
-            this.btnGiaHan.Text = "GIA HẠN";
-            this.btnGiaHan.Click += new System.EventHandler(this.btnGiaHan_Click);
-            this.pnlMuonAction.Controls.Add(this.btnGiaHan);
             // 
             // pnlTraContent
             // 
-            this.pnlTraContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.pnlTraContent.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnlTraContent.Controls.Add(this.dgvDSTra);
             this.pnlTraContent.Controls.Add(this.pnlTraAction);
             this.pnlTraContent.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -232,6 +233,20 @@
             this.pnlTraContent.Padding = new System.Windows.Forms.Padding(10);
             this.pnlTraContent.Size = new System.Drawing.Size(1052, 461);
             this.pnlTraContent.TabIndex = 0;
+            // 
+            // dgvDSTra
+            // 
+            this.dgvDSTra.AllowUserToAddRows = false;
+            this.dgvDSTra.BackgroundColor = System.Drawing.Color.White;
+            this.dgvDSTra.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvDSTra.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvDSTra.Location = new System.Drawing.Point(10, 70);
+            this.dgvDSTra.Name = "dgvDSTra";
+            this.dgvDSTra.ReadOnly = true;
+            this.dgvDSTra.RowHeadersVisible = false;
+            this.dgvDSTra.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvDSTra.Size = new System.Drawing.Size(1032, 381);
+            this.dgvDSTra.TabIndex = 1;
             // 
             // pnlTraAction
             // 
@@ -257,20 +272,10 @@
             this.btnLapPhieuTra.UseVisualStyleBackColor = false;
             this.btnLapPhieuTra.Click += new System.EventHandler(this.btnLapPhieuTra_Click);
             // 
-            // dgvDSTra
-            // 
-            this.dgvDSTra.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvDSTra.Location = new System.Drawing.Point(10, 70);
-            this.dgvDSTra.Name = "dgvDSTra";
-            this.dgvDSTra.Size = new System.Drawing.Size(1032, 381);
-            this.dgvDSTra.TabIndex = 1;
-            // 
             // QLMuonTra
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::QLTV.Properties.Resources.bookstorebg2;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1100, 600);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.pnlHeader);
@@ -291,9 +296,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvDSTra)).EndInit();
             this.pnlTraAction.ResumeLayout(false);
             this.ResumeLayout(false);
-
-
-
         }
 
         #endregion
@@ -309,15 +311,12 @@
         private System.Windows.Forms.DataGridView dgvDSMuon;
         private System.Windows.Forms.Panel pnlMuonAction;
         private System.Windows.Forms.Button btnThemPhieu;
+        private System.Windows.Forms.Button btnGiaHan; // Thêm nút Gia Hạn
         private System.Windows.Forms.TextBox txtTimKiem;
         private System.Windows.Forms.Button btnTimKiem;
         private System.Windows.Forms.Panel pnlTraContent;
         private System.Windows.Forms.DataGridView dgvDSTra;
         private System.Windows.Forms.Panel pnlTraAction;
         private System.Windows.Forms.Button btnLapPhieuTra;
-        private System.Windows.Forms.Button btnGiaHan;
-        private System.Windows.Forms.Button btnSomeOtherAction;
-
-        private System.Windows.Forms.Button btnNewAction;   
     }
 }

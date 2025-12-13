@@ -76,7 +76,9 @@
     <Compile Include="BaoCao_ThongKe.Designer.cs">
       <DependentUpon>BaoCao_ThongKe.cs</DependentUpon>
     </Compile>
+    <Compile Include="Database\DTO\RevenueDTO.cs" />
     <Compile Include="Database\Entities\BaoCao.cs" />
+    <Compile Include="Database\Entities\DANHGIA.cs" />
     <Compile Include="Database\Entities\DocGia.cs" />
     <Compile Include="Database\Entities\HoatDongLog.cs" />
     <Compile Include="Database\Entities\LoginLog.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="Database\Entities\ThongBao.cs" />
     <Compile Include="Database\Entities\YeuCauMuon.cs" />
     <Compile Include="Database\QLTVDataContext.cs" />
+    <Compile Include="ExcelHelper.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,6 +112,12 @@
     </Compile>
     <Compile Include="FormChao.Designer.cs">
       <DependentUpon>FormChao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormChiTietSach.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormChiTietSach.Designer.cs">
+      <DependentUpon>FormChiTietSach.cs</DependentUpon>
     </Compile>
     <Compile Include="FormDangKy.cs">
       <SubType>Form</SubType>

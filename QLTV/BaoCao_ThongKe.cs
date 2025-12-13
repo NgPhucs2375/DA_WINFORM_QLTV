@@ -3,14 +3,13 @@ using QLTV.Database.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity; 
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices; 
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using Excel = Microsoft.Office.Interop.Excel;
+using QLTV.Database.DTO;
 
 namespace QLTV
 {
@@ -24,514 +23,215 @@ namespace QLTV
 
         private void SetupForm()
         {
-            this.StartPosition = FormStartPosition.CenterScreen;
-
+            // Date Picker setup
             dtpTuNgay.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            dtpDenNgay.Value = dtpTuNgay.Value.AddMonths(1).AddDays(-1);
-            dtpTuNgay.Format = DateTimePickerFormat.Short;
-            dtpDenNgay.Format = DateTimePickerFormat.Short;
+            dtpDenNgay.Value = DateTime.Now;
+            lblTongTien.Visible = false;
 
-            lblTongTien.Text = "Tổng doanh thu: 0 VNĐ";
-            lblTongTien.Font = new Font("Arial", 12, FontStyle.Bold);
-            lblTongTien.ForeColor = Color.DarkRed;
-            lblTongTien.Visible = false; // Chỉ hiện khi chọn báo cáo doanh thu
-
-            ConfigDataGridView();
-            LoadComboBoxData();
-        }
-
-        private void ConfigDataGridView()
-        {
-            dgvKetQua.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvKetQua.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvKetQua.ReadOnly = true;
-            dgvKetQua.AllowUserToAddRows = false;
-            dgvKetQua.BackgroundColor = SystemColors.ControlLight;
-
-            // Tối ưu hiệu năng vẽ (Double Buffered)
-            typeof(DataGridView).InvokeMember("DoubleBuffered",
-                System.Reflection.BindingFlags.NonPublic |
-                System.Reflection.BindingFlags.Instance |
-                System.Reflection.BindingFlags.SetProperty,
-                null, dgvKetQua, new object[] { true });
-        }
-
-        private void LoadComboBoxData()
-        {
+            // Load Report List
             Dictionary<string, string> reports = new Dictionary<string, string>()
             {
                 { "BOOKS_AVAILABLE", "1. Sách đang có sẵn trong kho" },
                 { "BOOKS_BORROWED", "2. Sách đang được mượn (Chưa trả)" },
-                { "OVERDUE_LOANS", "3. Danh sách quá hạn & Tiền phạt dự kiến" },
+                { "OVERDUE_LOANS", "3. Danh sách quá hạn & Tiền phạt" },
                 { "TOP_READERS", "4. Top 10 Độc giả tích cực nhất" },
-                { "REVENUE_FINES", "5. Doanh thu tiền phạt (Theo ngày)" }
+                { "REVENUE_FINES", "5. Doanh thu tiền phạt (Chi tiết)" },
+                { "TREND_YEAR", "6. Xu hướng mượn sách (Theo tháng)" },
+                { "STATS_GENRE", "7. Thống kê theo Thể loại" },
+                { "STATS_AUTHOR", "8. Thống kê theo Tác giả" }
             };
-
             cboLoaiThongKe.DataSource = new BindingSource(reports, null);
             cboLoaiThongKe.DisplayMember = "Value";
             cboLoaiThongKe.ValueMember = "Key";
             cboLoaiThongKe.SelectedIndex = 0;
+
+            // Load Dashboard Data ngay khi mở
+            LoadDashboardAsync();
         }
 
-        // Sự kiện khi thay đổi loại báo cáo
+        // ================== LOGIC DASHBOARD (TAB 1) ==================
+        private async void LoadDashboardAsync()
+        {
+            try
+            {
+                using (var db = new QLTVDataContext())
+                {
+                    // 1. Load 4 KPI Cards
+                    var totalBooks = await db.Sachs.SumAsync(s => (int?)s.SoLuong_Sach) ?? 0;
+                    var activeLoans = await db.PhieuMuons.CountAsync(p => p.TrangThai_PhieuMuon == "Đang mượn");
+                    var overdue = await db.PhieuMuons.CountAsync(p => p.TrangThai_PhieuMuon == "Đang mượn" && p.HanTra_PhieuMuon < DateTime.Now);
+
+                    // Doanh thu tháng này
+                    var startMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                    var revenueMonth = await db.Phats
+                        .Where(p => p.DaThanhToan && p.NgayPhat >= startMonth)
+                        .SumAsync(p => (decimal?)p.SoTien_Phat) ?? 0;
+
+                    // Update UI (Cards)
+                    lblCard1Value.Text = totalBooks.ToString("N0");
+                    lblCard2Value.Text = activeLoans.ToString("N0");
+                    lblCard3Value.Text = overdue.ToString("N0");
+                    lblCard4Value.Text = revenueMonth.ToString("N0");
+
+                    // 2. Chart Xu Hướng Mượn (Năm nay)
+                    var yearData = await db.PhieuMuons
+                        .Where(p => p.NgayMuon_Sach.Year == DateTime.Now.Year)
+                        .GroupBy(p => p.NgayMuon_Sach.Month)
+                        .Select(g => new { Month = g.Key, Count = g.Count() })
+                        .ToListAsync();
+
+                    chartTrend.Series[0].Points.Clear();
+                    for (int i = 1; i <= 12; i++)
+                    {
+                        var data = yearData.FirstOrDefault(x => x.Month == i);
+                        chartTrend.Series[0].Points.AddXY("T" + i, data?.Count ?? 0);
+                    }
+
+                    // 3. Chart Tròn (Thể loại) - Top 5
+                    var genreData = db.Sachs // Cần load về client để group string
+                        .GroupBy(s => s.TheLoai_Sach)
+                        .Select(g => new { Name = g.Key, Count = g.Count() })
+                        .OrderByDescending(x => x.Count)
+                        .Take(5)
+                        .ToList();
+
+                    chartPieCategory.Series[0].Points.Clear();
+                    foreach (var item in genreData)
+                    {
+                        chartPieCategory.Series[0].Points.AddXY(item.Name, item.Count);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Silent fail or log
+                MessageBox.Show("Lỗi tải Dashboard: " + ex.Message);
+            }
+        }
+
+        private void tabControlMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControlMain.SelectedTab == tabDashboard)
+                LoadDashboardAsync(); // Refresh dashboard khi quay lại
+        }
+
+        // ================== LOGIC BÁO CÁO (TAB 2) ==================
+
         private void cboLoaiThongKe_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Chỉ hiện chọn ngày khi báo cáo là Doanh thu
-            bool isRevenue = cboLoaiThongKe.SelectedValue?.ToString() == "REVENUE_FINES";
-            dtpTuNgay.Enabled = isRevenue;
-            dtpDenNgay.Enabled = isRevenue;
-            lblTongTien.Visible = isRevenue;
+            string type = cboLoaiThongKe.SelectedValue?.ToString();
+            bool hasDateFilter = (type == "REVENUE_FINES" || type == "TREND_YEAR");
+            dtpTuNgay.Enabled = hasDateFilter;
+            dtpDenNgay.Enabled = hasDateFilter;
+            lblTongTien.Visible = (type == "REVENUE_FINES");
 
-            // Reset Grid khi đổi loại báo cáo
+            // Reset Grid
             dgvKetQua.DataSource = null;
-            lblTongTien.Text = "";
-            lalThongKe.Text = "Kết quả: ...";
+            chartThongKe.Series.Clear();
         }
 
-        // Sự kiện Click nút Thống Kê
         private async void btnThongKe_Click(object sender, EventArgs e)
         {
-            if (cboLoaiThongKe.SelectedValue == null) return;
-
             string type = cboLoaiThongKe.SelectedValue.ToString();
+            DateTime from = dtpTuNgay.Value.Date;
+            DateTime to = dtpDenNgay.Value.Date.AddDays(1).AddSeconds(-1);
 
-            // Lấy ngày từ UI (cho báo cáo doanh thu)
-            DateTime fromDate = dtpTuNgay.Value.Date; // 00:00:00
-            DateTime toDate = dtpDenNgay.Value.Date.AddDays(1).AddSeconds(-1); // 23:59:59
-
-            btnThongKe.Enabled = false;
             btnThongKe.Text = "Đang tải...";
+            btnThongKe.Enabled = false;
 
             try
             {
-                object resultData = null;
-                decimal totalRevenue = 0;
+                object result = null;
+                decimal totalRev = 0;
 
-                // Chạy Query ở Background Thread để không đơ máy
-                await Task.Run(() =>
-                {
+                await Task.Run(() => {
                     using (var db = new QLTVDataContext())
                     {
                         db.Configuration.LazyLoadingEnabled = false;
-
                         switch (type)
                         {
                             case "BOOKS_AVAILABLE":
-                                resultData = GetBooksAvailable(db);
+                                result = db.Sachs.Where(s => s.SoLuong_Sach > 0).Select(s => new { ID = s.IDSach, Ten = s.Name_Sach, SL = s.SoLuong_Sach, TL = s.TheLoai_Sach }).ToList();
                                 break;
                             case "BOOKS_BORROWED":
-                                resultData = GetBooksBorrowed(db);
+                                result = db.PhieuMuons.Where(p => p.TrangThai_PhieuMuon == "Đang mượn")
+                                    .Include(p => p.SACHDATA).Include(p => p.DOCGIADATA.NGUOIDUNGDATA)
+                                    .Select(p => new { MaPhieu = p.IDPhieuMuon, Sach = p.SACHDATA.Name_Sach, DocGia = p.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung, NgayMuon = p.NgayMuon_Sach }).ToList();
                                 break;
                             case "OVERDUE_LOANS":
-                                resultData = GetOverdueLoans(db);
+                                result = db.PhieuMuons.Where(p => p.TrangThai_PhieuMuon == "Đang mượn" && p.HanTra_PhieuMuon < DateTime.Now)
+                                    .Include(p => p.SACHDATA).Include(p => p.DOCGIADATA.NGUOIDUNGDATA)
+                                    .ToList() // Client side calc
+                                    .Select(p => new { Phieu = p.IDPhieuMuon, Sach = p.SACHDATA.Name_Sach, DG = p.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung, Han = p.HanTra_PhieuMuon, Tre = (DateTime.Now - p.HanTra_PhieuMuon).Days, Phat = (DateTime.Now - p.HanTra_PhieuMuon).Days * 5000 }).ToList();
                                 break;
                             case "TOP_READERS":
-                                resultData = GetTopReaders(db);
+                                result = db.PhieuMuons.GroupBy(p => p.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung)
+                                    .Select(g => new { DocGia = g.Key, SoLan = g.Count() }).OrderByDescending(x => x.SoLan).Take(10).ToList();
                                 break;
                             case "REVENUE_FINES":
-                                var revenueData = GetRevenueFines(db, fromDate, toDate);
-                                resultData = revenueData;
-                                // Tính tổng tiền ngay trong luồng phụ
-                                totalRevenue = revenueData.Sum(x => x.SoTien);
+                                var list = db.Phats.Where(p => p.DaThanhToan && p.NgayPhat >= from && p.NgayPhat <= to)
+                                    .Select(p => new RevenueDTO { MaPhat = p.IDPhat, SoTien = p.SoTien_Phat, NgayPhat = p.NgayPhat, LyDo = p.LyDo_Phat }).ToList();
+                                totalRev = list.Sum(x => x.SoTien);
+                                result = list;
+                                break;
+                            case "STATS_GENRE":
+                                result = db.Sachs.GroupBy(s => s.TheLoai_Sach).Select(g => new { TheLoai = g.Key, SoLuong = g.Count() }).ToList();
+                                break;
+                            case "STATS_AUTHOR":
+                                result = db.Sachs.GroupBy(s => s.TacGia_Sach).Select(g => new { TacGia = g.Key, SoLuong = g.Count() }).OrderByDescending(x => x.SoLuong).Take(20).ToList();
                                 break;
                         }
                     }
                 });
 
-                // Binding dữ liệu (Quay về UI Thread)
-                if (resultData != null)
-                {
-                    dgvKetQua.DataSource = resultData;
-                    lalThongKe.Text = $"Tìm thấy: {dgvKetQua.Rows.Count} bản ghi.";
-                    FormatGridColumns(type); // Format tiền tệ và ngày tháng
+                dgvKetQua.DataSource = result;
+                if (type == "REVENUE_FINES") lblTongTien.Text = $"Tổng: {totalRev:N0} VNĐ";
 
-                    if (type == "REVENUE_FINES")
-                    {
-                        lblTongTien.Text = $"Tổng doanh thu: {totalRevenue:N0} VNĐ";
-                        lblTongTien.Visible = true;
-                    }
-                    DrawChart(type, resultData);
-                }
-                else
-                {
-                    dgvKetQua.DataSource = null;
-                    lalThongKe.Text = "Không có dữ liệu.";
-                }
+                // Vẽ biểu đồ chi tiết (Basic mapping)
+                DrawDetailChart(type, result);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi: " + ex.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                btnThongKe.Enabled = true;
-                btnThongKe.Text = "Thống kê";
-            }
+            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
+            finally { btnThongKe.Enabled = true; btnThongKe.Text = "XEM BÁO CÁO"; }
         }
 
-        // --- HÀM FORMAT GIAO DIỆN ---
-        private void FormatGridColumns(string type)
+        private void DrawDetailChart(string type, object data)
         {
-            // Format cột Tiền
-            if (dgvKetQua.Columns["SoTien"] != null)
-            {
-                dgvKetQua.Columns["SoTien"].DefaultCellStyle.Format = "N0"; // Định dạng số 100,000
-                dgvKetQua.Columns["SoTien"].HeaderText = "Số tiền (VNĐ)";
-                dgvKetQua.Columns["SoTien"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            }
-
-            // Format các cột Ngày tháng
-            foreach (DataGridViewColumn col in dgvKetQua.Columns)
-            {
-                if (col.Name.Contains("Ngay") || col.Name.Contains("Han"))
-                {
-                    col.DefaultCellStyle.Format = "dd/MM/yyyy";
-                }
-            }
-        }
-
-        // --- CÁC HÀM TRUY VẤN LINQ ---
-
-        private object GetBooksAvailable(QLTVDataContext db)
-        {
-            return db.Sachs
-                .Where(s => s.SoLuong_Sach > 0 && s.TrangThai_Sach != "Ngưng hoạt động")
-                .Select(s => new {
-                    ID = s.IDSach,
-                    TenSach = s.Name_Sach,
-                    TacGia = s.TacGia_Sach,
-                    TheLoai = s.TheLoai_Sach,
-                    TonKho = s.SoLuong_Sach,
-                    ViTri = s.ViTriSach
-                }).ToList();
-        }
-
-        private object GetBooksBorrowed(QLTVDataContext db)
-        {
-            return db.PhieuMuons
-                .Include(pm => pm.DOCGIADATA.NGUOIDUNGDATA)
-                .Include(pm => pm.SACHDATA)
-                .Where(pm => pm.TrangThai_PhieuMuon == "Đang mượn")
-                .Select(pm => new {
-                    MaPhieu = pm.IDPhieuMuon,
-                    DocGia = pm.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung,
-                    TenSach = pm.SACHDATA.Name_Sach,
-                    NgayMuon = pm.NgayMuon_Sach,
-                    HanTra = pm.HanTra_PhieuMuon
-                }).ToList();
-        }
-
-        private object GetOverdueLoans(QLTVDataContext db)
-        {
-            var today = DateTime.Now;
-            return db.PhieuMuons
-                .Include(pm => pm.DOCGIADATA.NGUOIDUNGDATA)
-                .Where(pm => pm.TrangThai_PhieuMuon == "Đang mượn" && pm.HanTra_PhieuMuon < today)
-                .ToList() // Chuyển về List Client-side để dùng hàm tính ngày của C#
-                .Select(pm => new {
-                    MaPhieu = pm.IDPhieuMuon,
-                    DocGia = pm.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung,
-                    SDT = pm.DOCGIADATA.NGUOIDUNGDATA.SDT_NguoiDung,
-                    HanTra = pm.HanTra_PhieuMuon,
-                    SoNgayQua = (today - pm.HanTra_PhieuMuon).Days,
-                    TienPhatDuKien = (today - pm.HanTra_PhieuMuon).Days * 5000 // Giả sử phạt 5k/ngày
-                }).ToList();
-        }
-
-        private object GetTopReaders(QLTVDataContext db)
-        {
-            return db.PhieuMuons
-                .GroupBy(pm => new { pm.DOCGIADATA.IDDocGia, pm.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung })
-                .Select(g => new {
-                    MaDG = g.Key.IDDocGia,
-                    HoTen = g.Key.HoTen_NguoiDung,
-                    SoLanMuon = g.Count()
-                })
-                .OrderByDescending(x => x.SoLanMuon)
-                .Take(10)
-                .ToList();
-        }
-
-        private List<RevenueDTO> GetRevenueFines(QLTVDataContext db, DateTime from, DateTime to)
-        {
-            return db.Phats
-                .Include(p => p.PHIEUMUONDATA.DOCGIADATA.NGUOIDUNGDATA)
-                .Where(p => p.DaThanhToan == true && p.NgayPhat >= from && p.NgayPhat <= to)
-                .Select(p => new RevenueDTO
-                {
-                    MaPhat = p.IDPhat,
-                    DocGia = p.PHIEUMUONDATA.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung,
-                    LyDo = p.LyDo_Phat,
-                    NgayPhat = p.NgayPhat,
-                    SoTien = p.SoTien_Phat
-
-                })
-                .ToList();
-        }
-
-        // --- SỰ KIỆN XUẤT EXCEL ---
-        private void btnXuatExcel_Click(object sender, EventArgs e)
-        {
-            if (dgvKetQua.Rows.Count == 0)
-            {
-                MessageBox.Show("Không có dữ liệu để xuất!", "Thông báo");
-                return;
-            }
-
-            Excel.Application excelApp = null;
-            Excel.Workbook workbook = null;
-            Excel.Worksheet worksheet = null;
-
-            try
-            {
-                excelApp = new Excel.Application();
-                workbook = excelApp.Workbooks.Add(Type.Missing);
-                worksheet = (Excel.Worksheet)workbook.Sheets[1];
-                worksheet.Name = "ThongKe";
-
-                // 1. Xuất tiêu đề cột
-                for (int i = 1; i < dgvKetQua.Columns.Count + 1; i++)
-                {
-                    worksheet.Cells[1, i] = dgvKetQua.Columns[i - 1].HeaderText;
-                    // Format tiêu đề
-                    Excel.Range cell = worksheet.Cells[1, i];
-                    cell.Font.Bold = true;
-                    cell.Interior.Color = ColorTranslator.ToOle(Color.LightGray);
-                }
-
-                // 2. Xuất dữ liệu
-                for (int i = 0; i < dgvKetQua.Rows.Count; i++)
-                {
-                    for (int j = 0; j < dgvKetQua.Columns.Count; j++)
-                    {
-                        var value = dgvKetQua.Rows[i].Cells[j].Value;
-                        // Thêm dấu ' đằng trước để Excel hiểu là text, tránh lỗi format ngày tháng
-                        if (value is DateTime)
-                        {
-                            worksheet.Cells[i + 2, j + 1] = ((DateTime)value).ToString("dd/MM/yyyy");
-                        }
-                        else
-                        {
-                            worksheet.Cells[i + 2, j + 1] = value != null ? value.ToString() : "";
-                        }
-                    }
-                }
-
-                // 3. Auto fit cột
-                worksheet.Columns.AutoFit();
-
-                // 4. Hiển thị Excel
-                excelApp.Visible = true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi xuất Excel: " + ex.Message);
-            }
-            finally
-            {
-                // BẮT BUỘC: Giải phóng tài nguyên COM để tránh Excel chạy ngầm
-                if (worksheet != null) Marshal.ReleaseComObject(worksheet);
-                if (workbook != null) Marshal.ReleaseComObject(workbook);
-                if (excelApp != null) Marshal.ReleaseComObject(excelApp);
-
-                worksheet = null;
-                workbook = null;
-                excelApp = null;
-
-                GC.Collect(); // Dọn dẹp rác bộ nhớ ngay lập tức
-            }
-        }
-
-        private void DrawChart(string type, object dataSource)
-        {
-            // Xóa series & title cũ
             chartThongKe.Series.Clear();
-            chartThongKe.Titles.Clear();
+            chartThongKe.Series.Add("Data");
+            chartThongKe.Series[0].IsValueShownAsLabel = true;
 
-            // Tiêu đề biểu đồ
-            chartThongKe.Titles.Add(cboLoaiThongKe.Text);
-            chartThongKe.Titles[0].Font = new Font("Arial", 12, FontStyle.Bold);
+            var list = data as IEnumerable<dynamic>;
+            if (list == null) return;
 
-            // Cấu hình ChartArea
-            var area = chartThongKe.ChartAreas[0];
-            area.AxisX.MajorGrid.Enabled = false;
-            area.AxisY.MajorGrid.Enabled = false;
-            area.AxisX.Title = "Danh mục";
-            area.AxisY.Title = "Số lượng";
-            area.AxisX.Interval = 1;
-            area.AxisX.LabelStyle.Angle = -45;
-
-            // ===== 1. SÁCH ĐANG CÓ SẴN TRONG KHO → BIỂU ĐỒ TRÒN (PIE) =====
-            if (type == "BOOKS_AVAILABLE")
+            if (type == "STATS_GENRE" || type == "STATS_AUTHOR" || type == "TOP_READERS")
             {
-                var list = dataSource as IEnumerable<dynamic>;
-                if (list == null || !list.Any()) return;
-
-                // Lấy TOP 10 sách tồn kho cao nhất để chart tròn không bị rối
-                var topBooks = list
-                    .Select(x => new
-                    {
-                        TenSach = x.TenSach ?? x.Name_Sach ?? "Unknown",
-                        TonKho = (int)(x.TonKho ?? x.SoLuong_Sach ?? 0)
-                    })
-                    .OrderByDescending(x => x.TonKho)
-                    .Take(10)
-                    .ToList();
-
-                Series series = new Series("Tồn kho");
-                series.ChartType = SeriesChartType.Pie;
-                series.IsValueShownAsLabel = true;
-
-                foreach (var item in topBooks)
-                {
-                    series.Points.AddXY(item.TenSach, item.TonKho);
-                }
-
-                // Style cho Pie
-                series["PieLabelStyle"] = "Outside";
-                series["PieLineColor"] = "Black";
-                chartThongKe.Legends[0].Enabled = true;
-
-                chartThongKe.Series.Add(series);
-
-                // Thêm đoạn tăng kích thước pie chart ở đây
-                var areaPie = chartThongKe.ChartAreas[0];
-                areaPie.InnerPlotPosition.Auto = false;
-                areaPie.InnerPlotPosition.X = 5;
-                areaPie.InnerPlotPosition.Y = 5;
-                areaPie.InnerPlotPosition.Width = 50;
-                areaPie.InnerPlotPosition.Height = 50;
-
-                areaPie.Position.Auto = false;
-                areaPie.Position.X = 25;
-                areaPie.Position.Y = 25;
-                areaPie.Position.Width = 70;
-                areaPie.Position.Height = 70;
-
-
-                if (list.Count() > 10)
-                {
-                    chartThongKe.Titles.Add($"(Hiển thị Top 10 / {list.Count()} sách tồn kho)");
-                    chartThongKe.Titles[1].Font = new Font("Arial", 9, FontStyle.Italic);
-                    chartThongKe.Titles[1].ForeColor = Color.Gray;
-                }
-            }
-            // ===== 2. DOANH THU TIỀN PHẠT → CỘT =====
-            else if (type == "REVENUE_FINES")
-            {
-                var list = dataSource as List<RevenueDTO>;
-                if (list == null || list.Count == 0) return;
-
-                var chartData = list
-                    .GroupBy(x => x.NgayPhat.Date)
-                    .Select(g => new { Ngay = g.Key, TongTien = g.Sum(x => x.SoTien) })
-                    .OrderBy(x => x.Ngay)
-                    .ToList();
-
-                Series series = new Series("Doanh Thu");
-                series.ChartType = SeriesChartType.Column;
-                series.IsValueShownAsLabel = true;
-
-                foreach (var item in chartData)
-                {
-                    series.Points.AddXY(item.Ngay.ToString("dd/MM"), item.TongTien);
-                }
-
-                chartThongKe.Series.Add(series);
-            }
-            // ===== 3. TOP ĐỘC GIẢ → TRÒN =====
-            else if (type == "TOP_READERS")
-            {
-                var list = dataSource as IEnumerable<dynamic>;
-                if (list == null || !list.Any()) return;
-
-                Series series = new Series("Top Độc Giả");
-                series.ChartType = SeriesChartType.Pie;
-                series.IsValueShownAsLabel = true;
-
+                chartThongKe.Series[0].ChartType = SeriesChartType.Bar;
                 foreach (var item in list)
                 {
-                    string label = item.HoTen ?? item.HoTen_NguoiDung ?? "Unknown";
-                    int count = (int)(item.SoLanMuon ?? 0);
-                    series.Points.AddXY(label, count);
+                    // Reflection dynamic properties
+                    string label = "";
+                    double val = 0;
+                    if (type == "STATS_GENRE") { label = item.TheLoai; val = item.SoLuong; }
+                    else if (type == "STATS_AUTHOR") { label = item.TacGia; val = item.SoLuong; }
+                    else { label = item.DocGia; val = item.SoLan; }
+
+                    chartThongKe.Series[0].Points.AddXY(label, val);
                 }
-
-                series["PieLabelStyle"] = "Outside";
-                series["PieLineColor"] = "Black";
-                chartThongKe.Legends[0].Enabled = true;
-
-                chartThongKe.Series.Add(series);
             }
-            // ===== 4. SÁCH ĐANG ĐƯỢC MƯỢN → CỘT =====
-            else if (type == "BOOKS_BORROWED")
+            else if (type == "REVENUE_FINES")
             {
-                var list = dataSource as IEnumerable<dynamic>;
-                if (list == null || !list.Any()) return;
-
-                var grouped = list
-                    .GroupBy(x => x.TenSach ?? x.Name_Sach)
-                    .Select(g => new { TenSach = g.Key, SoLuongMuon = g.Count() })
-                    .OrderByDescending(x => x.SoLuongMuon)
-                    .Take(20)
-                    .ToList();
-
-                Series series = new Series("Sách đang mượn");
-                series.ChartType = SeriesChartType.Column;
-                series.IsValueShownAsLabel = true;
-
-                foreach (var item in grouped)
-                {
-                    series.Points.AddXY(item.TenSach ?? "Unknown", item.SoLuongMuon);
-                }
-
-                chartThongKe.Series.Add(series);
-            }
-            // ===== 5. DANH SÁCH QUÁ HẠN → CỘT =====
-            else if (type == "OVERDUE_LOANS")
-            {
-                var list = dataSource as IEnumerable<dynamic>;
-                if (list == null || !list.Any()) return;
-
-                var grouped = list
-                    .GroupBy(x => (int)(x.SoNgayQua ?? 0))
-                    .Select(g => new { SoNgayQua = g.Key, SoLuong = g.Count() })
-                    .OrderBy(x => x.SoNgayQua)
-                    .ToList();
-
-                Series series = new Series("Phiếu mượn quá hạn");
-                series.ChartType = SeriesChartType.Column;
-                series.IsValueShownAsLabel = true;
-
-                foreach (var item in grouped)
-                {
-                    series.Points.AddXY(item.SoNgayQua + " ngày", item.SoLuong);
-                }
-
-                chartThongKe.Series.Add(series);
+                chartThongKe.Series[0].ChartType = SeriesChartType.Column;
+                var revList = data as List<RevenueDTO>;
+                var grouped = revList.GroupBy(x => x.NgayPhat.Date).Select(g => new { D = g.Key, V = g.Sum(k => k.SoTien) }).OrderBy(x => x.D);
+                foreach (var item in grouped) chartThongKe.Series[0].Points.AddXY(item.D.ToString("dd/MM"), item.V);
             }
         }
 
-        private void dgvKetQua_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        // === CHỨC NĂNG XUẤT EXCEL MỚI ===
+        private void btnXuatExcel_Click(object sender, EventArgs e)
         {
-
+            // Gọi hàm helper để xuất file
+            ExcelHelper.ExportToExcel(dgvKetQua, "Báo cáo thống kê");
         }
-
-        private void chartThongKe_Click(object sender, EventArgs e)
-        {
-
-        }
-    }
-
-
-
-    // Class DTO để hứng dữ liệu Doanh thu
-    public class RevenueDTO
-    {
-        public int MaPhat { get; set; }
-        public string DocGia { get; set; }
-        public string LyDo { get; set; }
-        public DateTime NgayPhat { get; set; }
-        public decimal SoTien { get; set; }
     }
 }
-

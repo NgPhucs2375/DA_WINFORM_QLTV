@@ -33,5 +33,8 @@ namespace QLTV.Database.Entities
         public string MaQR {  get; set; }
         [Column("TRANGTHAI")]
         public string TrangThai_Sach { get; set; }
+
+        [Column("MOTA")]
+        public string MoTa { get; set; }
     }
 }

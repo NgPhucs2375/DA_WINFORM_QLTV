@@ -3,16 +3,20 @@ using QLTV.Database.Entities;
 using System;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Windows.Forms;
-using System.Net.Http; 
-using Newtonsoft.Json.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Windows.Forms;
+using Newtonsoft.Json.Linq; // Cần cài NuGet Newtonsoft.Json
+using Excel = Microsoft.Office.Interop.Excel; // Cần Add Reference Microsoft.Office.Interop.Excel
 
 namespace QLTV
 {
     public partial class QuanLySach : Form
     {
+        string selectedImagePath = ""; // Biến lưu đường dẫn ảnh
+
         public QuanLySach()
         {
             InitializeComponent();
@@ -32,7 +36,7 @@ namespace QLTV
             dgwhowList.BackgroundColor = Color.White;
             dgwhowList.EnableHeadersVisualStyles = false;
             dgwhowList.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgwhowList.ColumnHeadersDefaultCellStyle.BackColor = Color.SeaGreen; // Màu chủ đạo
+            dgwhowList.ColumnHeadersDefaultCellStyle.BackColor = Color.SeaGreen;
             dgwhowList.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgwhowList.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dgwhowList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -80,15 +84,31 @@ namespace QLTV
 
             string status = row.Cells["TrangThai"].Value.ToString();
             if (cboTrangThai.Items.Contains(status)) cboTrangThai.SelectedItem = status;
+
+            // Load ảnh nếu có
+            using (var db = new QLTVDataContext())
+            {
+                int id = int.Parse(txtIDSach.Text);
+                var s = db.Sachs.Find(id);
+                if (s != null && !string.IsNullOrEmpty(s.AnhBia_Sach))
+                {
+                    string folder = Path.Combine(Application.StartupPath, "Images");
+                    string path = Path.Combine(folder, s.AnhBia_Sach);
+                    if (File.Exists(path))
+                    {
+                        picAnhBia.Image = Image.FromFile(path);
+                    }
+                    else picAnhBia.Image = null;
+                }
+                else picAnhBia.Image = null;
+            }
         }
 
-        // Tìm kiếm thông minh (Real-time)
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             string key = txtSearch.Text.ToLower();
             using (var db = new QLTVDataContext())
             {
-                // Tìm kiếm trên nhiều trường cùng lúc
                 var list = db.Sachs.Where(s =>
                     s.Name_Sach.ToLower().Contains(key) ||
                     s.TacGia_Sach.ToLower().Contains(key) ||
@@ -108,6 +128,7 @@ namespace QLTV
                 dgwhowList.DataSource = list;
             }
         }
+
         private void btnThem_Click(object sender, EventArgs e)
         {
             if (!ValidateInput()) return;
@@ -116,45 +137,23 @@ namespace QLTV
             {
                 using (var db = new QLTVDataContext())
                 {
-                    // Lấy mã sách nhập từ textbox (ví dụ txtMaSach)
-                    string maSach = txtIDSach.Text.Trim();
-
-                    // Tìm sách theo mã đã tồn tại chưa
-                    var sachTonTai = db.Sachs.FirstOrDefault(s => s.IDSach.ToString() == maSach);
-
-                    if (sachTonTai != null)
+                    Sach s = new Sach()
                     {
-                        // Nếu tồn tại thì chỉ cộng số lượng
-                        int soLuongNhap = int.Parse(txtSoLuong.Text);
-                        sachTonTai.SoLuong_Sach += soLuongNhap;
+                        Name_Sach = txtNameSach.Text.Trim(),
+                        TacGia_Sach = txtTacGia.Text.Trim(),
+                        TheLoai_Sach = txtChuDe.Text.Trim(),
+                        NhaXuatBan_Sach = txtNXB.Text.Trim(),
+                        NamXuatBan_Sach = int.Parse(txtNamXB.Text),
+                        SoLuong_Sach = int.Parse(txtSoLuong.Text),
+                        TrangThai_Sach = cboTrangThai.Text,
+                        ViTriSach = "Kệ A1",
+                        // Lưu tên file ảnh (nếu có)
+                        AnhBia_Sach = !string.IsNullOrEmpty(selectedImagePath) ? SaveImage(selectedImagePath, DateTime.Now.Ticks.ToString()) : null
+                    };
 
-                        db.SaveChanges();
-                        MessageBox.Show($"Sách có mã {maSach}, đã cập nhật số lượng thành: {sachTonTai.SoLuong_Sach}");
-                        Logger.Record("Cập nhật số lượng sách", "Sach", $"Sách mã: {maSach}, số lượng mới: {sachTonTai.SoLuong_Sach}");
-                    }
-                    else
-                    {
-                        // Nếu chưa tồn tại thì tạo mới sách
-                        Sach s = new Sach()
-                        {
-                            // Giả sử IDSach là tự sinh hoặc do bạn nhập, nếu nhập thì gán IDSach = maSach hoặc kiểu phù hợp
-                            // Nếu IDSach tự sinh trong DB, bạn không cần gán ở đây
-                            Name_Sach = txtNameSach.Text.Trim(),
-                            TacGia_Sach = txtTacGia.Text.Trim(),
-                            TheLoai_Sach = txtChuDe.Text.Trim(),
-                            NhaXuatBan_Sach = txtNXB.Text.Trim(),
-                            NamXuatBan_Sach = int.Parse(txtNamXB.Text),
-                            SoLuong_Sach = int.Parse(txtSoLuong.Text),
-                            TrangThai_Sach = cboTrangThai.Text,
-                            ViTriSach = "Kệ A1" // hoặc lấy từ textbox
-                        };
-
-                        db.Sachs.Add(s);
-                        db.SaveChanges();
-                        MessageBox.Show("Thêm sách thành công!");
-                        Logger.Record("Thêm sách", "Sach", "Đã thêm sách có ID: " + s.IDSach);
-                    }
-
+                    db.Sachs.Add(s);
+                    db.SaveChanges();
+                    MessageBox.Show("Thêm sách thành công!");
                     LoadData();
                     ClearForm();
                 }
@@ -164,39 +163,6 @@ namespace QLTV
                 MessageBox.Show("Lỗi: " + ex.Message);
             }
         }
-
-        //private void btnThem_Click(object sender, EventArgs e)
-        //{
-        //    if (!ValidateInput()) return;
-
-        //    try
-        //    {
-        //        using (var db = new QLTVDataContext())
-        //        {
-
-        //            Sach s = new Sach()
-        //            {
-
-        //                Name_Sach = txtNameSach.Text.Trim(),
-        //                TacGia_Sach = txtTacGia.Text.Trim(),
-        //                TheLoai_Sach = txtChuDe.Text.Trim(),
-        //                NhaXuatBan_Sach = txtNXB.Text.Trim(),
-        //                NamXuatBan_Sach = int.Parse(txtNamXB.Text),
-        //                SoLuong_Sach = int.Parse(txtSoLuong.Text),
-        //                TrangThai_Sach = cboTrangThai.Text,
-        //                ViTriSach = "Kệ A1" // Mặc định hoặc thêm textbox nhập
-        //            };
-
-        //            db.Sachs.Add(s);
-        //            db.SaveChanges();
-        //            MessageBox.Show("Thêm sách thành công!");
-        //            Logger.Record("Thêm sách", "Sach", "Đã thêm sách có ID: " + s.IDSach);
-        //            LoadData();
-        //            ClearForm();
-        //        }
-        //    }
-        //    catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
-        //}
 
         private void btnSua_Click(object sender, EventArgs e)
         {
@@ -219,9 +185,14 @@ namespace QLTV
                         s.SoLuong_Sach = int.Parse(txtSoLuong.Text);
                         s.TrangThai_Sach = cboTrangThai.Text;
 
+                        // Cập nhật ảnh nếu có chọn ảnh mới
+                        if (!string.IsNullOrEmpty(selectedImagePath))
+                        {
+                            s.AnhBia_Sach = SaveImage(selectedImagePath, s.IDSach.ToString());
+                        }
+
                         db.SaveChanges();
                         MessageBox.Show("Cập nhật thành công!");
-                        Logger.Record("Sửa sách", "Sach", "Đã Sửa sách có ID: " + id);
                         LoadData();
                     }
                 }
@@ -242,7 +213,6 @@ namespace QLTV
                     var s = db.Sachs.FirstOrDefault(x => x.IDSach == id);
                     if (s != null)
                     {
-                        // Kiểm tra ràng buộc khóa ngoại (sách đang mượn thì không được xóa)
                         if (db.PhieuMuons.Any(p => p.IDSach_PhieuMuon == id))
                         {
                             MessageBox.Show("Sách này đang có trong phiếu mượn, không thể xóa!", "Cảnh báo");
@@ -252,7 +222,6 @@ namespace QLTV
                         db.Sachs.Remove(s);
                         db.SaveChanges();
                         MessageBox.Show("Đã xóa!");
-                        Logger.Record("Xóa sách", "Sach", "Đã xóa sách có ID: " + id);
                         LoadData();
                         ClearForm();
                     }
@@ -272,7 +241,10 @@ namespace QLTV
             txtNXB.Clear();
             txtNamXB.Clear();
             txtSoLuong.Clear();
+            txtISBN.Clear();
             cboTrangThai.SelectedIndex = 0;
+            picAnhBia.Image = null;
+            selectedImagePath = "";
         }
 
         private bool ValidateInput()
@@ -283,96 +255,195 @@ namespace QLTV
             return true;
         }
 
-private async void btnGetInfo_Click(object sender, EventArgs e)
-    {
-        // 1. Làm sạch mã ISBN (Xóa khoảng trắng, dấu gạch ngang)
-        string isbn = txtISBN.Text.Replace("-", "").Replace(" ", "").Trim();
+        // --- CÁC CHỨC NĂNG MỚI (SCAN, IMPORT, ẢNH) ---
 
-        if (string.IsNullOrEmpty(isbn))
+        // 1. Scan QR Logic
+        private void txtScanQR_KeyDown(object sender, KeyEventArgs e)
         {
-            MessageBox.Show("Vui lòng nhập mã ISBN!");
-            return;
-        }
-
-        btnGetInfo.Text = "Đang tải...";
-        btnGetInfo.Enabled = false;
-
-        try
-        {
-            // --- FIX QUAN TRỌNG: Kích hoạt bảo mật TLS 1.2 ---
-            // Google chặn các kết nối cũ, dòng này bắt buộc với WinForms .NET 4.5/4.6/4.7
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-            using (HttpClient client = new HttpClient())
+            if (e.KeyCode == Keys.Enter)
             {
-                // Thêm User-Agent giả lập trình duyệt (tránh bị chặn)
-                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+                string code = txtScanQR.Text.Trim();
+                if (string.IsNullOrEmpty(code)) return;
 
-                string url = $"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}";
-
-                // Debug: Nếu vẫn lỗi, bạn hãy copy link này dán vào Chrome xem có ra gì không
-                Console.WriteLine("Link API: " + url);
-
-                HttpResponseMessage response = await client.GetAsync(url);
-
-                if (response.IsSuccessStatusCode)
+                using (var db = new QLTVDataContext())
                 {
-                    string json = await response.Content.ReadAsStringAsync();
-                    JObject data = JObject.Parse(json);
+                    // Tìm sách theo ID hoặc Mã QR (ở đây giả sử check IDSach trước)
+                    // Nếu bạn có cột ISBN/MaQR riêng thì sửa lại điều kiện Where
+                    var book = db.Sachs.ToList().FirstOrDefault(s => s.IDSach.ToString() == code || (s.MaQR != null && s.MaQR == code));
 
-                    // Kiểm tra số lượng kết quả trả về
-                    if (data["totalItems"] != null && data["totalItems"].Value<int>() > 0)
+                    if (book != null)
                     {
-                        var bookInfo = data["items"][0]["volumeInfo"];
-
-                        // --- ĐIỀN DỮ LIỆU ---
-                        txtNameSach.Text = bookInfo["title"]?.ToString();
-
-                        // Tác giả
-                        if (bookInfo["authors"] != null)
+                        // Highlight trên lưới
+                        foreach (DataGridViewRow row in dgwhowList.Rows)
                         {
-                            txtTacGia.Text = string.Join(", ", bookInfo["authors"].Select(a => a.ToString()));
+                            if (row.Cells["ID"].Value.ToString() == book.IDSach.ToString())
+                            {
+                                row.Selected = true;
+                                dgwhowList.FirstDisplayedScrollingRowIndex = row.Index;
+                                dgwhowList_CellClick(null, new DataGridViewCellEventArgs(0, row.Index));
+                                break;
+                            }
                         }
-
-                        // NXB & Năm
-                        txtNXB.Text = bookInfo["publisher"]?.ToString();
-                        string publishDate = bookInfo["publishedDate"]?.ToString(); // VD: "2008-08-01"
-                        if (!string.IsNullOrEmpty(publishDate) && publishDate.Length >= 4)
-                        {
-                            txtNamXB.Text = publishDate.Substring(0, 4);
-                        }
-
-                        // Số trang (Gán tạm vào số lượng nếu muốn)
-                        // txtSoLuong.Text = bookInfo["pageCount"]?.ToString();
-
-                        MessageBox.Show("Đã tìm thấy thông tin sách!", "Thành công");
                     }
                     else
                     {
-                        // Trường hợp không tìm thấy
-                        string msg = $"Không tìm thấy sách có mã '{isbn}' trên Google Books.\n\n" +
-                                     "Nguyên nhân: Sách này (thường là sách Việt Nam) chưa được cập nhật lên hệ thống Google.\n" +
-                                     "Bạn hãy thử mã này để test: 9780132350884";
-                        MessageBox.Show(msg, "Kết quả tìm kiếm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        if (MessageBox.Show("Sách chưa có trong kho. Bạn có muốn lấy thông tin từ Web?", "Scan", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        {
+                            txtISBN.Text = code;
+                            btnGetInfo.PerformClick();
+                        }
                     }
                 }
-                else
+                txtScanQR.SelectAll(); // Sẵn sàng scan tiếp
+            }
+        }
+
+        // 2. Import Excel Logic
+        private void btnImportExcel_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Excel Files|*.xls;*.xlsx;*.xlsm",
+                Title = "Chọn file Excel danh sách sách"
+            };
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
                 {
-                    MessageBox.Show("Lỗi kết nối đến Google: " + response.StatusCode);
+                    Excel.Application xlApp = new Excel.Application();
+                    Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(openFileDialog.FileName);
+                    Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+                    Excel.Range xlRange = xlWorksheet.UsedRange;
+
+                    int rowCount = xlRange.Rows.Count;
+                    int successCount = 0;
+
+                    using (var db = new QLTVDataContext())
+                    {
+                        // Bắt đầu từ dòng 2 (giả sử dòng 1 là tiêu đề)
+                        for (int i = 2; i <= rowCount; i++)
+                        {
+                            // Giả sử cột 1: Tên, 2: Tác giả, 3: Thể loại
+                            string tenSach = Convert.ToString((xlRange.Cells[i, 1] as Excel.Range).Value2);
+                            if (string.IsNullOrEmpty(tenSach)) continue;
+
+                            Sach s = new Sach();
+                            s.Name_Sach = tenSach;
+                            s.TacGia_Sach = Convert.ToString((xlRange.Cells[i, 2] as Excel.Range).Value2);
+                            s.TheLoai_Sach = Convert.ToString((xlRange.Cells[i, 3] as Excel.Range).Value2);
+                            s.NhaXuatBan_Sach = "Unknown";
+                            s.NamXuatBan_Sach = 2020;
+                            s.SoLuong_Sach = 1;
+                            s.TrangThai_Sach = "Có sẵn";
+                            s.ViTriSach = "Kho";
+
+                            db.Sachs.Add(s);
+                            successCount++;
+                        }
+                        db.SaveChanges();
+                    }
+
+                    // Cleanup Excel
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(xlRange);
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorksheet);
+                    xlWorkbook.Close();
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkbook);
+                    xlApp.Quit();
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(xlApp);
+
+                    MessageBox.Show($"Đã nhập thành công {successCount} cuốn sách!", "Import hoàn tất");
+                    LoadData();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi Import: " + ex.Message);
                 }
             }
         }
-        catch (Exception ex)
+
+        // 3. Google Books API Logic
+        private async void btnGetInfo_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Lỗi hệ thống: " + ex.Message);
+            string isbn = txtISBN.Text.Replace("-", "").Trim();
+            if (string.IsNullOrEmpty(isbn)) { MessageBox.Show("Nhập ISBN!"); return; }
+
+            btnGetInfo.Text = "...";
+            btnGetInfo.Enabled = false;
+
+            try
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                using (HttpClient client = new HttpClient())
+                {
+                    string url = $"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}";
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string json = await response.Content.ReadAsStringAsync();
+                        JObject data = JObject.Parse(json);
+                        if (data["totalItems"] != null && data["totalItems"].Value<int>() > 0)
+                        {
+                            var info = data["items"][0]["volumeInfo"];
+                            txtNameSach.Text = info["title"]?.ToString();
+                            txtNXB.Text = info["publisher"]?.ToString();
+
+                            // Lấy tác giả (mảng)
+                            if (info["authors"] != null)
+                                txtTacGia.Text = string.Join(", ", info["authors"].Select(a => a.ToString()));
+
+                            string date = info["publishedDate"]?.ToString();
+                            if (!string.IsNullOrEmpty(date) && date.Length >= 4)
+                                txtNamXB.Text = date.Substring(0, 4);
+
+                            MessageBox.Show("Tìm thấy!");
+                        }
+                        else MessageBox.Show("Không tìm thấy sách này.");
+                    }
+                }
+            }
+            catch (Exception ex) { MessageBox.Show("Lỗi API: " + ex.Message); }
+            finally { btnGetInfo.Text = "Web"; btnGetInfo.Enabled = true; }
         }
-        finally
+
+        // 4. Upload Image Logic
+        private void btnUploadAnh_Click(object sender, EventArgs e)
         {
-            btnGetInfo.Text = "Lấy từ Web";
-            btnGetInfo.Enabled = true;
+            OpenFileDialog op = new OpenFileDialog();
+            op.Filter = "Image Files|*.jpg;*.jpeg;*.png";
+            if (op.ShowDialog() == DialogResult.OK)
+            {
+                selectedImagePath = op.FileName;
+                picAnhBia.Image = Image.FromFile(selectedImagePath);
+            }
         }
-    }
-    private void btnSearch_Click(object sender, EventArgs e) { } // Đã dùng TextChanged
-        private void btnHTDanhSach_Click(object sender, EventArgs e) => LoadData();
+
+        private string SaveImage(string sourcePath, string fileNamePre)
+        {
+            try
+            {
+                string folder = Path.Combine(Application.StartupPath, "Images");
+                if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+
+                string ext = Path.GetExtension(sourcePath);
+                string fileName = fileNamePre + ext;
+                string dest = Path.Combine(folder, fileName);
+
+                File.Copy(sourcePath, dest, true);
+                return fileName;
+            }
+            catch { return null; }
+        }
+
+        // 5. Open Detail Form (Double Click)
+        private void dgwhowList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                int id = Convert.ToInt32(dgwhowList.Rows[e.RowIndex].Cells["ID"].Value);
+                FormChiTietSach f = new FormChiTietSach(id);
+                f.ShowDialog();
+            }
+        }
     }
 }

@@ -71,7 +71,6 @@ namespace QLTV
             }
         }
 
-        // Sự kiện khi thay đổi ngày mượn -> Tự tính hạn trả
         private void dtpNgayMuon_ValueChanged(object sender, EventArgs e)
         {
             dtpHanTra.Value = dtpNgayMuon.Value.AddDays(7);
@@ -79,29 +78,20 @@ namespace QLTV
 
         private void btnLapPhieuMuon_Click(object sender, EventArgs e)
         {
-            // 1. Kiểm tra đã chọn độc giả và sách chưa
+            // 1. Kiểm tra đầu vào
             if (cboDocGia.SelectedValue == null || cboSach.SelectedValue == null)
             {
                 MessageBox.Show("Vui lòng chọn Độc giả và Sách!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // ================================================================
-            // 2. XỬ LÝ LỖI NGÀY THÁNG (Theo yêu cầu của bạn)
-            // ================================================================
-
-            // Sử dụng .Date để so sánh ngày, bỏ qua giờ phút giây
             if (dtpHanTra.Value.Date <= dtpNgayMuon.Value.Date)
             {
                 MessageBox.Show("Ngày hạn trả phải lớn hơn (sau) ngày mượn!", "Lỗi ngày tháng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                dtpHanTra.Focus(); // Đưa con trỏ về ô hạn trả để người dùng sửa
+                dtpHanTra.Focus();
                 return;
             }
 
-            // (Tùy chọn) Kiểm tra ngày mượn không được quá khứ quá xa
-            // if (dtpNgayMuon.Value.Date < DateTime.Now.AddDays(-30).Date) { MessageBox.Show("Ngày mượn quá cũ!"); return; }
-
-            // Lấy ID an toàn (Tránh lỗi crash nếu value không phải int)
             int idDocGia, idSach;
             if (!int.TryParse(cboDocGia.SelectedValue.ToString(), out idDocGia) ||
                 !int.TryParse(cboSach.SelectedValue.ToString(), out idSach))
@@ -112,24 +102,37 @@ namespace QLTV
 
             try
             {
+                // --- SỬA LỖI: CHỈ DÙNG 1 KHỐI USING DUY NHẤT Ở ĐÂY ---
                 using (var db = new QLTVDataContext())
                 {
-                    // 3. Kiểm tra lại số lượng sách (tránh trường hợp 2 người cùng mượn 1 cuốn cuối cùng cùng lúc)
-                    var sach = db.Sachs.Find(idSach);
-                    if (sach == null)
+                    // === LOGIC MỚI: KIỂM TRA GIỚI HẠN MƯỢN ===
+                    int dangMuon = db.PhieuMuons.Count(p =>
+                        p.IDDocGia_PhieuMuon == idDocGia &&
+                        p.TrangThai_PhieuMuon == "Đang mượn");
+
+                    int gioiHan = 5; // Mặc định
+                    var config = db.ThamSos.Find("GIOI_HAN_SACH_MUON");
+                    if (config != null) int.TryParse(config.GiaTri, out gioiHan);
+
+                    if (dangMuon >= gioiHan)
                     {
-                        MessageBox.Show("Không tìm thấy thông tin sách!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        MessageBox.Show($"Độc giả này đang mượn {dangMuon} cuốn sách.\nQuy định chỉ được mượn tối đa {gioiHan} cuốn.\nVui lòng trả sách cũ trước khi mượn mới.",
+                            "Vi phạm quy định", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return; // Dừng lại, không cho mượn tiếp
                     }
+                    // ==========================================
+
+                    // 2. Kiểm tra sách trong kho
+                    var sach = db.Sachs.Find(idSach);
+                    if (sach == null) return;
 
                     if (sach.SoLuong_Sach <= 0)
                     {
                         MessageBox.Show($"Sách '{sach.Name_Sach}' vừa hết hàng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        // Refresh lại danh sách sách nếu cần
                         return;
                     }
 
-                    // 4. Tạo phiếu mượn
+                    // 3. Tạo phiếu mượn
                     PhieuMuon pm = new PhieuMuon()
                     {
                         IDDocGia_PhieuMuon = idDocGia,
@@ -138,27 +141,23 @@ namespace QLTV
                         HanTra_PhieuMuon = dtpHanTra.Value,
                         TrangThai_PhieuMuon = "Đang mượn",
                         SoTienPhat_PhieuMuon = 0,
-                        // Nếu có thông tin người lập phiếu (Program.CurrentUserId) thì thêm vào
                         // IDNhanVien = Program.CurrentUserId 
                     };
                     db.PhieuMuons.Add(pm);
 
-                    // 5. Trừ số lượng sách trong kho
+                    // 4. Trừ số lượng sách
                     sach.SoLuong_Sach -= 1;
-
-                    // Cập nhật trạng thái nếu hết sách
                     if (sach.SoLuong_Sach == 0) sach.TrangThai_Sach = "Hết hàng";
 
                     db.SaveChanges();
 
-                    // 6. Hỏi in phiếu
+                    // 5. In phiếu
                     DialogResult result = MessageBox.Show("Lập phiếu thành công! Bạn có muốn in phiếu không?", "Thành công", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
                     if (result == DialogResult.Yes)
                     {
                         PrintDocument pd = new PrintDocument();
                         pd.PrintPage += new PrintPageEventHandler(InPhieu_PrintPage);
-
                         PrintPreviewDialog preview = new PrintPreviewDialog();
                         preview.Document = pd;
                         preview.ShowDialog();
@@ -181,15 +180,12 @@ namespace QLTV
 
         private void InPhieu_PrintPage(object sender, PrintPageEventArgs e)
         {
-            // Thiết lập font chữ
             Font fontTieuDe = new Font("Arial", 20, FontStyle.Bold);
             Font fontNoiDung = new Font("Arial", 12);
             Font fontNguoiLap = new Font("Arial", 14, FontStyle.Bold);
 
-            // Vẽ tiêu đề
             e.Graphics.DrawString("PHIẾU MƯỢN SÁCH", fontTieuDe, Brushes.DarkBlue, 250, 50);
 
-            // Vẽ thông tin chi tiết
             int startX = 100;
             int startY = 120;
             int offset = 30;
@@ -199,14 +195,8 @@ namespace QLTV
             e.Graphics.DrawString($"Ngày mượn: {dtpNgayMuon.Value:dd/MM/yyyy}", fontNoiDung, Brushes.Black, startX, startY + offset * 2);
             e.Graphics.DrawString($"Hạn trả: {dtpHanTra.Value:dd/MM/yyyy}", fontNoiDung, Brushes.Black, startX, startY + offset * 3);
 
-            // Vẽ footer (Người lập phiếu)
-            // Kiểm tra null để tránh lỗi nếu chưa đăng nhập (Program.CurrentName chưa có giá trị)
             string nguoiLap = Program.CurrentName ?? "Admin";
-
             e.Graphics.DrawString($"Người lập phiếu: {nguoiLap}", fontNguoiLap, Brushes.DarkBlue, 400, 300);
         }
-
-
-
     }
 }

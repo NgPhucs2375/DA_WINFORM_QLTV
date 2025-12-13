@@ -39,19 +39,38 @@ namespace QLTV
                         lblTheLoai.Text = "Thể loại: " + book.TheLoai_Sach;
                         txtMoTa.Text = book.MoTa ?? "Chưa có mô tả cho sách này.";
 
-                        // Hiển thị hình ảnh
+                        // Handle Image Loading Safely
                         if (!string.IsNullOrEmpty(book.AnhBia_Sach))
                         {
                             string path = Path.Combine(Application.StartupPath, "Images", book.AnhBia_Sach);
                             if (File.Exists(path))
                             {
-                                picAnhBia.Image = Image.FromFile(path);
+                                try
+                                {
+                                    // Use FileStream to avoid locking the file and handle 'Out of memory' (invalid format) errors
+                                    using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read))
+                                    {
+                                        picAnhBia.Image = Image.FromStream(stream);
+                                    }
+                                }
+                                catch (ArgumentException) // Catch "Parameter is not valid"
+                                {
+                                    // Optionally set a default "Error" image here
+                                    picAnhBia.Image = null;
+                                }
+                                catch (OutOfMemoryException) // Catch "Out of memory" (often WebP masquerading as JPG)
+                                {
+                                    picAnhBia.Image = null;
+                                }
                             }
                             else
                             {
-                                // Nếu không tìm thấy ảnh, set null hoặc ảnh mặc định
-                                picAnhBia.Image = null;
+                                picAnhBia.Image = null; // File not found
                             }
+                        }
+                        else
+                        {
+                            picAnhBia.Image = null; // No image in DB
                         }
                     }
                 }
@@ -61,7 +80,6 @@ namespace QLTV
                 MessageBox.Show("Lỗi tải thông tin sách: " + ex.Message);
             }
         }
-
         private void LoadReviews()
         {
             // Load dữ liệu đánh giá từ DB

@@ -11,7 +11,9 @@ namespace QLTV
 
         // Constructor mặc định (tránh lỗi khi gọi new MainMenu() không tham số)
         public MainMenu() : this("guest") { }
-
+        private bool isSidebarExpanded = true;
+        private const int SidebarMaxWidth = 280;
+        private const int SidebarMinWidth = 70;
         public MainMenu(string role)
         {
             InitializeComponent();
@@ -26,6 +28,7 @@ namespace QLTV
         {
             this.IsMdiContainer = true;
             this.WindowState = FormWindowState.Maximized;
+            lblLogo.Text = "THE LIBRARY";
 
             // Hack: Tìm control MdiClient và gán ảnh nền cho nó
             foreach (Control ctl in this.Controls)
@@ -186,6 +189,61 @@ namespace QLTV
         private void MainMenu_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void picMenu_Click(object sender, EventArgs e)
+        {
+            tmrSidebar.Start(); // Bắt đầu chạy Timer
+        }
+
+        private void tmrSidebar_Tick(object sender, EventArgs e)
+        {
+            if (isSidebarExpanded)
+            {
+                // Đang mở -> Thu nhỏ lại
+                pnlSidebar.Width -= 20;
+                if (pnlSidebar.Width <= SidebarMinWidth)
+                {
+                    pnlSidebar.Width = SidebarMinWidth;
+                    isSidebarExpanded = false;
+                    tmrSidebar.Stop();
+
+                    // Ẩn text logo khi thu nhỏ
+                    lblLogo.Visible = false;
+
+                    // Căn giữa các nút icon
+                    AlignButtons(ContentAlignment.MiddleCenter);
+                }
+            }
+            else
+            {
+                // Đang đóng -> Mở rộng ra
+                pnlSidebar.Width += 20;
+                if (pnlSidebar.Width >= SidebarMaxWidth)
+                {
+                    pnlSidebar.Width = SidebarMaxWidth;
+                    isSidebarExpanded = true;
+                    tmrSidebar.Stop();
+
+                    // Hiện lại logo
+                    lblLogo.Visible = true;
+
+                    // Căn trái text
+                    AlignButtons(ContentAlignment.MiddleLeft);
+                }
+            }
+        }
+
+        private void AlignButtons(ContentAlignment align)
+        {
+            foreach (Control c in pnlSidebar.Controls)
+            {
+                if (c is Button btn && btn != btnDangXuat) // Trừ nút đăng xuất nếu muốn giữ nguyên
+                {
+                    btn.TextAlign = align;
+                    // Nếu có icon, bạn có thể chỉnh ImageAlign ở đây luôn
+                }
+            }
         }
     }
 }

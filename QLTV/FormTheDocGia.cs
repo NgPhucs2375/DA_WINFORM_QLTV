@@ -18,6 +18,11 @@ namespace QLTV
         private Label lblTen, lblMa, lblHan, lblSchool;
         private Panel pnlCard;
 
+        private void FormTheDocGia_Load(object sender, EventArgs e)
+        {
+
+        }
+
         private void InitializeComponent_Code()
         {
             this.Size = new Size(450, 300);

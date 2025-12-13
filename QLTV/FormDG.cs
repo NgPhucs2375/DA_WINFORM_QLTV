@@ -122,6 +122,7 @@ namespace QLTV
                 _currentDocGiaId = dg.IDDocGia;
 
                 // Hiển thị thông tin cá nhân lên Tab Cá Nhân
+                lblName.Text = "Họ tên: " + user.HoTen_NguoiDung;
                 lblEmail.Text = "Email: " + user.Email_NguoiDung;
                 lblPhone.Text = "Số điện thoại: " + user.SDT_NguoiDung;
                 lblHanThe.Text = "Hạn thẻ: " + dg.NgayHetHan.ToString("dd/MM/yyyy");
@@ -135,8 +136,10 @@ namespace QLTV
         {
             using (var db = new QLTVDataContext())
             {
+
+                
                 var list = db.Sachs
-                    .Where(s => s.Name_Sach.Contains(keyword) || s.TacGia_Sach.Contains(keyword))
+                    .Where(s => s.Name_Sach.Contains(keyword) || s.TacGia_Sach.Contains(keyword) || s.TheLoai_Sach.Contains(keyword))
                     .Select(s => new {
                         ID = s.IDSach,
                         TenSach = s.Name_Sach,
@@ -259,6 +262,14 @@ namespace QLTV
         private void btnDangXuat_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Đăng xuất?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes) this.Close();
+        }
+
+       
+
+        private void btnRsFilter_Click(object sender, EventArgs e)
+        {
+           
+            LoadSach("");
         }
     }
 }

@@ -1,7 +1,8 @@
+D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.exe.config
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.exe
+D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.pdb
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\EntityFramework.dll
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\EntityFramework.SqlServer.dll
-D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QLTV.exe.config
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\Newtonsoft.Json.dll
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\QRCoder.dll
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\bin\Debug\EntityFramework.xml
@@ -17,6 +18,7 @@ D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\Q
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.FormDangNhap.resources
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.FormDG.resources
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.FormDoiMatKhau.resources
+D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.FormTheDocGia.resources
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.LapPhieuMuon.resources
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.LapPhieuTra.resources
 D:\Đại_Học\Năm_3\HKI\Net\QuanLyThuVien\QuanLyThuVien\QLTV\QLTV\obj\Debug\QLTV.MainMenu.resources

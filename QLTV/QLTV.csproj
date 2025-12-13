@@ -240,6 +240,9 @@
     <EmbeddedResource Include="FormDoiMatKhau.resx">
       <DependentUpon>FormDoiMatKhau.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormTheDocGia.resx">
+      <DependentUpon>FormTheDocGia.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LapPhieuMuon.resx">
       <DependentUpon>LapPhieuMuon.cs</DependentUpon>
     </EmbeddedResource>

@@ -14,13 +14,15 @@
 
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.dgvNhanVien = new System.Windows.Forms.DataGridView();
             this.pnlSearch = new System.Windows.Forms.Panel();
             this.txtKeyword = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.dgvNhanVien = new System.Windows.Forms.DataGridView();
             this.grbChiTiet = new System.Windows.Forms.GroupBox();
             this.txtMatKhauNV = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -45,56 +47,94 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.pnlSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNhanVien)).BeginInit();
+            this.pnlSearch.SuspendLayout();
             this.grbChiTiet.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlHeader
             // 
-            this.pnlHeader.BackColor = System.Drawing.Color.Indigo;
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(67)))), ((int)(((byte)(33))))); // Sienna Brown
             this.pnlHeader.Controls.Add(this.lblTitle);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(1100, 70);
+            this.pnlHeader.Size = new System.Drawing.Size(1100, 80);
             this.pnlHeader.TabIndex = 0;
             // 
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Font = new System.Drawing.Font("Playfair Display", 24F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(20, 12);
+            this.lblTitle.Location = new System.Drawing.Point(30, 20);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(363, 46);
+            this.lblTitle.Size = new System.Drawing.Size(435, 57);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "QUẢN LÝ NHÂN VIÊN";
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 70);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 80);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.BackColor = System.Drawing.Color.WhiteSmoke;
             this.splitContainer1.Panel1.Controls.Add(this.dgvNhanVien);
             this.splitContainer1.Panel1.Controls.Add(this.pnlSearch);
             this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(10);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.BackColor = System.Drawing.Color.White;
+            this.splitContainer1.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(243)))), ((int)(((byte)(224))))); // Cream
             this.splitContainer1.Panel2.Controls.Add(this.grbChiTiet);
             this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(10);
-            this.splitContainer1.Size = new System.Drawing.Size(1100, 530);
+            this.splitContainer1.Size = new System.Drawing.Size(1100, 520);
             this.splitContainer1.SplitterDistance = 700;
             this.splitContainer1.TabIndex = 1;
             // 
+            // dgvNhanVien
+            // 
+            this.dgvNhanVien.AllowUserToAddRows = false;
+            this.dgvNhanVien.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvNhanVien.BackgroundColor = System.Drawing.Color.White;
+            this.dgvNhanVien.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(82)))), ((int)(((byte)(45))))); // Sienna Light
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(82)))), ((int)(((byte)(45)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvNhanVien.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvNhanVien.ColumnHeadersHeight = 40;
+            this.dgvNhanVien.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(228)))), ((int)(((byte)(196))))); // Peach
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvNhanVien.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvNhanVien.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvNhanVien.EnableHeadersVisualStyles = false;
+            this.dgvNhanVien.Location = new System.Drawing.Point(10, 70);
+            this.dgvNhanVien.Name = "dgvNhanVien";
+            this.dgvNhanVien.ReadOnly = true;
+            this.dgvNhanVien.RowHeadersVisible = false;
+            this.dgvNhanVien.RowHeadersWidth = 51;
+            this.dgvNhanVien.RowTemplate.Height = 35;
+            this.dgvNhanVien.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvNhanVien.Size = new System.Drawing.Size(680, 440);
+            this.dgvNhanVien.TabIndex = 1;
+            this.dgvNhanVien.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvNhanVien_CellClick);
+            // 
             // pnlSearch
             // 
-            this.pnlSearch.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.pnlSearch.BackColor = System.Drawing.Color.White;
             this.pnlSearch.Controls.Add(this.txtKeyword);
             this.pnlSearch.Controls.Add(this.label1);
             this.pnlSearch.Dock = System.Windows.Forms.DockStyle.Top;
@@ -105,6 +145,8 @@
             // 
             // txtKeyword
             // 
+            this.txtKeyword.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtKeyword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtKeyword.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txtKeyword.Location = new System.Drawing.Point(110, 14);
             this.txtKeyword.Name = "txtKeyword";
@@ -116,28 +158,16 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label1.ForeColor = System.Drawing.Color.DimGray;
             this.label1.Location = new System.Drawing.Point(15, 18);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(83, 23);
             this.label1.TabIndex = 0;
             this.label1.Text = "Tìm kiếm:";
             // 
-            // dgvNhanVien
-            // 
-            this.dgvNhanVien.AllowUserToAddRows = false;
-            this.dgvNhanVien.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvNhanVien.Location = new System.Drawing.Point(10, 70);
-            this.dgvNhanVien.Name = "dgvNhanVien";
-            this.dgvNhanVien.ReadOnly = true;
-            this.dgvNhanVien.RowHeadersVisible = false;
-            this.dgvNhanVien.RowTemplate.Height = 30;
-            this.dgvNhanVien.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvNhanVien.Size = new System.Drawing.Size(680, 450);
-            this.dgvNhanVien.TabIndex = 1;
-            this.dgvNhanVien.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvNhanVien_CellClick);
-            // 
             // grbChiTiet
             // 
+            this.grbChiTiet.BackColor = System.Drawing.Color.White;
             this.grbChiTiet.Controls.Add(this.txtMatKhauNV);
             this.grbChiTiet.Controls.Add(this.label7);
             this.grbChiTiet.Controls.Add(this.btnReset);
@@ -157,97 +187,99 @@
             this.grbChiTiet.Controls.Add(this.txtMaNV);
             this.grbChiTiet.Controls.Add(this.label2);
             this.grbChiTiet.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grbChiTiet.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.grbChiTiet.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.grbChiTiet.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(67)))), ((int)(((byte)(33))))); // Sienna Text
             this.grbChiTiet.Location = new System.Drawing.Point(10, 10);
             this.grbChiTiet.Name = "grbChiTiet";
-            this.grbChiTiet.Size = new System.Drawing.Size(376, 510);
+            this.grbChiTiet.Size = new System.Drawing.Size(376, 500);
             this.grbChiTiet.TabIndex = 0;
             this.grbChiTiet.TabStop = false;
             this.grbChiTiet.Text = "Thông tin chi tiết";
             // 
-            // txtMaNV
+            // txtMatKhauNV
             // 
-            this.txtMaNV.Enabled = false;
-            this.txtMaNV.Location = new System.Drawing.Point(120, 37);
-            this.txtMaNV.Name = "txtMaNV";
-            this.txtMaNV.ReadOnly = true;
-            this.txtMaNV.Size = new System.Drawing.Size(230, 30);
-            this.txtMaNV.TabIndex = 1;
+            this.txtMatKhauNV.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtMatKhauNV.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtMatKhauNV.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtMatKhauNV.Location = new System.Drawing.Point(120, 307);
+            this.txtMatKhauNV.Name = "txtMatKhauNV";
+            this.txtMatKhauNV.Size = new System.Drawing.Size(230, 30);
+            this.txtMatKhauNV.TabIndex = 13;
+            this.txtMatKhauNV.UseSystemPasswordChar = true;
             // 
-            // label2
+            // label7
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(20, 40);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 23);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Mã NV:";
+            this.label7.AutoSize = true;
+            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label7.Location = new System.Drawing.Point(20, 310);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(89, 23);
+            this.label7.TabIndex = 12;
+            this.label7.Text = "Mật khẩu:";
             // 
-            // txtTenNV
+            // btnReset
             // 
-            this.txtTenNV.Location = new System.Drawing.Point(120, 82);
-            this.txtTenNV.Name = "txtTenNV";
-            this.txtTenNV.Size = new System.Drawing.Size(230, 30);
-            this.txtTenNV.TabIndex = 3;
+            this.btnReset.BackColor = System.Drawing.Color.LightGray;
+            this.btnReset.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnReset.FlatAppearance.BorderSize = 0;
+            this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReset.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnReset.ForeColor = System.Drawing.Color.Black;
+            this.btnReset.Location = new System.Drawing.Point(200, 430);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(150, 40);
+            this.btnReset.TabIndex = 17;
+            this.btnReset.Text = "⟳ LÀM MỚI";
+            this.btnReset.UseVisualStyleBackColor = false;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
-            // label3
+            // btnXoaNV
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(20, 85);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(66, 23);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Họ tên:";
+            this.btnXoaNV.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(92)))), ((int)(((byte)(92))))); // Indian Red
+            this.btnXoaNV.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnXoaNV.FlatAppearance.BorderSize = 0;
+            this.btnXoaNV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnXoaNV.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnXoaNV.ForeColor = System.Drawing.Color.White;
+            this.btnXoaNV.Location = new System.Drawing.Point(25, 430);
+            this.btnXoaNV.Name = "btnXoaNV";
+            this.btnXoaNV.Size = new System.Drawing.Size(150, 40);
+            this.btnXoaNV.TabIndex = 16;
+            this.btnXoaNV.Text = "✕ XÓA";
+            this.btnXoaNV.UseVisualStyleBackColor = false;
+            this.btnXoaNV.Click += new System.EventHandler(this.btnXoaNV_Click);
             // 
-            // txtEmailNV
+            // btnSuaNV
             // 
-            this.txtEmailNV.Location = new System.Drawing.Point(120, 127);
-            this.txtEmailNV.Name = "txtEmailNV";
-            this.txtEmailNV.Size = new System.Drawing.Size(230, 30);
-            this.txtEmailNV.TabIndex = 5;
+            this.btnSuaNV.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32))))); // Goldenrod
+            this.btnSuaNV.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSuaNV.FlatAppearance.BorderSize = 0;
+            this.btnSuaNV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSuaNV.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnSuaNV.ForeColor = System.Drawing.Color.White;
+            this.btnSuaNV.Location = new System.Drawing.Point(200, 370);
+            this.btnSuaNV.Name = "btnSuaNV";
+            this.btnSuaNV.Size = new System.Drawing.Size(150, 40);
+            this.btnSuaNV.TabIndex = 15;
+            this.btnSuaNV.Text = "✎ SỬA";
+            this.btnSuaNV.UseVisualStyleBackColor = false;
+            this.btnSuaNV.Click += new System.EventHandler(this.btnSuaNV_Click);
             // 
-            // label8
+            // btnThemNV
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(20, 130);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(55, 23);
-            this.label8.TabIndex = 4;
-            this.label8.Text = "Email:";
-            // 
-            // txtSDTNV
-            // 
-            this.txtSDTNV.Location = new System.Drawing.Point(120, 172);
-            this.txtSDTNV.Name = "txtSDTNV";
-            this.txtSDTNV.Size = new System.Drawing.Size(230, 30);
-            this.txtSDTNV.TabIndex = 7;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(20, 175);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(44, 23);
-            this.label10.TabIndex = 6;
-            this.label10.Text = "SĐT:";
-            // 
-            // cboVaiTro
-            // 
-            this.cboVaiTro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboVaiTro.FormattingEnabled = true;
-            this.cboVaiTro.Location = new System.Drawing.Point(120, 217);
-            this.cboVaiTro.Name = "cboVaiTro";
-            this.cboVaiTro.Size = new System.Drawing.Size(230, 31);
-            this.cboVaiTro.TabIndex = 9;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(20, 220);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(64, 23);
-            this.label6.TabIndex = 8;
-            this.label6.Text = "Vai trò:";
+            this.btnThemNV.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(139)))), ((int)(((byte)(87))))); // Sea Green
+            this.btnThemNV.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnThemNV.FlatAppearance.BorderSize = 0;
+            this.btnThemNV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnThemNV.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnThemNV.ForeColor = System.Drawing.Color.White;
+            this.btnThemNV.Location = new System.Drawing.Point(25, 370);
+            this.btnThemNV.Name = "btnThemNV";
+            this.btnThemNV.Size = new System.Drawing.Size(150, 40);
+            this.btnThemNV.TabIndex = 14;
+            this.btnThemNV.Text = "+ THÊM";
+            this.btnThemNV.UseVisualStyleBackColor = false;
+            this.btnThemNV.Click += new System.EventHandler(this.btnThemNV_Click);
             // 
             // dtpkNgayVLNV
             // 
@@ -260,84 +292,115 @@
             // label9
             // 
             this.label9.AutoSize = true;
+            this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label9.Location = new System.Drawing.Point(20, 265);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(79, 23);
+            this.label9.Size = new System.Drawing.Size(76, 23);
             this.label9.TabIndex = 10;
             this.label9.Text = "Vào làm:";
             // 
-            // txtMatKhauNV
+            // cboVaiTro
             // 
-            this.txtMatKhauNV.Location = new System.Drawing.Point(120, 307);
-            this.txtMatKhauNV.Name = "txtMatKhauNV";
-            this.txtMatKhauNV.Size = new System.Drawing.Size(230, 30);
-            this.txtMatKhauNV.TabIndex = 13;
-            this.txtMatKhauNV.UseSystemPasswordChar = true;
+            this.cboVaiTro.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.cboVaiTro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboVaiTro.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboVaiTro.FormattingEnabled = true;
+            this.cboVaiTro.Location = new System.Drawing.Point(120, 217);
+            this.cboVaiTro.Name = "cboVaiTro";
+            this.cboVaiTro.Size = new System.Drawing.Size(230, 31);
+            this.cboVaiTro.TabIndex = 9;
             // 
-            // label7
+            // label6
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(20, 310);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(86, 23);
-            this.label7.TabIndex = 12;
-            this.label7.Text = "Mật khẩu:";
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label6.Location = new System.Drawing.Point(20, 220);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(64, 23);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Vai trò:";
             // 
-            // btnThemNV
+            // txtSDTNV
             // 
-            this.btnThemNV.BackColor = System.Drawing.Color.SeaGreen;
-            this.btnThemNV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnThemNV.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnThemNV.ForeColor = System.Drawing.Color.White;
-            this.btnThemNV.Location = new System.Drawing.Point(25, 370);
-            this.btnThemNV.Name = "btnThemNV";
-            this.btnThemNV.Size = new System.Drawing.Size(150, 40);
-            this.btnThemNV.TabIndex = 14;
-            this.btnThemNV.Text = "THÊM";
-            this.btnThemNV.UseVisualStyleBackColor = false;
-            this.btnThemNV.Click += new System.EventHandler(this.btnThemNV_Click);
+            this.txtSDTNV.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtSDTNV.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtSDTNV.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtSDTNV.Location = new System.Drawing.Point(120, 172);
+            this.txtSDTNV.Name = "txtSDTNV";
+            this.txtSDTNV.Size = new System.Drawing.Size(230, 30);
+            this.txtSDTNV.TabIndex = 7;
             // 
-            // btnSuaNV
+            // label10
             // 
-            this.btnSuaNV.BackColor = System.Drawing.Color.Orange;
-            this.btnSuaNV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSuaNV.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnSuaNV.ForeColor = System.Drawing.Color.White;
-            this.btnSuaNV.Location = new System.Drawing.Point(200, 370);
-            this.btnSuaNV.Name = "btnSuaNV";
-            this.btnSuaNV.Size = new System.Drawing.Size(150, 40);
-            this.btnSuaNV.TabIndex = 15;
-            this.btnSuaNV.Text = "SỬA";
-            this.btnSuaNV.UseVisualStyleBackColor = false;
-            this.btnSuaNV.Click += new System.EventHandler(this.btnSuaNV_Click);
+            this.label10.AutoSize = true;
+            this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label10.Location = new System.Drawing.Point(20, 175);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(44, 23);
+            this.label10.TabIndex = 6;
+            this.label10.Text = "SĐT:";
             // 
-            // btnXoaNV
+            // txtEmailNV
             // 
-            this.btnXoaNV.BackColor = System.Drawing.Color.Crimson;
-            this.btnXoaNV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnXoaNV.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnXoaNV.ForeColor = System.Drawing.Color.White;
-            this.btnXoaNV.Location = new System.Drawing.Point(25, 430);
-            this.btnXoaNV.Name = "btnXoaNV";
-            this.btnXoaNV.Size = new System.Drawing.Size(150, 40);
-            this.btnXoaNV.TabIndex = 16;
-            this.btnXoaNV.Text = "XÓA";
-            this.btnXoaNV.UseVisualStyleBackColor = false;
-            this.btnXoaNV.Click += new System.EventHandler(this.btnXoaNV_Click);
+            this.txtEmailNV.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtEmailNV.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtEmailNV.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtEmailNV.Location = new System.Drawing.Point(120, 127);
+            this.txtEmailNV.Name = "txtEmailNV";
+            this.txtEmailNV.Size = new System.Drawing.Size(230, 30);
+            this.txtEmailNV.TabIndex = 5;
             // 
-            // btnReset
+            // label8
             // 
-            this.btnReset.BackColor = System.Drawing.Color.Gray;
-            this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReset.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnReset.ForeColor = System.Drawing.Color.White;
-            this.btnReset.Location = new System.Drawing.Point(200, 430);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(150, 40);
-            this.btnReset.TabIndex = 17;
-            this.btnReset.Text = "LÀM MỚI";
-            this.btnReset.UseVisualStyleBackColor = false;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            this.label8.AutoSize = true;
+            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label8.Location = new System.Drawing.Point(20, 130);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(55, 23);
+            this.label8.TabIndex = 4;
+            this.label8.Text = "Email:";
+            // 
+            // txtTenNV
+            // 
+            this.txtTenNV.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtTenNV.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTenNV.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtTenNV.Location = new System.Drawing.Point(120, 82);
+            this.txtTenNV.Name = "txtTenNV";
+            this.txtTenNV.Size = new System.Drawing.Size(230, 30);
+            this.txtTenNV.TabIndex = 3;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label3.Location = new System.Drawing.Point(20, 85);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(66, 23);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Họ tên:";
+            // 
+            // txtMaNV
+            // 
+            this.txtMaNV.BackColor = System.Drawing.Color.Gainsboro;
+            this.txtMaNV.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtMaNV.Enabled = false;
+            this.txtMaNV.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtMaNV.Location = new System.Drawing.Point(120, 37);
+            this.txtMaNV.Name = "txtMaNV";
+            this.txtMaNV.ReadOnly = true;
+            this.txtMaNV.Size = new System.Drawing.Size(230, 30);
+            this.txtMaNV.TabIndex = 1;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label2.Location = new System.Drawing.Point(20, 40);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(67, 23);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Mã NV:";
             // 
             // QuanLyNV
             // 
@@ -361,6 +424,7 @@
             this.grbChiTiet.ResumeLayout(false);
             this.grbChiTiet.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion

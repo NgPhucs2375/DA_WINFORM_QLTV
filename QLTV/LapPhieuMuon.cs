@@ -198,5 +198,7 @@ namespace QLTV
             string nguoiLap = Program.CurrentName ?? "Admin";
             e.Graphics.DrawString($"Người lập phiếu: {nguoiLap}", fontNguoiLap, Brushes.DarkBlue, 400, 300);
         }
+
+   
     }
 }

@@ -23,12 +23,10 @@ namespace QLTV
 
         private void SetupForm()
         {
-            // Date Picker setup
             dtpTuNgay.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             dtpDenNgay.Value = DateTime.Now;
             lblTongTien.Visible = false;
 
-            // Load Report List
             Dictionary<string, string> reports = new Dictionary<string, string>()
             {
                 { "BOOKS_AVAILABLE", "1. Sách đang có sẵn trong kho" },
@@ -40,92 +38,72 @@ namespace QLTV
                 { "STATS_GENRE", "7. Thống kê theo Thể loại" },
                 { "STATS_AUTHOR", "8. Thống kê theo Tác giả" }
             };
+
             cboLoaiThongKe.DataSource = new BindingSource(reports, null);
             cboLoaiThongKe.DisplayMember = "Value";
             cboLoaiThongKe.ValueMember = "Key";
             cboLoaiThongKe.SelectedIndex = 0;
 
-            // Load Dashboard Data ngay khi mở
             LoadDashboardAsync();
         }
 
-        // ================== LOGIC DASHBOARD (TAB 1) ==================
+        // ================== DASHBOARD ==================
         private async void LoadDashboardAsync()
         {
             try
             {
                 using (var db = new QLTVDataContext())
                 {
-                    // 1. Load 4 KPI Cards
-                    var totalBooks = await db.Sachs.SumAsync(s => (int?)s.SoLuong_Sach) ?? 0;
-                    var activeLoans = await db.PhieuMuons.CountAsync(p => p.TrangThai_PhieuMuon == "Đang mượn");
-                    var overdue = await db.PhieuMuons.CountAsync(p => p.TrangThai_PhieuMuon == "Đang mượn" && p.HanTra_PhieuMuon < DateTime.Now);
+                    lblCard1Value.Text = (await db.Sachs.SumAsync(s => (int?)s.SoLuong_Sach) ?? 0).ToString("N0");
+                    lblCard2Value.Text = (await db.PhieuMuons.CountAsync(p => p.TrangThai_PhieuMuon == "Đang mượn")).ToString("N0");
+                    lblCard3Value.Text = (await db.PhieuMuons.CountAsync(p =>
+                        p.TrangThai_PhieuMuon == "Đang mượn" && p.HanTra_PhieuMuon < DateTime.Now)).ToString("N0");
 
-                    // Doanh thu tháng này
                     var startMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-                    var revenueMonth = await db.Phats
+                    lblCard4Value.Text = (await db.Phats
                         .Where(p => p.DaThanhToan && p.NgayPhat >= startMonth)
-                        .SumAsync(p => (decimal?)p.SoTien_Phat) ?? 0;
+                        .SumAsync(p => (decimal?)p.SoTien_Phat) ?? 0).ToString("N0");
 
-                    // Update UI (Cards)
-                    lblCard1Value.Text = totalBooks.ToString("N0");
-                    lblCard2Value.Text = activeLoans.ToString("N0");
-                    lblCard3Value.Text = overdue.ToString("N0");
-                    lblCard4Value.Text = revenueMonth.ToString("N0");
-
-                    // 2. Chart Xu Hướng Mượn (Năm nay)
                     var yearData = await db.PhieuMuons
                         .Where(p => p.NgayMuon_Sach.Year == DateTime.Now.Year)
                         .GroupBy(p => p.NgayMuon_Sach.Month)
-                        .Select(g => new { Month = g.Key, Count = g.Count() })
+                        .Select(g => new { Thang = g.Key, SoLuong = g.Count() })
                         .ToListAsync();
 
                     chartTrend.Series[0].Points.Clear();
                     for (int i = 1; i <= 12; i++)
                     {
-                        var data = yearData.FirstOrDefault(x => x.Month == i);
-                        chartTrend.Series[0].Points.AddXY("T" + i, data?.Count ?? 0);
+                        var d = yearData.FirstOrDefault(x => x.Thang == i);
+                        chartTrend.Series[0].Points.AddXY("T" + i, d?.SoLuong ?? 0);
                     }
 
-                    // 3. Chart Tròn (Thể loại) - Top 5
-                    var genreData = db.Sachs // Cần load về client để group string
+                    var genreData = db.Sachs
                         .GroupBy(s => s.TheLoai_Sach)
-                        .Select(g => new { Name = g.Key, Count = g.Count() })
+                        .Select(g => new { g.Key, Count = g.Count() })
                         .OrderByDescending(x => x.Count)
                         .Take(5)
                         .ToList();
 
                     chartPieCategory.Series[0].Points.Clear();
-                    foreach (var item in genreData)
-                    {
-                        chartPieCategory.Series[0].Points.AddXY(item.Name, item.Count);
-                    }
+                    foreach (var g in genreData)
+                        chartPieCategory.Series[0].Points.AddXY(g.Key, g.Count);
                 }
             }
             catch (Exception ex)
             {
-                // Silent fail or log
-                MessageBox.Show("Lỗi tải Dashboard: " + ex.Message);
+                MessageBox.Show("Lỗi Dashboard: " + ex.Message);
             }
         }
-
-        private void tabControlMain_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabControlMain.SelectedTab == tabDashboard)
-                LoadDashboardAsync(); // Refresh dashboard khi quay lại
-        }
-
-        // ================== LOGIC BÁO CÁO (TAB 2) ==================
 
         private void cboLoaiThongKe_SelectedIndexChanged(object sender, EventArgs e)
         {
             string type = cboLoaiThongKe.SelectedValue?.ToString();
-            bool hasDateFilter = (type == "REVENUE_FINES" || type == "TREND_YEAR");
-            dtpTuNgay.Enabled = hasDateFilter;
-            dtpDenNgay.Enabled = hasDateFilter;
+            bool hasDate = (type == "REVENUE_FINES" || type == "TREND_YEAR");
+
+            dtpTuNgay.Enabled = hasDate;
+            dtpDenNgay.Enabled = hasDate;
             lblTongTien.Visible = (type == "REVENUE_FINES");
 
-            // Reset Grid
             dgvKetQua.DataSource = null;
             chartThongKe.Series.Clear();
         }
@@ -136,101 +114,194 @@ namespace QLTV
             DateTime from = dtpTuNgay.Value.Date;
             DateTime to = dtpDenNgay.Value.Date.AddDays(1).AddSeconds(-1);
 
-            btnThongKe.Text = "Đang tải...";
             btnThongKe.Enabled = false;
+            btnThongKe.Text = "Đang tải...";
 
             try
             {
                 object result = null;
                 decimal totalRev = 0;
 
-                await Task.Run(() => {
+                await Task.Run(() =>
+                {
                     using (var db = new QLTVDataContext())
                     {
-                        db.Configuration.LazyLoadingEnabled = false;
                         switch (type)
                         {
                             case "BOOKS_AVAILABLE":
-                                result = db.Sachs.Where(s => s.SoLuong_Sach > 0).Select(s => new { ID = s.IDSach, Ten = s.Name_Sach, SL = s.SoLuong_Sach, TL = s.TheLoai_Sach }).ToList();
+                                result = db.Sachs.Where(s => s.SoLuong_Sach > 0)
+                                    .Select(s => new { Ten = s.Name_Sach, SL = s.SoLuong_Sach })
+                                    .ToList();
                                 break;
+
                             case "BOOKS_BORROWED":
                                 result = db.PhieuMuons.Where(p => p.TrangThai_PhieuMuon == "Đang mượn")
-                                    .Include(p => p.SACHDATA).Include(p => p.DOCGIADATA.NGUOIDUNGDATA)
-                                    .Select(p => new { MaPhieu = p.IDPhieuMuon, Sach = p.SACHDATA.Name_Sach, DocGia = p.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung, NgayMuon = p.NgayMuon_Sach }).ToList();
+                                    .Select(p => new { Sach = p.SACHDATA.Name_Sach })
+                                    .ToList();
                                 break;
+
                             case "OVERDUE_LOANS":
-                                result = db.PhieuMuons.Where(p => p.TrangThai_PhieuMuon == "Đang mượn" && p.HanTra_PhieuMuon < DateTime.Now)
-                                    .Include(p => p.SACHDATA).Include(p => p.DOCGIADATA.NGUOIDUNGDATA)
-                                    .ToList() // Client side calc
-                                    .Select(p => new { Phieu = p.IDPhieuMuon, Sach = p.SACHDATA.Name_Sach, DG = p.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung, Han = p.HanTra_PhieuMuon, Tre = (DateTime.Now - p.HanTra_PhieuMuon).Days, Phat = (DateTime.Now - p.HanTra_PhieuMuon).Days * 5000 }).ToList();
+                                result = db.PhieuMuons
+                                    .Where(p => p.TrangThai_PhieuMuon == "Đang mượn" && p.HanTra_PhieuMuon < DateTime.Now)
+                                    .ToList()
+                                    .Select(p => new
+                                    {
+                                        Tre = (DateTime.Now - p.HanTra_PhieuMuon).Days
+                                    }).ToList();
                                 break;
+
                             case "TOP_READERS":
-                                result = db.PhieuMuons.GroupBy(p => p.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung)
-                                    .Select(g => new { DocGia = g.Key, SoLan = g.Count() }).OrderByDescending(x => x.SoLan).Take(10).ToList();
+                                result = db.PhieuMuons
+                                    .GroupBy(p => p.DOCGIADATA.NGUOIDUNGDATA.HoTen_NguoiDung)
+                                    .Select(g => new { DocGia = g.Key, SoLan = g.Count() })
+                                    .OrderByDescending(x => x.SoLan)
+                                    .Take(10)
+                                    .ToList();
                                 break;
+
                             case "REVENUE_FINES":
-                                var list = db.Phats.Where(p => p.DaThanhToan && p.NgayPhat >= from && p.NgayPhat <= to)
-                                    .Select(p => new RevenueDTO { MaPhat = p.IDPhat, SoTien = p.SoTien_Phat, NgayPhat = p.NgayPhat, LyDo = p.LyDo_Phat }).ToList();
+                                var list = db.Phats
+                                    .Where(p => p.DaThanhToan && p.NgayPhat >= from && p.NgayPhat <= to)
+                                    .Select(p => new RevenueDTO
+                                    {
+                                        SoTien = p.SoTien_Phat,
+                                        NgayPhat = p.NgayPhat
+                                    }).ToList();
                                 totalRev = list.Sum(x => x.SoTien);
                                 result = list;
                                 break;
-                            case "STATS_GENRE":
-                                result = db.Sachs.GroupBy(s => s.TheLoai_Sach).Select(g => new { TheLoai = g.Key, SoLuong = g.Count() }).ToList();
+
+                            case "TREND_YEAR": // ✅ FIX QUAN TRỌNG
+                                result = db.PhieuMuons
+                                    .Where(p => p.NgayMuon_Sach.Year == DateTime.Now.Year)
+                                    .GroupBy(p => p.NgayMuon_Sach.Month)
+                                    .Select(g => new { Thang = g.Key, SoLuong = g.Count() })
+                                    .OrderBy(x => x.Thang)
+                                    .ToList();
                                 break;
+
+                            case "STATS_GENRE":
+                                result = db.Sachs.GroupBy(s => s.TheLoai_Sach)
+                                    .Select(g => new { TheLoai = g.Key, SoLuong = g.Count() })
+                                    .ToList();
+                                break;
+
                             case "STATS_AUTHOR":
-                                result = db.Sachs.GroupBy(s => s.TacGia_Sach).Select(g => new { TacGia = g.Key, SoLuong = g.Count() }).OrderByDescending(x => x.SoLuong).Take(20).ToList();
+                                result = db.Sachs.GroupBy(s => s.TacGia_Sach)
+                                    .Select(g => new { TacGia = g.Key, SoLuong = g.Count() })
+                                    .OrderByDescending(x => x.SoLuong)
+                                    .Take(10)
+                                    .ToList();
                                 break;
                         }
                     }
                 });
 
                 dgvKetQua.DataSource = result;
-                if (type == "REVENUE_FINES") lblTongTien.Text = $"Tổng: {totalRev:N0} VNĐ";
+                if (type == "REVENUE_FINES")
+                    lblTongTien.Text = $"Tổng: {totalRev:N0} VNĐ";
 
-                // Vẽ biểu đồ chi tiết (Basic mapping)
                 DrawDetailChart(type, result);
             }
-            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
-            finally { btnThongKe.Enabled = true; btnThongKe.Text = "XEM BÁO CÁO"; }
+            finally
+            {
+                btnThongKe.Enabled = true;
+                btnThongKe.Text = "XEM BÁO CÁO";
+            }
+        }
+
+        private void tabControlMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControlMain.SelectedTab == tabDashboard)
+            {
+                LoadDashboardAsync();
+            }
         }
 
         private void DrawDetailChart(string type, object data)
         {
             chartThongKe.Series.Clear();
-            chartThongKe.Series.Add("Data");
-            chartThongKe.Series[0].IsValueShownAsLabel = true;
+            chartThongKe.Titles.Clear();
 
-            var list = data as IEnumerable<dynamic>;
-            if (list == null) return;
+            var list = (data as IEnumerable<dynamic>)?.ToList();
+            if (list == null || list.Count == 0) return;
 
-            if (type == "STATS_GENRE" || type == "STATS_AUTHOR" || type == "TOP_READERS")
+            var series = new Series("Data");
+            series.ChartArea = "ChartArea1"; // 🔥 FIX QUAN TRỌNG
+            series.IsValueShownAsLabel = true;
+            series.Points.Clear();
+
+            chartThongKe.Series.Add(series);
+
+            switch (type)
             {
-                chartThongKe.Series[0].ChartType = SeriesChartType.Bar;
-                foreach (var item in list)
-                {
-                    // Reflection dynamic properties
-                    string label = "";
-                    double val = 0;
-                    if (type == "STATS_GENRE") { label = item.TheLoai; val = item.SoLuong; }
-                    else if (type == "STATS_AUTHOR") { label = item.TacGia; val = item.SoLuong; }
-                    else { label = item.DocGia; val = item.SoLan; }
+                case "BOOKS_AVAILABLE":
+                    series.ChartType = SeriesChartType.Pie;
+                    foreach (var x in list.Take(10))
+                        series.Points.AddXY(x.Ten, x.SL);
+                    chartThongKe.Titles.Add("Top 10 sách trong kho");
+                    break;
 
-                    chartThongKe.Series[0].Points.AddXY(label, val);
-                }
+                case "BOOKS_BORROWED":
+                    series.ChartType = SeriesChartType.Column;
+                    foreach (var g in list.GroupBy(x => x.Sach))
+                        series.Points.AddXY(g.Key, g.Count());
+                    break;
+
+                case "OVERDUE_LOANS":
+                    series.ChartType = SeriesChartType.Column;
+                    foreach (var g in list.GroupBy(x => x.Tre))
+                        series.Points.AddXY(g.Key + " ngày", g.Count());
+                    break;
+
+                case "TOP_READERS":
+                    series.ChartType = SeriesChartType.Bar;
+                    foreach (var x in list)
+                        series.Points.AddXY(x.DocGia, x.SoLan);
+                    break;
+
+                case "REVENUE_FINES":
+                    series.ChartType = SeriesChartType.Column;
+                    foreach (var g in list.GroupBy(x => x.NgayPhat.Date))
+                        series.Points.AddXY(g.Key.ToString("dd/MM"), g.Sum(x => x.SoTien));
+                    break;
+
+                case "TREND_YEAR":
+                    series.ChartType = SeriesChartType.Line;
+                    for (int i = 1; i <= 12; i++)
+                    {
+                        var item = list.FirstOrDefault(x => x.Thang == i);
+                        series.Points.AddXY("T" + i, item?.SoLuong ?? 0);
+                    }
+                    chartThongKe.Titles.Add("Xu hướng mượn sách theo tháng");
+                    break;
+
+                case "STATS_GENRE":
+                    series.ChartType = SeriesChartType.Pie;
+                    foreach (var x in list)
+                        series.Points.AddXY(x.TheLoai, x.SoLuong);
+                    break;
+
+                case "STATS_AUTHOR":
+                    series.ChartType = SeriesChartType.Bar;
+                    foreach (var x in list.Take(10))
+                        series.Points.AddXY(x.TacGia, x.SoLuong);
+                    break;
             }
-            else if (type == "REVENUE_FINES")
+
+            if (series.ChartType == SeriesChartType.Pie)
             {
-                chartThongKe.Series[0].ChartType = SeriesChartType.Column;
-                var revList = data as List<RevenueDTO>;
-                var grouped = revList.GroupBy(x => x.NgayPhat.Date).Select(g => new { D = g.Key, V = g.Sum(k => k.SoTien) }).OrderBy(x => x.D);
-                foreach (var item in grouped) chartThongKe.Series[0].Points.AddXY(item.D.ToString("dd/MM"), item.V);
+                series["PieLabelStyle"] = "Outside";
+                series["PieLineColor"] = "Black";
             }
+
+            chartThongKe.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
+            chartThongKe.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
         }
 
-        // === CHỨC NĂNG XUẤT EXCEL MỚI ===
+
         private void btnXuatExcel_Click(object sender, EventArgs e)
         {
-            // Gọi hàm helper để xuất file
             ExcelHelper.ExportToExcel(dgvKetQua, "Báo cáo thống kê");
         }
     }
